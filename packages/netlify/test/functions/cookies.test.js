@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { cli } from './test-utils.js';
-import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 
 const root = new URL('./fixtures/cookies/', import.meta.url).toString();

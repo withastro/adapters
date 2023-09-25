@@ -28,9 +28,6 @@ describe('Mixed Prerendering with SSR', () => {
 });
 
 describe('Mixed Hybrid rendering with SSR', () => {
-	/** @type {import('./test-utils').Fixture} */
-	let fixture;
-
 	before(async () => {
 		process.env.PRERENDER = false;
 		process.env.ASTRO_OUTPUT = 'hybrid';
