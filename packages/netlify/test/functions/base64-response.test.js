@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { cli } from './test-utils.js';
-import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 
 const root = new URL('./fixtures/base64-response/', import.meta.url).toString();
