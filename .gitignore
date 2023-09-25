@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+.vercel
+.netlify
+_site/
+*.log
+package-lock.json
+.turbo/
+.eslintcache
+.pnpm-store
+
+# ignore top-level vscode settings
+/.vscode/settings.json
+
+# do not commit .env files or any files that end with `.env`
+*.env
+
+# exclude IntelliJ/WebStorm stuff
+.idea
+
