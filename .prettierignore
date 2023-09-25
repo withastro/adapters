@@ -1,0 +1,13 @@
+# Deep Directories
+**/dist
+**/node_modules
+**/fixtures
+**/vendor
+**/.vercel
+
+# Directories
+.github
+.changeset
+
+# Files
+pnpm-lock.yaml

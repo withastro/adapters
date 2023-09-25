@@ -1,34 +1,17 @@
 import { expect } from 'chai';
-import netlifyAdapter from '../../dist/index.js';
-import { loadFixture, testIntegration } from './test-utils.js';
+import { cli } from './test-utils.js';
+
+const root = new URL('../functions/fixtures/split-support/', import.meta.url).toString();
 
 describe('Split support', () => {
-	/** @type {import('./test-utils').Fixture} */
-	let fixture;
 	let _entryPoints;
 
 	before(async () => {
-		fixture = await loadFixture({
-			root: new URL('./fixtures/split-support/', import.meta.url).toString(),
-			output: 'server',
-			adapter: netlifyAdapter({
-				dist: new URL('./fixtures/split-support/dist/', import.meta.url),
-				functionPerRoute: true,
-			}),
-			site: `http://example.com`,
-			integrations: [
-				testIntegration({
-					setEntryPoints(ep) {
-						_entryPoints = ep;
-					},
-				}),
-			],
-		});
-		await fixture.build();
+		await cli('build', '--root', fileURLToPath(root));
 	});
 
 	it('outputs a correct redirect file', async () => {
-		const redir = await fixture.readFile('/_redirects');
+		let redir = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
 		const lines = redir.split(/[\r\n]+/);
 		expect(lines.length).to.equal(3);
 
