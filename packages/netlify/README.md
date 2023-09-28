@@ -243,7 +243,6 @@ We check for common mime types for audio, image, and video files. To include spe
 
 ```js
 // src/pages/image.jpg.ts
-
 import fs from 'node:fs';
 
 export function GET() {
