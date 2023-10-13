@@ -18,7 +18,7 @@
     "test": "turbo run test --concurrency=1 --filter=astro --filter=create-astro --filter=\"@astrojs/*\"",
     "benchmark": "astro-benchmark",
     "lint": "eslint . --report-unused-disable-directives",
-    "version": "changeset version && node ./scripts/deps/update-example-versions.js && pnpm install --no-frozen-lockfile && pnpm run format",
+    "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format",
     "preinstall": "npx only-allow pnpm"
   },
   "workspaces": [
