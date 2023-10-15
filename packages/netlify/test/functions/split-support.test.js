@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { cli } from "./test-utils.js";
 
