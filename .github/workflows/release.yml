@@ -17,9 +17,12 @@ env:
 jobs:
   changelog:
     name: Changelog PR or Release
-    if: ${{ github.repository_owner == 'lilnasy' }}
+    if: ${{ github.repository_owner == 'withastro' }}
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
 
