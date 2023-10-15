@@ -85,8 +85,8 @@ importers:
         specifier: ^18.17.8
         version: 18.17.8
       astro:
-        specifier: ^3.1.0
-        version: 3.1.0(@types/node@18.17.8)
+        specifier: ^3.1.4
+        version: 3.2.0(@types/node@18.17.8)
       chai:
         specifier: ^4.3.7
         version: 4.3.7
@@ -169,14 +169,20 @@ importers:
         specifier: 'workspace:'
         version: link:../../../..
 
+  packages/netlify/test/functions/fixtures/split-support:
+    dependencies:
+      '@astrojs/netlify':
+        specifier: 'workspace:'
+        version: link:../../../..
+
   packages/netlify/test/hosted/hosted-astro-project:
     dependencies:
       '@astrojs/netlify':
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^3.1.0
-        version: 3.1.0(@types/node@18.17.8)
+        specifier: ^3.2.0
+        version: 3.2.0(@types/node@18.17.8)
 
 packages:
 
@@ -259,13 +265,13 @@ packages:
       - typescript
     dev: true
 
-  /@astrojs/markdown-remark@3.2.0(astro@3.1.0):
+  /@astrojs/markdown-remark@3.2.0(astro@3.2.0):
     resolution: {integrity: sha512-jigyLfefUZPKgVmmraCkVpdUuFH1R3SrpgQO13axsgwLDBgkggaQpNR5Ag4O9PDualeBtbdt30aYSfvnBKx9Hg==}
     peerDependencies:
       astro: '*'
     dependencies:
       '@astrojs/prism': 3.0.0
-      astro: 3.1.0(@types/node@18.17.8)
+      astro: 3.2.0(@types/node@18.17.8)
       github-slugger: 2.0.0
       import-meta-resolve: 3.0.0
       mdast-util-definitions: 6.0.0
@@ -288,8 +294,8 @@ packages:
     dependencies:
       prismjs: 1.29.0
 
-  /@astrojs/telemetry@3.0.1:
-    resolution: {integrity: sha512-7zJMuikRDQ0LLLivteu0+y4pqdgznrChFiRrY3qmKlOEkLWD1T3u1a5M970lvpErP7Vgh4P298JBPjv8LTj+sw==}
+  /@astrojs/telemetry@3.0.2:
+    resolution: {integrity: sha512-ef+jqCkqopCzjGfsMsr+8p56Nj6F9ZzouWcWZt+dKsqbRccI3c8K3jfkLcdq4AyfFZtKBDB6N4ZuI68g33oiOg==}
     engines: {node: '>=18.14.1'}
     dependencies:
       ci-info: 3.8.0
@@ -1726,15 +1732,15 @@ packages:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
     dev: true
 
-  /astro@3.1.0(@types/node@18.17.8):
-    resolution: {integrity: sha512-hVPZg9uDafqJbDwOwtcujwhJ6Qp3BCaIj1cvablTYI0jdYrZSvcybhIMTf8NhzK5smvZy2Bv9eEDYXLpiLDrRQ==}
+  /astro@3.2.0(@types/node@18.17.8):
+    resolution: {integrity: sha512-sDQnSFV46ZzNkVU6co5f8wilZFmGiWsqnIVoMhd5/XPU76iZdA40WqFyBOhGaji7hGuqbcjN8MGobMg53lsoUg==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
       '@astrojs/compiler': 2.1.0
       '@astrojs/internal-helpers': 0.2.0
-      '@astrojs/markdown-remark': 3.2.0(astro@3.1.0)
-      '@astrojs/telemetry': 3.0.1
+      '@astrojs/markdown-remark': 3.2.0(astro@3.2.0)
+      '@astrojs/telemetry': 3.0.2
       '@babel/core': 7.23.0
       '@babel/generator': 7.23.0
       '@babel/parser': 7.23.0
@@ -3090,7 +3096,7 @@ packages:
     dev: true
 
   /github-from-package@0.0.0:
-    resolution: {integrity: sha1-l/tdlr/eiXMxPyDoKI75oWf6ZM4=}
+    resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
     requiresBuild: true
     optional: true
 
