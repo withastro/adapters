@@ -3,27 +3,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": [
-        "**/*",
-        "!test/**/*",
-        "!.astro/**/*",
-        "!.cache/**/*",
-        "!mod.js",
-        "!mod.js.map"
-      ],
+      "inputs": ["**/*", "!test/**/*", "!.astro/**/*", "!.cache/**/*", "!mod.js", "!mod.js.map"],
       "outputs": ["dist/**/*", "!vendor/**", "mod.js", "mod.js.map"],
       "outputMode": "new-only"
     },
     "build:ci": {
       "dependsOn": ["^build:ci"],
-      "inputs": [
-        "**/*",
-        "!test/**/*",
-        "!.astro/**/*",
-        "!.cache/**/*",
-        "!mod.js",
-        "!mod.js.map"
-      ],
+      "inputs": ["**/*", "!test/**/*", "!.astro/**/*", "!.cache/**/*", "!mod.js", "!mod.js.map"],
       "outputs": ["dist/**/*", "!vendor/**", "mod.js", "mod.js.map"],
       "outputMode": "new-only"
     },
