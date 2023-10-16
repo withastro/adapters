@@ -1,0 +1,14 @@
+{
+  "name": "test-utils",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./test-utils.js"
+  },
+  "dependencies": {
+    "astro": "^3",
+    "execa": "^8",
+    "fast-glob": "^3",
+    "strip-ansi": "^7"
+  }
+}
