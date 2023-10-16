@@ -1,5 +1,6 @@
 ---
 '@astrojs/cloudflare': patch
+'@astrojs/netlify': patch
 ---
 
-Test
+Updates repository information
