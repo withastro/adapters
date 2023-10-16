@@ -93,6 +93,9 @@ importers:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@18.17.8)
     devDependencies:
+      '@astrojs/test-utils':
+        specifier: workspace:*
+        version: link:../test-utils
       '@types/iarna__toml':
         specifier: ^2.0.2
         version: 2.0.2
@@ -117,9 +120,6 @@ importers:
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
-      test-utils:
-        specifier: workspace:*
-        version: link:../test-utils
       wrangler:
         specifier: ^3.11.0
         version: 3.11.0
@@ -250,6 +250,9 @@ importers:
         specifier: ^0.19.2
         version: 0.19.2
     devDependencies:
+      '@astrojs/test-utils':
+        specifier: workspace:*
+        version: link:../test-utils
       '@netlify/edge-functions':
         specifier: ^2.0.0
         version: 2.0.0
@@ -283,9 +286,6 @@ importers:
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
-      test-utils:
-        specifier: workspace:*
-        version: link:../test-utils
       typescript:
         specifier: ^5.2.2
         version: 5.2.2

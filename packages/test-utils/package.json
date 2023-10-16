@@ -1,5 +1,5 @@
 {
-  "name": "test-utils",
+  "name": "@astrojs/test-utils",
   "private": true,
   "type": "module",
   "exports": {
