@@ -5,6 +5,7 @@
   "exports": {
     ".": "./test-utils.js"
   },
+  "keywords": [],
   "dependencies": {
     "astro": "^3",
     "execa": "^8",
