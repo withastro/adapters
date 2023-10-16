@@ -117,6 +117,9 @@ importers:
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
+      test-utils:
+        specifier: workspace:*
+        version: link:../test-utils
       wrangler:
         specifier: ^3.11.0
         version: 3.11.0
