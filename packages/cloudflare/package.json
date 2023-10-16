@@ -1,5 +1,5 @@
 {
-  "//comment": "test changeset",
+  "//comment": "test changeset-bot",
   "name": "@astrojs/cloudflare",
   "description": "Deploy your site to Cloudflare Workers/Pages",
   "version": "7.5.3",
