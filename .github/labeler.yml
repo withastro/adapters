@@ -1,0 +1,14 @@
+# See https://github.com/actions/labeler
+
+'🚨 action':
+- .github/workflows/**
+
+'pkg: cloudflare':
+- packages/cloudflare/**
+
+'pkg: netlify':
+- packages/netlify/**
+
+'docs pr':
+- README.md
+- .changeset/*.md
