@@ -3,21 +3,19 @@ import { writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateEdgeMiddleware } from './middleware.js';
-import type { Args } from './netlify-functions.js';
-import { createRedirects } from './shared.js';
+import { createRedirects, type Args } from './shared.js';
 
 export const NETLIFY_EDGE_MIDDLEWARE_FILE = 'netlify-edge-middleware';
-export const ASTRO_LOCALS_HEADER = 'x-astro-locals';
 
-export function getAdapter({ functionPerRoute, edgeMiddleware, ...args }: Args): AstroAdapter {
+export function getAdapter(args: Args): AstroAdapter {
 	return {
 		name: '@astrojs/netlify/functions',
-		serverEntrypoint: '@astrojs/netlify/netlify-functions.js',
-		exports: ['handler'],
+		serverEntrypoint: args.runtime === 'v2' ? '@astrojs/netlify/server-v2.js' : '@astrojs/netlify/server-v1.js',
+		exports: args.runtime === 'v2' ? ['default'] : ['handler'],
 		args,
 		adapterFeatures: {
-			functionPerRoute,
-			edgeMiddleware,
+			functionPerRoute: args.functionPerRoute,
+			edgeMiddleware: args.edgeMiddleware,
 		},
 		supportedAstroFeatures: {
 			hybridOutput: 'stable',
@@ -38,15 +36,22 @@ interface NetlifyFunctionsOptions {
 	binaryMediaTypes?: string[];
 	edgeMiddleware?: boolean;
 	functionPerRoute?: boolean;
+	runtime?: 'v1' | 'v2';
 }
 
 function netlifyFunctions({
 	dist,
-	builders,
 	binaryMediaTypes,
+	builders = false,
 	functionPerRoute = false,
 	edgeMiddleware = false,
+	runtime = 'v1'
 }: NetlifyFunctionsOptions = {}): AstroIntegration {
+
+	if (runtime === 'v2' && builders) {
+		throw new Error("Builder functions are not compatible with Netlify's Runtime V2. Please either disable builders or switch back to V1.")
+	}
+
 	let _config: AstroConfig;
 	let _entryPoints: Map<RouteData, URL>;
 	let ssrEntryFile: string;
@@ -54,7 +59,7 @@ function netlifyFunctions({
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
-			'astro:config:setup': ({ config, updateConfig }) => {
+			'astro:config:setup' ({ config, updateConfig }) {
 				const outDir = dist ?? new URL('./dist/', config.root);
 				updateConfig({
 					outDir,
@@ -65,36 +70,31 @@ function netlifyFunctions({
 					},
 				});
 			},
-			'astro:build:ssr': async ({ entryPoints, middlewareEntryPoint }) => {
+			'astro:build:ssr' ({ entryPoints, middlewareEntryPoint }) {
 				if (middlewareEntryPoint) {
 					_middlewareEntryPoint = middlewareEntryPoint;
 				}
 				_entryPoints = entryPoints;
 			},
-			'astro:config:done': ({ config, setAdapter }) => {
+			'astro:config:done' ({ config, setAdapter, logger }) {
 				setAdapter(
 					getAdapter({
 						binaryMediaTypes,
 						builders,
 						functionPerRoute,
 						edgeMiddleware,
+						runtime
 					})
 				);
 				_config = config;
 				ssrEntryFile = config.build.serverEntry.replace(/\.m?js/, '');
 
 				if (config.output === 'static') {
-					// eslint-disable-next-line no-console
-					console.warn(
-						`[@astrojs/netlify] \`output: "server"\` or \`output: "hybrid"\` is required to use this adapter.`
-					);
-					// eslint-disable-next-line no-console
-					console.warn(
-						`[@astrojs/netlify] Otherwise, this adapter is not required to deploy a static site to Netlify.`
-					);
+					logger.warn('`output: "server"` or `output: "hybrid"` is required to use this adapter.');
+					logger.warn('Otherwise, this adapter is not required to deploy a static site to Netlify.');
 				}
 			},
-			'astro:build:done': async ({ routes, dir }) => {
+			async 'astro:build:done' ({ routes, dir }) {
 				const functionsConfig = {
 					version: 1,
 					config: {

@@ -2,28 +2,17 @@ import { builder, type Handler } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
-import { ASTRO_LOCALS_HEADER } from './integration-functions.js';
+import { clientAddressSymbol, ASTRO_LOCALS_HEADER, type Args } from './shared.js';
 
 applyPolyfills();
-
-export interface Args {
-	builders?: boolean;
-	binaryMediaTypes?: string[];
-	edgeMiddleware: boolean;
-	functionPerRoute: boolean;
-}
 
 function parseContentType(header?: string) {
 	return header?.split(';')[0] ?? '';
 }
 
-const clientAddressSymbol = Symbol.for('astro.clientAddress');
-
-export const createExports = (manifest: SSRManifest, args: Args) => {
+export const createExports = (manifest: SSRManifest, { builders, binaryMediaTypes = [] }: Args) => {
 	const app = new App(manifest);
 
-	const builders = args.builders ?? false;
-	const binaryMediaTypes = args.binaryMediaTypes ?? [];
 	const knownBinaryMediaTypes = new Set([
 		'audio/3gpp',
 		'audio/3gpp2',
@@ -58,10 +47,12 @@ export const createExports = (manifest: SSRManifest, args: Args) => {
 
 	const myHandler: Handler = async (event) => {
 		const { httpMethod, headers, rawUrl, body: requestBody, isBase64Encoded } = event;
+		
 		const init: RequestInit = {
 			method: httpMethod,
 			headers: new Headers(headers as any),
 		};
+
 		// Attach the event body the request, with proper encoding.
 		if (httpMethod !== 'GET' && httpMethod !== 'HEAD') {
 			const encoding = isBase64Encoded ? 'base64' : 'utf-8';
@@ -71,7 +62,6 @@ export const createExports = (manifest: SSRManifest, args: Args) => {
 
 		const request = new Request(rawUrl, init);
 
-		const routeData = app.match(request);
 		const ip = headers['x-nf-client-connection-ip'];
 		Reflect.set(request, clientAddressSymbol, ip);
 
@@ -94,7 +84,7 @@ export const createExports = (manifest: SSRManifest, args: Args) => {
 			  }
 			: {};
 
-		const response: Response = await app.render(request, routeData, locals);
+		const response: Response = await app.render(request, undefined, locals);
 		const responseHeaders = Object.fromEntries(response.headers.entries());
 
 		const responseContentType = parseContentType(responseHeaders['content-type']);

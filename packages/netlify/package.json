@@ -20,9 +20,8 @@
   "exports": {
     ".": "./dist/index.js",
     "./functions": "./dist/integration-functions.js",
-    "./netlify-functions.js": "./dist/netlify-functions.js",
-    "./edge-functions": "./dist/integration-edge-functions.js",
-    "./netlify-edge-functions.js": "./dist/netlify-edge-functions.js",
+    "./server-v1.js": "./dist/server-v1.js",
+    "./server-v2.js": "./dist/server-v2.js",
     "./package.json": "./package.json"
   },
   "files": [
@@ -44,8 +43,6 @@
     "astro": "^3.4.3"
   },
   "devDependencies": {
-    "@netlify/edge-functions": "^2.0.0",
-    "@netlify/edge-handler-types": "^0.34.1",
     "@types/node": "^18.17.8",
     "astro": "^3.4.3",
     "chai": "^4.3.10",
