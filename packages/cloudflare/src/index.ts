@@ -1,6 +1,7 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
+import { passthroughImageService } from 'astro/config';
 import { AstroError } from 'astro/errors';
 import esbuild from 'esbuild';
 import { Miniflare } from 'miniflare';
@@ -104,7 +105,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
-			'astro:config:setup': ({ config, updateConfig }) => {
+			'astro:config:setup': ({ config, updateConfig, logger }) => {
 				let imageConfigOverwrite = false;
 				if (
 					config.image.service.entrypoint === 'astro/assets/services/sharp' ||
