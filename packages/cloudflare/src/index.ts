@@ -105,6 +105,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 		name: '@astrojs/cloudflare',
 		hooks: {
 			'astro:config:setup': ({ config, updateConfig }) => {
+				let imageConfigOverwrite = false;
+				if (
+					config.image.service.entrypoint === 'astro/assets/services/sharp' ||
+					config.image.service.entrypoint === 'astro/assets/services/squoosh'
+				) {
+					logger.warn(
+						`Does not support image optimization. To allow your project to build with the original, unoptimized images, the image service has been automatically switched to the 'noop' option. See https://docs.astro.build/en/reference/configuration-reference/#imageservice`
+					);
+					imageConfigOverwrite = true;
+				}
 				updateConfig({
 					build: {
 						client: new URL(`.${config.base}`, config.outDir),
@@ -121,6 +131,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							}),
 						],
 					},
+					image: imageConfigOverwrite ? passthroughImageService() : config.image,
 				});
 			},
 			'astro:config:done': ({ setAdapter, config, logger }) => {
