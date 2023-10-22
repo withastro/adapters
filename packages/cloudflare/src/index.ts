@@ -112,7 +112,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					config.image.service.entrypoint === 'astro/assets/services/squoosh'
 				) {
 					logger.warn(
-						`Does not support image optimization. To allow your project to build with the original, unoptimized images, the image service has been automatically switched to the 'noop' option. See https://docs.astro.build/en/reference/configuration-reference/#imageservice`
+						`The current configuration does not support image optimization. To allow your project to build with the original, unoptimized images, the image service has been automatically switched to the 'noop' option. See https://docs.astro.build/en/reference/configuration-reference/#imageservice`
 					);
 					imageConfigOverwrite = true;
 				}
