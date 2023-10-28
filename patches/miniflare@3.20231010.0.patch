@@ -1,0 +1,22 @@
+diff --git a/dist/src/index.js b/dist/src/index.js
+index 73c59ba08f0b2a251fd805e183fc81394875d79e..40d1f86bdad9ca2a63656b682ad60b349efb340c 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -2885,7 +2885,7 @@ var structuredSerializableRevivers = {
+ function createHTTPReducers(impl) {
+   return {
+     Headers(val) {
+-      if (val instanceof impl.Headers)
++      if (val instanceof impl.Headers || val.constructor.name == "Headers")
+         return Object.fromEntries(val);
+     },
+     Request(val) {
+@@ -2894,7 +2894,7 @@ function createHTTPReducers(impl) {
+       }
+     },
+     Response(val) {
+-      if (val instanceof impl.Response) {
++      if (val instanceof impl.Response || val.constructor.name == "Response") {
+         return [val.status, val.statusText, val.headers, val.cf, val.body];
+       }
+     }

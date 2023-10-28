@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  miniflare@3.20231010.0:
+    hash: c7azssxc76kecoipgoc3yzxd2y
+    path: patches/miniflare@3.20231010.0.patch
+
 importers:
 
   .:
@@ -85,7 +90,7 @@ importers:
         version: 6.3.0
       miniflare:
         specifier: 3.20231010.0
-        version: 3.20231010.0
+        version: 3.20231010.0(patch_hash=c7azssxc76kecoipgoc3yzxd2y)
       tiny-glob:
         specifier: ^0.2.9
         version: 0.2.9
@@ -5589,7 +5594,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /miniflare@3.20231010.0:
+  /miniflare@3.20231010.0(patch_hash=c7azssxc76kecoipgoc3yzxd2y):
     resolution: {integrity: sha512-VETY+/OhJ1RN+yrFpPUqBZysb2R8wXvyx3vzaRZS2qO1aGNKeGASa/vxCvNcBF+gt8UdbWMOalSXX8zY0IgWZA==}
     engines: {node: '>=16.13'}
     dependencies:
@@ -5609,6 +5614,7 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    patched: true
 
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -7909,7 +7915,7 @@ packages:
       blake3-wasm: 2.1.5
       chokidar: 3.5.3
       esbuild: 0.17.19
-      miniflare: 3.20231010.0
+      miniflare: 3.20231010.0(patch_hash=c7azssxc76kecoipgoc3yzxd2y)
       nanoid: 3.3.6
       path-to-regexp: 6.2.1
       selfsigned: 2.1.1

@@ -43,6 +43,9 @@
       "allowAny": [
         "astro"
       ]
+    },
+    "patchedDependencies": {
+      "miniflare@3.20231010.0": "patches/miniflare@3.20231010.0.patch"
     }
   },
   "devDependencies": {
