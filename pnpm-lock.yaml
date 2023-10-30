@@ -303,6 +303,12 @@ importers:
         specifier: 'workspace:'
         version: link:../../../..
 
+  packages/netlify/test/functions/fixtures/base:
+    dependencies:
+      '@astrojs/netlify':
+        specifier: 'workspace:'
+        version: link:../../../..
+
   packages/netlify/test/functions/fixtures/base64-response:
     dependencies:
       '@astrojs/netlify':
