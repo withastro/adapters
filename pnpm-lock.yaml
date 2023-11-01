@@ -66,8 +66,8 @@ importers:
   packages/cloudflare:
     dependencies:
       '@astrojs/underscore-redirects':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.3
+        version: 0.3.3
       '@cloudflare/workers-types':
         specifier: ^4.20230821.0
         version: 4.20230821.0
@@ -245,8 +245,8 @@ importers:
   packages/netlify:
     dependencies:
       '@astrojs/underscore-redirects':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.3
+        version: 0.3.3
       '@netlify/functions':
         specifier: ^2.0.1
         version: 2.0.1
@@ -558,8 +558,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@astrojs/underscore-redirects@0.3.0:
-    resolution: {integrity: sha512-dWBOH6hlGeaERmbdi+jFV2rnTcjOJrNOFYTnTTf8G2x0Gs3Radsh1ObSNEL5Z+xUhXNZLymhLbnN9yQSmh+PQw==}
+  /@astrojs/underscore-redirects@0.3.3:
+    resolution: {integrity: sha512-qDAKhFO4M1KzP7mxoJfiehf8oyf3EB158MxAa6z10NeD2pR3o4K3LlOQI8CfJgXE+BDBQcnaLvVCg/Mz/Gkg4Q==}
     dev: false
 
   /@babel/code-frame@7.22.13:
