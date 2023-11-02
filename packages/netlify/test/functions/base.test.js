@@ -1,5 +1,5 @@
-// import { expect } from 'chai';
-// import fs from 'fs/promises';
+import { expect } from 'chai';
+import fs from 'fs/promises';
 import { cli } from './test-utils.js';
 import { fileURLToPath } from 'url';
 
@@ -11,9 +11,8 @@ describe('Base', () => {
 	});
 
 	it('Path is prepended by base', async () => {
-		// TODO: uncomment after fix is implemented
-		// const redir = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
-		// const expr = new RegExp('/test/     /.netlify/functions/entry    200');
-		// expect(redir).to.match(expr);
+		const redir = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
+		const expr = new RegExp('/test/     /.netlify/functions/entry    200');
+		expect(redir).to.match(expr);
 	});
 });
