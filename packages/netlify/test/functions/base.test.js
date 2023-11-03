@@ -12,7 +12,10 @@ describe('Base', () => {
 
 	it('Path is prepended by base', async () => {
 		const redir = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
-		const expr = new RegExp('/test/     /.netlify/functions/entry    200');
-		expect(redir).to.match(expr);
+		const baseRouteIndex = redir.indexOf('/test/          /.netlify/functions/entry    200');
+		const imageEndpoint = redir.indexOf('/test/_image    /.netlify/functions/entry    200');
+
+		expect(baseRouteIndex).to.not.be.equal(-1);
+		expect(imageEndpoint).to.not.be.equal(-1);
 	});
 });
