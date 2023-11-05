@@ -133,7 +133,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						],
 					},
 					image: imageConfigOverwrite
-						? { ...config.image, endpoint: '/null' }
+						? { ...config.image, endpoint: import.meta.env.DEV ? undefined : '/null' }
 						: config.image,
 				});
 			},
