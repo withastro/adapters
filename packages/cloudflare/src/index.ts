@@ -22,7 +22,7 @@ export type { DirectoryRuntime } from './entrypoints/server.directory.js';
 export type Options = {
 	mode?: 'directory' | 'advanced';
 	functionPerRoute?: boolean;
-	imageService?: 'passthrough' | 'cloudflare';
+	imageService?: 'passthrough' | 'cloudflare' | 'compile';
 	/** Configure automatic `routes.json` generation */
 	routes?: {
 		/** Strategy for generating `include` and `exclude` patterns

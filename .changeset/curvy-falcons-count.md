@@ -1,0 +1,5 @@
+---
+'@astrojs/cloudflare': minor
+---
+
+TBA
