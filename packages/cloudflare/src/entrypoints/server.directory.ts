@@ -32,40 +32,35 @@ export function createExports(manifest: SSRManifest) {
 			return env.ASSETS.fetch(request);
 		}
 
-		let routeData = app.match(request, { matchNotFound: true });
-		if (routeData) {
-			Reflect.set(
-				request,
-				Symbol.for('astro.clientAddress'),
-				request.headers.get('cf-connecting-ip')
-			);
+		// REF: If routeData is undefined, the render method invokes the #renderError method
+		let routeData = app.match(request, { matchNotFound: true }) || undefined;
 
-			const locals: DirectoryRuntime = {
-				runtime: {
-					waitUntil: (promise: Promise<any>) => {
-						context.waitUntil(promise);
-					},
-					env: context.env,
-					cf: request.cf,
-					caches: caches as unknown as CacheStorage,
+		Reflect.set(
+			request,
+			Symbol.for('astro.clientAddress'),
+			request.headers.get('cf-connecting-ip')
+		);
+
+		const locals: DirectoryRuntime = {
+			runtime: {
+				waitUntil: (promise: Promise<any>) => {
+					context.waitUntil(promise);
 				},
-			};
+				env: context.env,
+				cf: request.cf,
+				caches: caches as unknown as CacheStorage,
+			},
+		};
 
-			let response = await app.render(request, routeData, locals);
+		let response = await app.render(request, routeData, locals);
 
-			if (app.setCookieHeaders) {
-				for (const setCookieHeader of app.setCookieHeaders(response)) {
-					response.headers.append('Set-Cookie', setCookieHeader);
-				}
+		if (app.setCookieHeaders) {
+			for (const setCookieHeader of app.setCookieHeaders(response)) {
+				response.headers.append('Set-Cookie', setCookieHeader);
 			}
-
-			return response;
 		}
 
-		return new Response(null, {
-			status: 404,
-			statusText: 'Not found',
-		});
+		return response;
 	};
 
 	return { onRequest, manifest };
