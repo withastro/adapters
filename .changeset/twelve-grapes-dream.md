@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': patch
 ---
 
-Fix 404 responses in "exclude" routing strategy
+Fixes an issue where `404.astro` was not used when `routes.strategy` was set to `exclude`
