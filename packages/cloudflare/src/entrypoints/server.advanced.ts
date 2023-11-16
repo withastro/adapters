@@ -39,7 +39,7 @@ export function createExports(manifest: SSRManifest) {
 			return env.ASSETS.fetch(request);
 		}
 
-		let routeData = app.match(request, { matchNotFound: true });
+		let routeData = app.match(request);
 			Reflect.set(
 				request,
 				Symbol.for('astro.clientAddress'),
