@@ -6,7 +6,7 @@ import type { SSRManifest } from 'astro';
 
 applyPolyfills();
 
-export function createExports (manifest: SSRManifest, args: Args) {
+export function createExports (manifest: SSRManifest, _args: Args) {
 	const app = new App(manifest);
 
 	return {
