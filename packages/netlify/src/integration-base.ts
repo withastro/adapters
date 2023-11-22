@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { generateEdgeMiddleware } from './middleware.ts';
 import { createRedirects, type Options } from './shared.ts';
+import type { Connect } from 'vite';
 
 export const NETLIFY_EDGE_MIDDLEWARE_FILE = 'netlify-edge-middleware';
 
@@ -34,6 +35,7 @@ export function getAdapter(options: Required<Options> & InternalOptions): AstroA
 interface InternalOptions {
 	adapterName: string;
 	functionType: 'lambda-compatible' | 'builders' | 'v2';
+	devMiddleware?: Connect.HandleFunction
 	dist?: URL
 }
 
@@ -42,11 +44,12 @@ class StacklessError extends Error { trace = undefined }
 export function getIntegration({
 	dist,
 	adapterName,
-	binaryMediaTypes = [],
+	functionType,
+	devMiddleware,
 	builders = false,
+	binaryMediaTypes = [],
 	functionPerRoute = false,
 	edgeMiddleware = false,
-	functionType
 }: Options & InternalOptions): AstroIntegration {
 
 	if (functionType === 'v2' && builders) {
@@ -95,6 +98,9 @@ export function getIntegration({
 					logger.warn('`output: "server"` or `output: "hybrid"` is required to use this adapter.');
 					logger.warn('Otherwise, this adapter is not required to deploy a static site to Netlify.');
 				}
+			},
+			'astro:server:setup' ({ server }) {
+				if (devMiddleware) server.middlewares.use(devMiddleware)
 			},
 			async 'astro:build:done' ({ routes, dir }) {
 				const functionsConfig = {
