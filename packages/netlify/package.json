@@ -18,19 +18,21 @@
   "bugs": "https://github.com/withastro/adapters/issues",
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/netlify/",
   "exports": {
-    ".": "./dist/index.js",
-    "./functions": "./dist/integration-functions.js",
-    "./server-v1.js": "./dist/server-v1.js",
-    "./server-v2.js": "./dist/server-v2.js",
+    ".": "./src/index.ts",
+    "./functions": "./src/integration-lambda.ts",
+    "./builders": "./src/integration-builders.ts",
+    "./v2": "./src/integration-v2.ts",
+    "./server-lambda": "./src/server-lambda.ts",
+    "./server-v2": "./src/server-v2.ts",
+    "./builder-types": "./builder-types.d.ts",
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "builders-types.d.ts",
+    "src"
   ],
   "scripts": {
-    "build": "tsc",
     "test-fn": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/functions/",
-    "test-edge": "deno test --allow-run --allow-read --allow-net --allow-env --allow-write ./test/edge-functions/",
     "test": "pnpm test-fn",
     "test:hosted": "mocha --exit --timeout 30000 test/hosted"
   },

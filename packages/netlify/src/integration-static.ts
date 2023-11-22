@@ -1,7 +1,7 @@
 import type { AstroIntegration, RouteData } from 'astro';
-import { createRedirects } from './shared.js';
+import { createRedirects } from './shared.ts';
 
-export function netlifyStatic(): AstroIntegration {
+export function getIntegration(): AstroIntegration {
 	let _config: any;
 	return {
 		name: '@astrojs/netlify',
@@ -28,3 +28,5 @@ export function netlifyStatic(): AstroIntegration {
 		},
 	};
 }
+
+export { getIntegration as default, getIntegration as netlifyStatic };

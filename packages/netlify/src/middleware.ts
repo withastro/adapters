@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { ASTRO_LOCALS_HEADER } from './shared.js';
+import { ASTRO_LOCALS_HEADER } from './shared.ts';
 
 const DENO_SHIM = `globalThis.process = {
 	argv: [],

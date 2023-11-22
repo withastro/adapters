@@ -1,12 +1,12 @@
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
-import { clientAddressSymbol, ASTRO_LOCALS_HEADER, type Args } from './shared.js';
+import { clientAddressSymbol, ASTRO_LOCALS_HEADER, type Options } from './shared.ts';
 import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 
 applyPolyfills();
 
-export function createExports (manifest: SSRManifest, _args: Args) {
+export function createExports (manifest: SSRManifest, _options: Options) {
 	const app = new App(manifest);
 
 	return {

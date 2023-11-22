@@ -2,12 +2,14 @@ import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import fs from 'node:fs';
 import type { AstroConfig, RouteData } from 'astro';
 
-export interface Args {
-	builders: boolean;
+export interface Options {
+	/**
+	 * @deprecated Import from "@astrojs/netlify/builders" instead.
+	 */
+	builders?: boolean;
 	binaryMediaTypes?: string[];
-	edgeMiddleware: boolean;
-	functionPerRoute: boolean;
-	runtime: 'v1' | 'v2';
+	edgeMiddleware?: boolean;
+	functionPerRoute?: boolean;
 }
 
 export const clientAddressSymbol = Symbol.for('astro.clientAddress');

@@ -1,2 +1,2 @@
-export { netlifyFunctions as default, netlifyFunctions } from './integration-functions.js';
+export { default, default as netlifyFunctions } from './integration-lambda.ts';
 export { netlifyStatic } from './integration-static.js';

@@ -1,21 +1,22 @@
 import type { AstroAdapter, AstroConfig, AstroIntegration, RouteData } from 'astro';
 import { writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { generateEdgeMiddleware } from './middleware.js';
-import { createRedirects, type Args } from './shared.js';
+import { generateEdgeMiddleware } from './middleware.ts';
+import { createRedirects, type Options } from './shared.ts';
 
 export const NETLIFY_EDGE_MIDDLEWARE_FILE = 'netlify-edge-middleware';
 
-export function getAdapter(args: Args): AstroAdapter {
+export function getAdapter(options: Required<Options> & InternalOptions): AstroAdapter {
 	return {
-		name: '@astrojs/netlify/functions',
-		serverEntrypoint: args.runtime === 'v2' ? '@astrojs/netlify/server-v2.js' : '@astrojs/netlify/server-v1.js',
-		exports: args.runtime === 'v2' ? ['default'] : ['handler'],
-		args,
+		name: options.adapterName,
+		serverEntrypoint: options.functionType === 'v2' ? '@astrojs/netlify/server-v2' : '@astrojs/netlify/server-lambda',
+		exports: options.functionType === 'v2' ? ['default'] : ['handler'],
+		args: options,
 		adapterFeatures: {
-			functionPerRoute: args.functionPerRoute,
-			edgeMiddleware: args.edgeMiddleware,
+			functionPerRoute: options.functionPerRoute,
+			edgeMiddleware: options.edgeMiddleware,
 		},
 		supportedAstroFeatures: {
 			hybridOutput: 'stable',
@@ -30,37 +31,37 @@ export function getAdapter(args: Args): AstroAdapter {
 	};
 }
 
-interface NetlifyFunctionsOptions {
-	dist?: URL;
-	builders?: boolean;
-	binaryMediaTypes?: string[];
-	edgeMiddleware?: boolean;
-	functionPerRoute?: boolean;
-	runtime?: 'v1' | 'v2';
+interface InternalOptions {
+	adapterName: string;
+	functionType: 'lambda-compatible' | 'builders' | 'v2';
+	dist?: URL
 }
 
-function netlifyFunctions({
+class StacklessError extends Error { trace = undefined }
+
+export function getIntegration({
 	dist,
-	binaryMediaTypes,
+	adapterName,
+	binaryMediaTypes = [],
 	builders = false,
 	functionPerRoute = false,
 	edgeMiddleware = false,
-	runtime = 'v1'
-}: NetlifyFunctionsOptions = {}): AstroIntegration {
+	functionType
+}: Options & InternalOptions): AstroIntegration {
 
-	if (runtime === 'v2' && builders) {
-		throw new Error("Builder functions are not compatible with Netlify's Runtime V2. Please either disable builders or switch back to V1.")
+	if (functionType === 'v2' && builders) {
+		throw new StacklessError("Builder functions are not compatible with Netlify Functions 2.0. Please either disable builders or switch back to lambda compatible function.")
 	}
 
 	let _config: AstroConfig;
 	let _entryPoints: Map<RouteData, URL>;
 	let ssrEntryFile: string;
-	let _middlewareEntryPoint: URL;
+	let _middlewareEntryPoint: URL | undefined;
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
 			'astro:config:setup' ({ config, updateConfig }) {
-				const outDir = dist ?? new URL('./dist/', config.root);
+				const outDir = dist ?? config.outDir;
 				updateConfig({
 					outDir,
 					build: {
@@ -79,11 +80,12 @@ function netlifyFunctions({
 			'astro:config:done' ({ config, setAdapter, logger }) {
 				setAdapter(
 					getAdapter({
+						adapterName,
 						binaryMediaTypes,
 						builders,
 						functionPerRoute,
 						edgeMiddleware,
-						runtime
+						functionType
 					})
 				);
 				_config = config;
@@ -104,26 +106,46 @@ function netlifyFunctions({
 				const functionsConfigPath = join(fileURLToPath(_config.build.server), 'entry.json');
 				await writeFile(functionsConfigPath, JSON.stringify(functionsConfig));
 
-				const type = builders ? 'builders' : 'functions';
-				const kind = type ?? 'functions';
+				const type = functionType === 'builders' ? 'builders' : 'functions';
 
 				if (_entryPoints.size) {
 					const routeToDynamicTargetMap = new Map();
 					for (const [route, entryFile] of _entryPoints) {
 						const wholeFileUrl = fileURLToPath(entryFile);
 
+						// HACK: transform entry file manually so that netlify-cli can automatically detect there's a default export
+						const orginalEntrypointContents = fs.readFileSync(wholeFileUrl, 'utf-8');
+
+						const replacedEntrypointContents =
+							orginalEntrypointContents
+							.replace("export { _default as default, pageModule };", "export { pageModule };")
+							.replace("const _default = _exports['default'];", "export default _exports['default'];");
+						
+						fs.writeFileSync(wholeFileUrl, replacedEntrypointContents);
+
 						const extension = extname(wholeFileUrl);
 						const relative = wholeFileUrl
 							.replace(fileURLToPath(_config.build.server), '')
 							.replace(extension, '')
 							.replaceAll('\\', '/');
-						const dynamicTarget = `/.netlify/${kind}/${relative}`;
+						const dynamicTarget = `/.netlify/${type}/${relative}`;
 
 						routeToDynamicTargetMap.set(route, dynamicTarget);
 					}
 					await createRedirects(_config, routeToDynamicTargetMap, dir);
 				} else {
-					const dynamicTarget = `/.netlify/${kind}/${ssrEntryFile}`;
+					// HACK: transform entry file manually so that netlify-cli can automatically detect there's a default export
+					const filePath = fileURLToPath(new URL(`./.netlify/functions-internal/${_config.build.serverEntry}`, _config.root))
+					const originalEntrypointContents = fs.readFileSync(filePath, 'utf-8')
+					
+					const replacedEntrypointContents =
+						originalEntrypointContents
+						.replace("export { _default as default, pageMap };", "export { pageMap };")
+						.replace("const _default = _exports['default'];", "export default _exports['default'];");
+				
+					fs.writeFileSync(filePath, replacedEntrypointContents);
+
+					const dynamicTarget = `/.netlify/${type}/${ssrEntryFile}`;
 					const map: [RouteData, string][] = routes.map((route) => {
 						return [route, dynamicTarget];
 					});
@@ -147,5 +169,3 @@ function netlifyFunctions({
 		},
 	};
 }
-
-export { netlifyFunctions as default, netlifyFunctions };

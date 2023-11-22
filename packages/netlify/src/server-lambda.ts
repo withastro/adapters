@@ -2,7 +2,7 @@ import { builder, type Handler } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
-import { clientAddressSymbol, ASTRO_LOCALS_HEADER, type Args } from './shared.js';
+import { clientAddressSymbol, ASTRO_LOCALS_HEADER, type Options } from './shared.ts';
 
 applyPolyfills();
 
@@ -10,7 +10,7 @@ function parseContentType(header?: string) {
 	return header?.split(';')[0] ?? '';
 }
 
-export const createExports = (manifest: SSRManifest, { builders, binaryMediaTypes = [] }: Args) => {
+export const createExports = (manifest: SSRManifest, { builders, binaryMediaTypes = [] }: Options) => {
 	const app = new App(manifest);
 
 	const knownBinaryMediaTypes = new Set([
