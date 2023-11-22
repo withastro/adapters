@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import netlifyAdapter from '../../../../dist/index.js';
+import netlifyAdapter from '@astrojs/netlify';
 
 
 export default defineConfig({

@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import netlifyAdapter from '../../dist/index.js';
 import { testIntegration } from './test-utils.js';
 import { loadFixture } from '@astrojs/test-utils';
 
@@ -10,12 +9,7 @@ describe('Split support', () => {
 
 	before(async () => {
 		fixture = await loadFixture({
-			root: new URL('./fixtures/split-support/', import.meta.url).toString(),
-			output: 'server',
-			adapter: netlifyAdapter({
-				functionPerRoute: true,
-			}),
-			site: `http://example.com`,
+			root: new URL('./fixtures/split-support/', import.meta.url),
 			integrations: [
 				testIntegration({
 					setEntryPoints(ep) {
