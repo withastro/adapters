@@ -21,6 +21,9 @@
     ".": "./dist/index.js",
     "./functions": "./dist/integration-functions.js",
     "./netlify-functions.js": "./dist/netlify-functions.js",
+    "./ssr-function.js": "./dist/ssr-function.js",
+    "./image-service.js": "./dist/image-service.js",
+    "./v2": "./dist/v2.js",
     "./edge-functions": "./dist/integration-edge-functions.js",
     "./netlify-edge-functions.js": "./dist/netlify-edge-functions.js",
     "./package.json": "./package.json"
