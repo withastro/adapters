@@ -29,7 +29,6 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 
 		if (app.setCookieHeaders) {
 			for (const setCookieHeader of app.setCookieHeaders(response)) {
-				
 				response.headers.append('Set-Cookie', setCookieHeader);
 			}
 		}

@@ -22,7 +22,7 @@ export default function netlifyIntegration(): AstroIntegration {
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
-			'astro:config:setup': async ({ config, updateConfig }) => {
+			'astro:config:setup': async ({ config, updateConfig, command }) => {
 				rootDir = config.root;
 				await cleanFunctions();
 
@@ -38,7 +38,7 @@ export default function netlifyIntegration(): AstroIntegration {
 					},
 					image: {
 						service: {
-							entrypoint: '@astrojs/netlify/image-service.js',
+							entrypoint: command === 'build' ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
 				});
@@ -79,8 +79,6 @@ export default function netlifyIntegration(): AstroIntegration {
 				astroMiddlewareEntryPoint = middlewareEntryPoint;
 			},
 			'astro:build:done': async () => {
-				// TODO: create redirects file
-
 				// Finalizing SSR function
 				await writeFile(
 					new URL('./ssr.mjs', ssrOutputDir()),
