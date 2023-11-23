@@ -79,8 +79,8 @@ export default function netlifyIntegration(): AstroIntegration {
 				astroMiddlewareEntryPoint = middlewareEntryPoint;
 			},
 			'astro:build:done': async () => {
-        // TODO: create redirects file
-        
+				// TODO: create redirects file
+
 				// Finalizing SSR function
 				await writeFile(
 					new URL('./ssr.mjs', ssrOutputDir()),
@@ -132,36 +132,7 @@ export default function netlifyIntegration(): AstroIntegration {
 						format: 'esm',
 						bundle: true,
 						minify: false,
-						banner: {
-							js: `
-							globalThis.process = {
-								argv: [],
-								env: Deno.env.toObject(),
-							};
-							`,
-						},
 					});
-
-					const edgeFunctionDirectory = new URL('./.netlify/edge-functions/', rootDir);
-					const importMap = {
-						imports: {
-							crypto: 'node:crypto',
-							buffer: 'node:buffer',
-						},
-					};
-					await writeFile(
-						new URL('import_map.json', edgeFunctionDirectory),
-						JSON.stringify(importMap, null, 2)
-					);
-
-					const manifest = {
-						version: 1,
-						import_map: 'import_map.json',
-					};
-					await writeFile(
-						new URL('manifest.json', edgeFunctionDirectory),
-						JSON.stringify(manifest, null, 2)
-					);
 				}
 			},
 		},
