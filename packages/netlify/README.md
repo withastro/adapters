@@ -57,56 +57,38 @@ If you prefer to install the adapter manually instead, complete the following tw
      });
    ```
 
-### Run middleware in Edge Functions
-
-When deploying to Netlify Functions, you can choose to use an Edge Function to run your Astro middleware.
-
-To enable this, set the `edgeMiddleware` config option to `true`:
-
-```diff lang="js"
-  // astro.config.mjs
-  import { defineConfig } from 'astro/config';
-  import netlify from '@astrojs/netlify/functions';
-
-  export default defineConfig({
-    output: 'server',
-    adapter: netlify({
-+     edgeMiddleware: true,
-    }),
-  });
-```
-
-#### Pass edge context to your site
+#### Accessing edge context from your site
 
 Netlify Edge Functions provide a [context object](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) including metadata about the request, such as a user’s IP, geolocation data, and cookies.
 
-To expose values from this context to your site, create a `netlify-edge-middleware.ts` (or `.js`) file in your project’s [source directory](https://docs.astro.build/en/reference/configuration-reference/#srcdir). This file must export a function that returns the data to add to [Astro’s `locals` object](https://docs.astro.build/en/guides/middleware/#locals), which is available in middleware and Astro routes.
+This can be accessed via the `Astro.locals.netlify.context` object:
 
-In this example, `visitorCountry` and `hasEdgeMiddleware` would both be added to Astro’s `locals` object:
+```astro
+---
+const { geo: { city } } = Astro.locals.netlify.context
+---
+<h1>Hello there, friendly visitor from {city}!</h1>
+```
+
+If you're using TypeScript, you can get proper typings by updating your `src/env.d.ts` to use `NetlifyLocals`:
 
 ```ts
-// src/netlify-edge-middleware.ts
-import type { Context } from 'https://edge.netlify.com';
+// src/env.d.ts
+/// <reference path="../.astro/types.d.ts" />
+/// <reference types="astro/client" />
 
-export default function ({ request, context }: { request: Request; context: Context }) {
-  // Return serializable data to add to Astro.locals
-  return {
-    visitorCountry: context.geo.country.name,
-    hasEdgeMiddleware: true,
-  };
+type NetlifyLocals = import('@astrojs/netlify').NetlifyLocals
+
+declare namespace App {
+  interface Locals extends NetlifyLocals {
+    ...
+  }
 }
 ```
 
-> **Note**
-> Netlify Edge Functions run in [a Deno environment](https://docs.netlify.com/edge-functions/api/#runtime-environment), so import statements in this file must use Deno’s URL syntax.
-
-`netlify-edge-middleware.ts` must provide a function as its default export. This function:
-
-- must return a JSON-serializable object, which cannot include types like `Map`, `function`, `Set`, etc.
-- will always run first, before any other middleware and routes.
-- cannot return a response or redirect.
-
 ### Per-page functions
+
+> TODO: this currently doesn't work - should maybe revisit?
 
 The Netlify adapter builds to a single function by default. Astro 2.7 added support for splitting your build into separate entry points per page. If you use this configuration, the Netlify adapter will generate a separate function for each page. This can help reduce the size of each function so they are only bundling code used on that page.
 
@@ -124,6 +106,8 @@ export default defineConfig({
 ```
 
 ### Static sites
+
+> TODO: do we really need this?
 
 For static sites you usually don't need an adapter. However, if you use `redirects` configuration in your Astro config, the Netlify adapter can be used to translate this to the proper `_redirects` format.
 
@@ -148,19 +132,17 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 
 ### On-demand Builders
 
-[Netlify On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/) are serverless functions used to generate web content as needed that’s automatically cached on Netlify’s Edge CDN. You can enable these functions using the [`builders` configuration](#builders).
+In v3 of this plugin, there was support for [Netlify On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/).
+They are not supported by v4 of this anymore. If you are using On-Demand-Builders, please use [fine-grained cache control instead](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/):
 
-By default, all pages will be rendered on first visit and the rendered result will be reused for every subsequent visit until you redeploy. To set a revalidation time, call the [`runtime.setBuildersTtl(ttl)` local](https://docs.astro.build/en/guides/middleware/#locals) with the duration (in seconds).
-
-The following example sets a revalidation time of 45, causing Netlify to store the rendered HTML for 45 seconds.
-
-```astro
+```diff lang="astro"
 ---
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
 
 if (import.meta.env.PROD) {
-  Astro.locals.runtime.setBuildersTtl(45);
+-  Astro.locals.runtime.setBuildersTtl(45)
++  Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
 }
 ---
 
@@ -169,13 +151,11 @@ if (import.meta.env.PROD) {
 </Layout>
 ```
 
-It is important to note that On-demand Builders ignore query params when checking for cached pages. For example, if `example.com/?x=y` is cached, it will be served for `example.com/?a=b` (different query params) and `example.com/` (no query params) as well.
-
 ## Usage
 
 [Read the full deployment guide here.](https://docs.astro.build/en/guides/deploy/netlify/)
 
-After [performing a build](https://docs.astro.build/en/guides/deploy/#building-your-site-locally) the `netlify/` folder will contain [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `netlify/functions/` folder.
+After [performing a build](https://docs.astro.build/en/guides/deploy/#building-your-site-locally) the `.netlify/` folder will contain [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `.netlify/functions-internal/` and [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/) in the `.netlify/edge-functions/` folder.
 
 Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
 
@@ -185,78 +165,7 @@ netlify deploy --build
 
 The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Documentation](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
 
-## Configuration
-
-To configure this adapter, pass an object to the `netlify()` function call in `astro.config.mjs` - there's only one possible configuration option:
-
-### dist
-
-We build to the `dist` directory at the base of your project. To change this, use the `dist` option:
-
-```js
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
-
-export default defineConfig({
-  output: 'server',
-  adapter: netlify({
-    dist: new URL('./dist/', import.meta.url),
-  }),
-});
-```
-
-And then point to the dist in your `netlify.toml`:
-
-```toml
-# netlify.toml
-[functions]
-directory = "dist/functions"
-```
-
-### builders
-
-You can enable On-demand Builders using the `builders` option:
-
-```js
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
-
-export default defineConfig({
-  output: 'server',
-  adapter: netlify({
-    builders: true,
-  }),
-});
-```
-
-On-demand Builders are only available with the `@astrojs/netlify/functions` adapter and are not compatible with Edge Functions.
-
-### binaryMediaTypes
-
-> This option is only needed for the Functions adapter and is not needed for Edge Functions.
-
-Netlify Functions requires binary data in the `body` to be base64 encoded. The `@astrojs/netlify/functions` adapter handles this automatically based on the `Content-Type` header.
-
-We check for common mime types for audio, image, and video files. To include specific mime types that should be treated as binary data, include the `binaryMediaTypes` option with a list of binary mime types.
-
-```js
-// src/pages/image.jpg.ts
-import fs from 'node:fs';
-
-export function GET() {
-  const buffer = fs.readFileSync('../image.jpg');
-
-  // Return the buffer directly, @astrojs/netlify will base64 encode the body
-  return new Response(buffer, {
-    status: 200,
-    headers: {
-      'content-type': 'image/jpeg',
-    },
-  });
-}
-```
+TODO: update astro template after this is released
 
 ## Examples
 

@@ -3,6 +3,13 @@ import { writeFile, rmdir, mkdir } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { build } from 'esbuild';
 import { version as packageVersion } from "../package.json"
+import type { Context } from '@netlify/functions';
+
+export interface NetlifyLocals {
+	netlify: {
+		context: Context;
+	};
+}
 
 export default function netlifyIntegration(): AstroIntegration {
 	let rootDir: URL;
