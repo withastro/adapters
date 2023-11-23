@@ -2,6 +2,7 @@ import type { AstroIntegration } from 'astro';
 import { writeFile, rmdir, mkdir } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { build } from 'esbuild';
+import { version as packageVersion } from "../package.json"
 
 export default function netlifyIntegration(): AstroIntegration {
 	let rootDir: URL;
@@ -85,7 +86,7 @@ export default function netlifyIntegration(): AstroIntegration {
 					`
 						import ssrRoute from './entry.mjs';
 						export default ssrRoute;
-						export const config = { name: "Astro SSR", generator: "@astrojs/netlify@TODO", path: "/*", preferStatic: true };
+						export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
 					`
 				);
 
@@ -114,7 +115,7 @@ export default function netlifyIntegration(): AstroIntegration {
 
 						export const config = {
 							name: "Astro Middleware",
-							generator: "@astrojs/netlify@TODO",
+							generator: "@astrojs/netlify@${packageVersion}",
 							path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
 						};
 						`
