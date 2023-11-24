@@ -1,8 +1,9 @@
-import type { AstroIntegration } from 'astro';
-import { writeFile, rmdir, mkdir } from 'fs/promises';
+import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
+import { writeFile, rmdir, mkdir, appendFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { build } from 'esbuild';
-import { version as packageVersion } from "../package.json"
+import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
+import { version as packageVersion } from '../package.json';
 import type { Context } from '@netlify/functions';
 
 export interface NetlifyLocals {
@@ -11,7 +12,11 @@ export interface NetlifyLocals {
 	};
 }
 
+const isStaticRedirect = (route: RouteData) => route.type === 'redirect' && route.redirectRoute;
+
 export default function netlifyIntegration(): AstroIntegration {
+	let _config: AstroConfig;
+	let outDir: URL;
 	let rootDir: URL;
 	let astroMiddlewareEntryPoint: URL | undefined = undefined;
 
@@ -27,6 +32,77 @@ export default function netlifyIntegration(): AstroIntegration {
 		} catch {}
 	};
 
+	async function writeRedirects(routes: RouteData[], dir: URL) {
+		const redirects = createRedirectsFromAstroRoutes({
+			config: _config,
+			dir,
+			routeToDynamicTargetMap: new Map(
+				routes
+					.filter(isStaticRedirect) // all other routes are handled by SSR
+					.map((route) => [route, '/.netlify/functions/ssr/']) // we don't really want any redirect to point to SSR, but we need to provide a target and this is a good fallback
+			),
+		});
+
+		if (!redirects.empty()) {
+			await appendFile(new URL('_redirects', outDir), '\n' + redirects.print() + '\n');
+		}
+	}
+
+	async function writeSSRFunction() {
+		await writeFile(
+			new URL('./ssr.mjs', ssrOutputDir()),
+			`
+				import ssrRoute from './entry.mjs';
+				export default ssrRoute;
+				export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
+			`
+		);
+	}
+
+	async function writeMiddleware(astroMiddlewareEntryPoint: URL) {
+		await mkdir(middlewareOutputDir(), { recursive: true });
+		await writeFile(
+			new URL('./entry.mjs', middlewareOutputDir()),
+			`
+						import { onRequest } from "${fileURLToPath(astroMiddlewareEntryPoint)}";
+						import { createContext, trySerializeLocals } from 'astro/middleware';
+
+						export default async (request, context) => {
+							const ctx = createContext({ 
+								request,
+								params: {}
+							});
+							ctx.locals = { netlify: { context } }
+							const next = () => {
+								const { netlify, ...otherLocals } = ctx.locals;
+								request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
+								return context.next();
+							};
+						
+							return onRequest(ctx, next);
+						}
+
+						export const config = {
+							name: "Astro Middleware",
+							generator: "@astrojs/netlify@${packageVersion}",
+							path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
+						};
+						`
+		);
+
+		// taking over bundling, because Netlify bundling trips over NPM modules
+		await build({
+			entryPoints: [fileURLToPath(new URL('./entry.mjs', middlewareOutputDir()))],
+			target: 'es2022',
+			platform: 'node',
+			outfile: fileURLToPath(new URL('./middleware.mjs', middlewareOutputDir())),
+			allowOverwrite: true,
+			format: 'esm',
+			bundle: true,
+			minify: false,
+		});
+	}
+
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
@@ -34,7 +110,7 @@ export default function netlifyIntegration(): AstroIntegration {
 				rootDir = config.root;
 				await cleanFunctions();
 
-				const outDir = new URL('./dist/', rootDir);
+				outDir = new URL('./dist/', rootDir);
 
 				// todo: put config.image.remotePatterns and config.image.domains into netlify.toml
 				updateConfig({
@@ -53,6 +129,7 @@ export default function netlifyIntegration(): AstroIntegration {
 			},
 			'astro:config:done': ({ config, setAdapter }) => {
 				rootDir = config.root;
+				_config = config;
 
 				if (config.output === 'static') {
 					// eslint-disable-next-line no-console
@@ -86,59 +163,16 @@ export default function netlifyIntegration(): AstroIntegration {
 			'astro:build:ssr': async ({ middlewareEntryPoint }) => {
 				astroMiddlewareEntryPoint = middlewareEntryPoint;
 			},
-			'astro:build:done': async () => {
-				// Finalizing SSR function
-				await writeFile(
-					new URL('./ssr.mjs', ssrOutputDir()),
-					`
-						import ssrRoute from './entry.mjs';
-						export default ssrRoute;
-						export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
-					`
-				);
+			'astro:build:done': async ({ routes, dir, logger }) => {
+				await writeRedirects(routes, dir);
+				logger.info('Emitted _redirects');
+
+				await writeSSRFunction();
+				logger.info('Generated SSR Function');
 
 				if (astroMiddlewareEntryPoint) {
-					await mkdir(middlewareOutputDir(), { recursive: true });
-					await writeFile(
-						new URL('./entry.mjs', middlewareOutputDir()),
-						`
-						import { onRequest } from "${fileURLToPath(astroMiddlewareEntryPoint)}";
-						import { createContext, trySerializeLocals } from 'astro/middleware';
-
-						export default async (request, context) => {
-							const ctx = createContext({ 
-								request,
-								params: {}
-							});
-							ctx.locals = { netlify: { context } }
-							const next = () => {
-								const { netlify, ...otherLocals } = ctx.locals;
-								request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
-								return context.next();
-							};
-						
-							return onRequest(ctx, next);
-						}
-
-						export const config = {
-							name: "Astro Middleware",
-							generator: "@astrojs/netlify@${packageVersion}",
-							path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
-						};
-						`
-					);
-
-					// taking over bundling, because Netlify bundling trips over NPM modules
-					await build({
-						entryPoints: [fileURLToPath(new URL('./entry.mjs', middlewareOutputDir()))],
-						target: 'es2022',
-						platform: 'node',
-						outfile: fileURLToPath(new URL('./middleware.mjs', middlewareOutputDir())),
-						allowOverwrite: true,
-						format: 'esm',
-						bundle: true,
-						minify: false,
-					});
+					await writeMiddleware(astroMiddlewareEntryPoint)
+					logger.info('Generated Middleware Edge Function');
 				}
 			},
 		},
