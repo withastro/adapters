@@ -85,9 +85,7 @@ declare namespace App {
 }
 ```
 
-### Static sites
-
-> TODO: do we really need this?
+### Static sites & Redirects
 
 For static sites you usually don't need an adapter. However, if you use `redirects` configuration in your Astro config, the Netlify adapter can be used to translate this to the proper `_redirects` format.
 
