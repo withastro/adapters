@@ -108,20 +108,18 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 > **Note**
 > You can still include a `public/_redirects` file for manual redirects. Any redirects you specify in the redirects config are appended to the end of your own.
 
-### Replacing On-demand Builders
+### Caching SSR Pages using Fine-Grained Cache Control
 
-In v3 of this plugin, there was support for [Netlify On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/).
-Support for this was removed from the plugin, and it's recommended to use [fine-grained cache control instead](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/):
+With [fine-grained cache control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/), Netlify supports
+standard caching headers like `CDN-Cache-Control` or `Vary`.
+Use these to add caching to your SSR Pages:
 
-```diff lang="astro"
+```astro
 ---
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
 
-if (import.meta.env.PROD) {
--  Astro.locals.runtime.setBuildersTtl(45)
-+  Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
-}
+Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
 ---
 
 <Layout title="Astro on Netlify">
