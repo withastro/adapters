@@ -59,12 +59,12 @@ export default function netlifyIntegration(): AstroIntegration {
 		);
 	}
 
-	async function writeMiddleware(astroMiddlewareEntryPoint: URL) {
+	async function writeMiddleware(entrypoint: URL) {
 		await mkdir(middlewareOutputDir(), { recursive: true });
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
 			`
-						import { onRequest } from "${fileURLToPath(astroMiddlewareEntryPoint)}";
+						import { onRequest } from "${fileURLToPath(entrypoint)}";
 						import { createContext, trySerializeLocals } from 'astro/middleware';
 
 						export default async (request, context) => {
@@ -106,13 +106,15 @@ export default function netlifyIntegration(): AstroIntegration {
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
-			'astro:config:setup': async ({ config, updateConfig, command }) => {
+			'astro:config:setup': async ({ config, updateConfig }) => {
 				rootDir = config.root;
 				await cleanFunctions();
 
 				outDir = new URL('./dist/', rootDir);
 
-				// todo: put config.image.remotePatterns and config.image.domains into netlify.toml
+				const isRunningInNetlifyDev = process.env.NETLIFY_DEV === 'true'; // TODO
+
+				// todo: outut config.image.remotePatterns and config.image.domains into netlify.toml
 				updateConfig({
 					outDir,
 					build: {
@@ -122,7 +124,7 @@ export default function netlifyIntegration(): AstroIntegration {
 					},
 					image: {
 						service: {
-							entrypoint: command === 'build' ? '@astrojs/netlify/image-service.js' : undefined,
+							entrypoint: !isRunningInNetlifyDev ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
 				});
