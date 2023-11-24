@@ -51,10 +51,10 @@ In v4, you can use the cache-control headers instead:
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
 
-if (import.meta.env.PROD) {
--  Astro.locals.runtime.setBuildersTtl(45)
-+  Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
-}
+- if (import.meta.env.PROD) {
+-   Astro.locals.runtime.setBuildersTtl(45)
+- }
++ Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
 ---
 ```
 
