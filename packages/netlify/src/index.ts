@@ -128,7 +128,7 @@ export default function netlifyIntegration(): AstroIntegration {
 						`
 					);
 
-					// taking over bundling, because Netlify's bundling trips over NPM modules
+					// taking over bundling, because Netlify bundling trips over NPM modules
 					await build({
 						entryPoints: [fileURLToPath(new URL('./entry.mjs', middlewareOutputDir()))],
 						target: 'es2022',

@@ -7,7 +7,6 @@ Learn how to deploy your Astro site in our [Netlify deployment guide](https://do
 - <strong>[Why Astro Netlify](#why-astro-netlify)</strong>
 - <strong>[Installation](#installation)</strong>
 - <strong>[Usage](#usage)</strong>
-- <strong>[Configuration](#configuration)</strong>
 - <strong>[Examples](#examples)</strong>
 - <strong>[Troubleshooting](#troubleshooting)</strong>
 - <strong>[Contributing](#contributing)</strong>
@@ -49,7 +48,7 @@ If you prefer to install the adapter manually instead, complete the following tw
    ```diff lang="js"
      // astro.config.mjs
      import { defineConfig } from 'astro/config';
-   + import netlify from '@astrojs/netlify/functions';
+   + import netlify from '@astrojs/netlify';
 
      export default defineConfig({
    +   output: 'server',
@@ -86,25 +85,6 @@ declare namespace App {
 }
 ```
 
-### Per-page functions
-
-> TODO: this currently doesn't work - should maybe revisit?
-
-The Netlify adapter builds to a single function by default. Astro 2.7 added support for splitting your build into separate entry points per page. If you use this configuration, the Netlify adapter will generate a separate function for each page. This can help reduce the size of each function so they are only bundling code used on that page.
-
-```js
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
-
-export default defineConfig({
-  output: 'server',
-  adapter: netlify({
-    functionPerRoute: true,
-  }),
-});
-```
-
 ### Static sites
 
 > TODO: do we really need this?
@@ -130,10 +110,10 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 > **Note**
 > You can still include a `public/_redirects` file for manual redirects. Any redirects you specify in the redirects config are appended to the end of your own.
 
-### On-demand Builders
+### Replacing On-demand Builders
 
 In v3 of this plugin, there was support for [Netlify On-demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/).
-They are not supported by v4 of this anymore. If you are using On-Demand-Builders, please use [fine-grained cache control instead](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/):
+Support for this was removed from the plugin, and it's recommended to use [fine-grained cache control instead](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/):
 
 ```diff lang="astro"
 ---
