@@ -124,7 +124,7 @@ export default function netlifyIntegration(): AstroIntegration {
 					},
 					image: {
 						service: {
-							entrypoint: !isRunningInNetlifyDev ? '@astrojs/netlify/image-service.js' : undefined,
+							entrypoint: isRunningInNetlifyDev ? undefined : '@astrojs/netlify/image-service.js',
 						},
 					},
 				});
@@ -165,7 +165,7 @@ export default function netlifyIntegration(): AstroIntegration {
 				logger.info('Generated SSR Function');
 
 				if (astroMiddlewareEntryPoint) {
-					await writeMiddleware(astroMiddlewareEntryPoint)
+					await writeMiddleware(astroMiddlewareEntryPoint);
 					logger.info('Generated Middleware Edge Function');
 				}
 			},
