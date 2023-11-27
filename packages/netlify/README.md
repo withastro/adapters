@@ -118,7 +118,7 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 
 With [fine-grained cache control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/), Netlify supports
 standard caching headers like `CDN-Cache-Control` or `Vary`.
-This allows you to implement e.g. Time to live (TTL) or [Stale while revalidate (SWR)](https://docs.netlify.com/platform/caching/#stale-while-revalidate-directive) caching.
+This allows you to implement e.g. time to live (TTL) or [stale while revalidate (SWR)](https://docs.netlify.com/platform/caching/#stale-while-revalidate-directive) caching.
 Use these to add caching to your SSR Pages:
 
 ```astro
