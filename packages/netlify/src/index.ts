@@ -124,6 +124,13 @@ export default function netlifyIntegration(): AstroIntegration {
 						client: outDir,
 						server: ssrOutputDir(),
 					},
+					vite: {
+						server: {
+							watch: {
+								ignored: [fileURLToPath(new URL('./.netlify/**', rootDir))],
+							},
+						},
+					},
 					image: {
 						service: {
 							entrypoint: isRunningInNetlify ? '@astrojs/netlify/image-service.js' : undefined,
@@ -134,7 +141,7 @@ export default function netlifyIntegration(): AstroIntegration {
 			'astro:config:done': ({ config, setAdapter }) => {
 				rootDir = config.root;
 				_config = config;
-			
+
 				if (config.image.domains.length || config.image.remotePatterns.length) {
 					throw new AstroError(
 						"config.image.domains and config.image.remotePatterns aren't supported by the Netlify adapter.",
