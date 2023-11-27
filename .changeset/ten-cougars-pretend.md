@@ -39,7 +39,7 @@ In your codebase, change all usage of locals injected through that file to use `
 ## On-Demand Builders are no longer supported
 
 On-Demand Builders (ODB) allows SSR-Rendered pages to be cached using a Time to Live (TTL) strategy.
-ODB continues to be supported by Netlify, but has since been superceded by the much more powerful
+ODB continues to be supported by Netlify, but has since been superseded by the much more powerful
 [Fine-Grained Cache Control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control).
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
