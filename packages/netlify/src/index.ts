@@ -133,14 +133,6 @@ export default function netlifyIntegration(): AstroIntegration {
 				rootDir = config.root;
 				_config = config;
 
-				if (config.output === 'static') {
-					// eslint-disable-next-line no-console
-					console.warn(
-						`[@astrojs/netlify] \`output: "server"\` or \`output: "hybrid"\` is required to use this adapter.`
-					);
-					return;
-				}
-
 				setAdapter({
 					name: '@astrojs/netlify',
 					serverEntrypoint: '@astrojs/netlify/ssr-function.js',
