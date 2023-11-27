@@ -112,7 +112,9 @@ export default function netlifyIntegration(): AstroIntegration {
 
 				outDir = new URL('./dist/', rootDir);
 
-				const isRunningInNetlifyDev = process.env.NETLIFY_DEV === 'true'; // TODO
+				const isRunningInNetlify = Boolean(
+					process.env.NETLIFY || process.env.NETLIFY_LOCAL || process.env.NETLIFY_DEV
+				);
 
 				// todo: outut config.image.remotePatterns and config.image.domains into netlify.toml
 				updateConfig({
@@ -124,7 +126,7 @@ export default function netlifyIntegration(): AstroIntegration {
 					},
 					image: {
 						service: {
-							entrypoint: isRunningInNetlifyDev ? undefined : '@astrojs/netlify/image-service.js',
+							entrypoint: isRunningInNetlify ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
 				});
