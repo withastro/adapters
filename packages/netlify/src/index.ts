@@ -5,6 +5,7 @@ import { build } from 'esbuild';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { version as packageVersion } from '../package.json';
 import type { Context } from '@netlify/functions';
+import { AstroError } from 'astro/errors';
 
 export interface NetlifyLocals {
 	netlify: {
@@ -134,6 +135,13 @@ export default function netlifyIntegration(): AstroIntegration {
 			'astro:config:done': ({ config, setAdapter }) => {
 				rootDir = config.root;
 				_config = config;
+			
+				if (config.image.domains.length || config.image.remotePatterns.length) {
+					throw new AstroError(
+						"config.image.domains and config.image.remotePatterns aren't supported by the Netlify adapter.",
+						'See https://github.com/withastro/adapters/tree/main/packages/netlify#image-cdn for more.'
+					);
+				}
 
 				setAdapter({
 					name: '@astrojs/netlify',
