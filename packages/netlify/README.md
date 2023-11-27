@@ -137,7 +137,7 @@ After [performing a build](https://docs.astro.build/en/guides/deploy/#building-y
 Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
 
 ```sh
-netlify deploy --build
+netlify deploy
 ```
 
 The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Documentation](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
