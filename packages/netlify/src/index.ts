@@ -1,5 +1,5 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
-import { writeFile, rmdir, mkdir, appendFile } from 'fs/promises';
+import { writeFile, mkdir, appendFile, rm } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { build } from 'esbuild';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
@@ -15,6 +15,8 @@ export interface NetlifyLocals {
 
 const isStaticRedirect = (route: RouteData) => route.type === 'redirect' && route.redirectRoute;
 
+const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {});
+
 export default function netlifyIntegration(): AstroIntegration {
 	let _config: AstroConfig;
 	let outDir: URL;
@@ -24,14 +26,11 @@ export default function netlifyIntegration(): AstroIntegration {
 	const ssrOutputDir = () => new URL('./.netlify/functions-internal/ssr/', rootDir);
 	const middlewareOutputDir = () => new URL('.netlify/edge-functions/middleware/', rootDir);
 
-	const cleanFunctions = async () => {
-		try {
-			await rmdir(middlewareOutputDir());
-		} catch {}
-		try {
-			await rmdir(ssrOutputDir());
-		} catch {}
-	};
+	const cleanFunctions = async () =>
+		await Promise.all([
+			clearDirectory(middlewareOutputDir()),
+			clearDirectory(ssrOutputDir())
+		]);
 
 	async function writeRedirects(routes: RouteData[], dir: URL) {
 		const redirects = createRedirectsFromAstroRoutes({
