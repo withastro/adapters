@@ -95,7 +95,7 @@ export default function netlifyIntegration(): AstroIntegration {
 		await build({
 			entryPoints: [fileURLToPath(new URL('./entry.mjs', middlewareOutputDir()))],
 			target: 'es2022',
-			platform: 'node',
+			platform: 'neutral',
 			outfile: fileURLToPath(new URL('./middleware.mjs', middlewareOutputDir())),
 			allowOverwrite: true,
 			format: 'esm',
