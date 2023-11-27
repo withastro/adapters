@@ -117,7 +117,6 @@ export default function netlifyIntegration(): AstroIntegration {
 					process.env.NETLIFY || process.env.NETLIFY_LOCAL || process.env.NETLIFY_DEV
 				);
 
-				// todo: outut config.image.remotePatterns and config.image.domains into netlify.toml
 				updateConfig({
 					outDir,
 					build: {
