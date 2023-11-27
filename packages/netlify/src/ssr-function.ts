@@ -1,4 +1,4 @@
-import type { Context } from '@netlify/edge-functions';
+import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
