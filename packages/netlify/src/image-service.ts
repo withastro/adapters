@@ -1,5 +1,6 @@
 import type { ExternalImageService, ImageMetadata } from 'astro';
 import { AstroError } from 'astro/errors';
+import { baseService } from 'astro/assets'
 
 const SUPPORTED_FORMATS = ['avif', 'jpg', 'png', 'webp'];
 const QUALITY_NAMES: Record<string, number> = { low: 25, mid: 50, high: 90, max: 100 };
@@ -29,6 +30,8 @@ const service: ExternalImageService = {
 
 		return '/.netlify/images?' + query;
 	},
+	getHTMLAttributes: baseService.getHTMLAttributes,
+	getSrcSet: baseService.getSrcSet,
 	validateOptions(options) {
 		if (options.format && !SUPPORTED_FORMATS.includes(options.format)) {
 			throw new AstroError(
