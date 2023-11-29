@@ -34,6 +34,12 @@ You can use this context to access information about the user (like geolocation 
 Remove the `netlify-edge-middleware.ts` or ``netlify-edge-middleware.js` file.
 In your codebase, change all usage of locals injected through that file to use `Astro.locals.netlify.context` instead.
 
+### Image CDN
+
+v4 of this adapter integrates your Astro site with Netlifys [Image CDN](https://docs.netlify.com/image-cdn/overview/) feature.
+This allows transforming images on-the-fly without impacting build times.
+It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/), and enabled by default.
+
 ## On-Demand Builders are no longer supported
 
 On-Demand Builders (ODB) allows SSR-Rendered pages to be cached using a Time to Live (TTL) strategy.
