@@ -36,7 +36,7 @@ In your codebase, change all usage of locals injected through that file to use `
 
 ### Image CDN
 
-v4 of this adapter integrates your Astro site with Netlifys [Image CDN](https://docs.netlify.com/image-cdn/overview/) feature.
+v4 of this adapter integrates your Astro site with Netlify [Image CDN](https://docs.netlify.com/image-cdn/overview/).
 This allows transforming images on-the-fly without impacting build times.
 It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/), and enabled by default.
 
