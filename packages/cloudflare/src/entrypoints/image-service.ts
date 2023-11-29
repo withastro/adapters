@@ -24,7 +24,7 @@ const service: ExternalImageService = {
 		}
 
 		const imageEndpoint = joinPaths(
-			// @ts-expect-error - Property 'env' does not exist on type 'ImportMeta'.ts(2339)
+			// @ts-ignore FIXME
 			import.meta.env.BASE_URL,
 			'/cdn-cgi/image',
 			resizingParams.join(','),
