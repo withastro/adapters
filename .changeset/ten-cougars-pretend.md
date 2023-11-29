@@ -31,9 +31,7 @@ In v4, this file is no longer needed because the Netlify context is automaticall
 You can use this context to access information about the user (like geolocation or IP address), your Netlify site (like deploy ID) or the request (like its request ID or the CDN region it's served from).
 
 **Action Required:**
-If you didn't have a `netlify-edge-middleware.ts` or `netlify-edge-middleware.js` file, you're good.
-
-Remove that file.
+Remove the `netlify-edge-middleware.ts` or ``netlify-edge-middleware.js` file.
 In your codebase, change all usage of locals injected through that file to use `Astro.locals.netlify.context` instead.
 
 ## On-Demand Builders are no longer supported
@@ -59,8 +57,6 @@ import Layout from '../components/Layout.astro';
 ```
 
 **Action Required:**
-If you weren't using ODBs, you're good.
-
 Remove the `builders` config option, and replace all usage of `Astro.locals.runtime.setBuildersTtl()`
 with caching headers as seen above.
 See [Supported Cache Control Headers](https://docs.netlify.com/platform/caching/#supported-cache-control-headers) for more info on those.
