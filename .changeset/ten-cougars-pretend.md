@@ -22,7 +22,7 @@ You can use this to implement customization or authorization logic!
 
 **Action Required:**
 If your site is using Middleware, and you had `edgeMiddleware` enabled, nothing changes for you. You are free to remove the config field, as it is no longer necessary.
-If your site is using Middleware, and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Check if this requires any changes to your middleware logic.
+If your site is using Middleware, and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Go through your prerendered pages, and check if this requires any changes to the logic in your middleware.
 
 ## Netlify Context is automatically available via Locals
 
