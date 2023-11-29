@@ -56,6 +56,21 @@ If you prefer to install the adapter manually instead, complete the following tw
      });
    ```
 
+## Usage
+
+[Read the full deployment guide here.](https://docs.astro.build/en/guides/deploy/netlify/)
+
+After [performing a build](https://docs.astro.build/en/guides/deploy/#building-your-site-locally) the `.netlify/` folder will contain [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `.netlify/functions-internal/` and [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/) in the `.netlify/edge-functions/` folder.
+
+Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
+
+```sh
+netlify deploy
+```
+
+The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Documentation](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
+
+
 ### Accessing edge context from your site
 
 Netlify Edge Functions provide a [context object](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) that includes metadata about the request such as a user’s IP, geolocation data, and cookies.
@@ -135,20 +150,6 @@ Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revali
   {new Date(Date.now())}
 </Layout>
 ```
-
-## Usage
-
-[Read the full deployment guide here.](https://docs.astro.build/en/guides/deploy/netlify/)
-
-After [performing a build](https://docs.astro.build/en/guides/deploy/#building-your-site-locally) the `.netlify/` folder will contain [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `.netlify/functions-internal/` and [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/) in the `.netlify/edge-functions/` folder.
-
-Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
-
-```sh
-netlify deploy
-```
-
-The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Documentation](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
 
 ## Examples
 
