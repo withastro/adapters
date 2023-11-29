@@ -58,9 +58,9 @@ If you prefer to install the adapter manually instead, complete the following tw
 
 ### Accessing edge context from your site
 
-Netlify Edge Functions provide a [context object](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) including metadata about the request, such as a user’s IP, geolocation data, and cookies.
+Netlify Edge Functions provide a [context object](https://docs.netlify.com/edge-functions/api/#netlify-specific-context-object) that includes metadata about the request such as a user’s IP, geolocation data, and cookies.
 
-This can be accessed via the `Astro.locals.netlify.context` object:
+This can be accessed through the `Astro.locals.netlify.context` object:
 
 ```astro
 ---
@@ -89,7 +89,9 @@ declare namespace App {
 
 This adapter integrates your site with [Netlify Image CDN](https://docs.netlify.com/image-cdn/), transforming images on-the-fly without impacting build times.
 It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/) under the hood.
-Note that this adapter does not support `image.domains` and `image.remotePatterns` config properties in your Astro config - use the `remote_images` field in `netlify.toml` instead: [Netlify Image CDN - Remote Path](https://docs.netlify.com/image-cdn/overview/#remote-path).
+
+> **Note**
+> This adapter does not support `image.domains` and `image.remotePatterns` config properties in your Astro config - use the `remote_images` field in `netlify.toml` instead: [Netlify Image CDN - Remote Path](https://docs.netlify.com/image-cdn/overview/#remote-path).
 
 ### Static sites & Redirects
 

@@ -21,14 +21,14 @@ it's deployed to an Edge Function where it runs super close to your users and is
 You can use this to implement customization or authorization logic!
 
 **Action Required:**
-If your site is using Middleware, and you had `edgeMiddleware` enabled, nothing changes for you - feel free to remove the config field, though.
-If your site is using Middleware, and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function (probably no change needed) and start running on prerendered pages (check if this requires any changes to your middleware logic).
+If your site is using Middleware, and you had `edgeMiddleware` enabled, nothing changes for you. You are free to remove the config field, as it is no longer necessary.
+If your site is using Middleware, and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Check if this requires any changes to your middleware logic.
 
 ## Netlify Context is automatically available via Locals
 
 In v3, you could use `netlify-edge-middleware.ts` to inject data from the Netlify context into your Astro locals.
 In v4, this file is no longer needed because the Netlify context is automatically made available via `Astro.locals.netlify.context`.
-You can use this to access information about the user (like geolocation or IP address), your Netlify site (like deploy ID) or the request (like its request ID or the CDN region it's served from).
+You can use this context to access information about the user (like geolocation or IP address), your Netlify site (like deploy ID) or the request (like its request ID or the CDN region it's served from).
 
 **Action Required:**
 If you didn't have a `netlify-edge-middleware.ts` or `netlify-edge-middleware.js` file, you're good.
@@ -39,7 +39,7 @@ In your codebase, change all usage of locals injected through that file to use `
 ## On-Demand Builders are no longer supported
 
 On-Demand Builders (ODB) allows SSR-Rendered pages to be cached using a Time to Live (TTL) strategy.
-ODB continues to be supported by Netlify, but has since been superseded by the much more powerful
+ODB continues to be supported by Netlify, but has since been replaced by the much more powerful
 [Fine-Grained Cache Control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control).
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
