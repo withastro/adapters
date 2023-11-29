@@ -1,5 +1,6 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import type { LocalPagesRuntime, LocalWorkersRuntime, RUNTIME } from './utils/local-runtime.js';
+import type { Actor } from 'xstate';
 
 import * as fs from 'node:fs';
 import * as os from 'node:os';
@@ -17,6 +18,8 @@ import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { rewriteWasmImportPath } from './utils/rewriteWasmImportPath.js';
 import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
+import { machine } from './utils/toolbar-app-state.js';
+import { createActor } from 'xstate';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 export type { DirectoryRuntime } from './entrypoints/server.directory.js';
@@ -69,6 +72,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 	let _buildConfig: BuildConfig;
 	let _localRuntime: LocalPagesRuntime | LocalWorkersRuntime;
+	let _actor: Actor<typeof machine>;
 	let _entryPoints = new Map<RouteData, URL>();
 
 	const SERVER_BUILD_FOLDER = '/$server_build/';
@@ -81,7 +85,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
-			'astro:config:setup': ({ command, config, updateConfig, logger }) => {
+			'astro:config:setup': ({ command, config, updateConfig, logger, addDevToolbarApp }) => {
 				updateConfig({
 					build: {
 						client: new URL(`.${config.base}`, config.outDir),
@@ -100,6 +104,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					},
 					image: prepareImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
 				});
+				addDevToolbarApp('@astrojs/cloudflare/dev-toolbar-app');
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
 				setAdapter(getAdapter({ isModeDirectory, functionPerRoute }));
@@ -118,11 +123,18 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					);
 				}
 			},
-			'astro:server:setup': ({ server, logger }) => {
+			'astro:server:setup': async ({ server, logger }) => {
 				if (runtimeMode.mode === 'local') {
-					server.middlewares.use(async function middleware(req, res, next) {
-						_localRuntime = getLocalRuntime(_config, runtimeMode, logger);
+					_localRuntime = getLocalRuntime(_config, runtimeMode, logger);
 
+					_actor = createActor(machine, {
+						input: {
+							bindings: _localRuntime.getGroupedBindingKeys(),
+							proxyStubs: await _localRuntime.getBindings(),
+						},
+					});
+
+					server.middlewares.use(async function middleware(req, res, next) {
 						const bindings = await _localRuntime.getBindings();
 						const secrets = await _localRuntime.getSecrets();
 						const caches = await _localRuntime.getCaches();
@@ -145,10 +157,48 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						});
 						next();
 					});
+
+					server.ws.on('astro-dev-toolbar:cloudflare-app:initialized', async () => {
+						console.log('My plugin was initialized!');
+
+						_actor.start();
+
+						_actor.subscribe((state) => {
+							console.log('DEBUG STATE (SERVER)', JSON.stringify(state));
+							server.ws.send('astro-dev-toolbar:cloudflare-app:server-data', {
+								msg: JSON.stringify(state),
+							});
+						});
+
+						server.ws.on('astro-dev-toolbar:cloudflare-app:toggled', async (data) => {
+							console.log(`My plugin is now ${data.state ? 'enabled' : 'disabled'}!`);
+							if (data.state) {
+								_actor.send({ type: 'open' });
+							} else {
+								_actor.send({ type: 'close' });
+							}
+						});
+
+						server.ws.on('astro-dev-toolbar:cloudflare-app:client-data-.send()', async (data) => {
+							console.log(data);
+							const receivedMessage = JSON.parse(data.msg);
+							_actor.send(receivedMessage);
+						});
+						server.ws.on('astro-dev-toolbar:cloudflare-app:client-data', async (data) => {
+							const receivedMessage = JSON.parse(data.msg);
+							if (receivedMessage.type === 'database selected') {
+								// _actor.send({ type: 'database selected', database: receivedMessage.database });
+							} else if (receivedMessage.type === 'CLOSE') {
+								_actor.send({ type: 'close' });
+							}
+						});
+					});
 				}
 			},
 			'astro:server:done': async ({ logger }) => {
 				if (_localRuntime) {
+					// Stops the root actor, actor system, and actors in the system
+					_actor.stop();
 					logger.info('Cleaning up the local Cloudflare runtime.');
 					await _localRuntime.dispose();
 				}
