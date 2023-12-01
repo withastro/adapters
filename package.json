@@ -13,8 +13,7 @@
     "build:ci": "turbo run build:ci --filter=\"@astrojs/*\"",
     "format": "pnpm run format:code",
     "format:ci": "pnpm run format:imports && pnpm run format:code",
-    "format:code": "prettier -w \"**/*\" --ignore-unknown --cache",
-    "format:imports": "biome check --apply ./packages",
+    "format:code": "biome check --apply ./ && prettier -w \"**/*\" --ignore-unknown --cache",
     "test": "turbo run test --concurrency=1 --filter=astro --filter=create-astro --filter=\"@astrojs/*\"",
     "benchmark": "astro-benchmark",
     "lint": "eslint . --report-unused-disable-directives",
@@ -47,7 +46,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.3.1",
-    "@biomejs/biome": "^1.4.0",
+    "@biomejs/biome": "^1.4.1",
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
     "@types/node": "^18.17.8",

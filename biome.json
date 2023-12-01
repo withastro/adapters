@@ -1,7 +1,28 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.4.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "files": {
+    "ignore": [
+      "**/dist",
+      "**/node_modules",
+      "**/fixtures",
+      "**/vendor",
+      "**/.vercel",
+      "**/.changeset"
+    ]
+  },
   "formatter": {
-    "enabled": false
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingComma": "es5"
+    }
+  },
+  "json": {
+    "formatter": {
+      "indentStyle": "space"
+    }
   },
   "organizeImports": {
     "enabled": true
