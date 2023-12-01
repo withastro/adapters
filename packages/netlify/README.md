@@ -68,7 +68,7 @@ Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-s
 netlify deploy
 ```
 
-The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Documentation](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
+The [Netlify Blog post on Astro](https://www.netlify.com/blog/how-to-deploy-astro/) and the [Netlify Docs](https://docs.netlify.com/integrations/frameworks/astro/) provide more information on how to use this integration to deploy to Netlify.
 
 
 ### Accessing edge context from your site

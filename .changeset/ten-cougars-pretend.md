@@ -21,8 +21,8 @@ it's deployed to an Edge Function where it runs super close to your users and is
 You can use this to implement customization or authorization logic!
 
 **Action Required:**
-If your site is using Middleware, and you had `edgeMiddleware` enabled, nothing changes for you. You are free to remove the config field, as it is no longer necessary.
-If your site is using Middleware, and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Go through your prerendered pages, and check if this requires any changes to the logic in your middleware.
+If your site is using Middleware and you had `edgeMiddleware` enabled, nothing changes for you. You are free to remove the config field, as it is no longer necessary.
+If your site is using Middleware and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Go through your prerendered pages to check if this requires any changes to the logic in your middleware.
 
 ## Netlify Context is automatically available via Locals
 
@@ -31,7 +31,7 @@ In v4, this file is no longer needed because the Netlify context is automaticall
 You can use this context to access information about the user (like geolocation or IP address), your Netlify site (like deploy ID) or the request (like its request ID or the CDN region it's served from).
 
 **Action Required:**
-Remove the `netlify-edge-middleware.ts` or ``netlify-edge-middleware.js` file.
+Remove the `netlify-edge-middleware.ts` or `netlify-edge-middleware.js` file.
 In your codebase, change all usage of locals injected through that file to use `Astro.locals.netlify.context` instead.
 
 ### Image CDN
