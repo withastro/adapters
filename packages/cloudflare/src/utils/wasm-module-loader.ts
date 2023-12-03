@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import type { AstroConfig } from 'astro';
 
 /**
  * Loads '*.wasm?module' imports as WebAssembly modules, which is the only way to load WASM in cloudflare workers.
@@ -16,7 +17,7 @@ export function wasmModuleLoader({
 }: {
 	disabled: boolean;
 	assetsDirectory: string;
-}): NonNullable<import("astro").AstroConfig['vite']['plugins']>[number] {
+}): NonNullable<AstroConfig['vite']['plugins']>[number] {
 	const postfix = '.wasm?module';
 	let isDev = false;
 
