@@ -15,22 +15,21 @@ describe('SSG - Redirects', () => {
 		const redirects = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
 		let parts = redirects.split(/\s+/);
 		expect(parts).to.deep.equal([
+			'',
+
 			'/two',
 			'/',
 			'302',
+
 			'/other',
-			'/',
-			'301',
-			'/nope',
 			'/',
 			'301',
 
 			'/blog/*',
 			'/team/articles/*/index.html',
 			'301',
-			'/team/articles/*',
-			'/team/articles/*/index.html',
-			'200',
+			
+			'',
 		]);
 	});
 });

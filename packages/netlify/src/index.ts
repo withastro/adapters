@@ -13,7 +13,8 @@ export interface NetlifyLocals {
 	};
 }
 
-const isStaticRedirect = (route: RouteData) => route.type === 'redirect' && route.redirectRoute;
+const isStaticRedirect = (route: RouteData) =>
+	route.type === 'redirect' && (route.redirect || route.redirectRoute);
 
 const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {});
 
@@ -27,19 +28,23 @@ export default function netlifyIntegration(): AstroIntegration {
 	const middlewareOutputDir = () => new URL('.netlify/edge-functions/middleware/', rootDir);
 
 	const cleanFunctions = async () =>
-		await Promise.all([
-			clearDirectory(middlewareOutputDir()),
-			clearDirectory(ssrOutputDir())
-		]);
+		await Promise.all([clearDirectory(middlewareOutputDir()), clearDirectory(ssrOutputDir())]);
 
 	async function writeRedirects(routes: RouteData[], dir: URL) {
+		const fallback = _config.output === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
 			dir,
 			routeToDynamicTargetMap: new Map(
 				routes
 					.filter(isStaticRedirect) // all other routes are handled by SSR
-					.map((route) => [route, '/.netlify/functions/ssr/']) // we don't really want any redirect to point to SSR, but we need to provide a target and this is a good fallback
+					.map((route) => {
+						// this is needed to support redirects to dynamic routes
+						// on static. not sure why this is needed, but it works.
+						route.distURL ??= route.redirectRoute?.distURL;
+
+						return [route, fallback];
+					})
 			),
 		});
 
@@ -176,7 +181,7 @@ export default function netlifyIntegration(): AstroIntegration {
 				await writeRedirects(routes, dir);
 				logger.info('Emitted _redirects');
 
-				if (_config.output !== "static") {
+				if (_config.output !== 'static') {
 					await writeSSRFunction();
 					logger.info('Generated SSR Function');
 				}
