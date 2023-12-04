@@ -29,7 +29,6 @@
   "scripts": {
     "build": "tsc",
     "test-fn": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/functions/",
-    "test-edge": "deno test --allow-run --allow-read --allow-net --allow-env --allow-write ./test/edge-functions/",
     "test": "pnpm test-fn",
     "test:hosted": "mocha --exit --timeout 30000 test/hosted"
   },
