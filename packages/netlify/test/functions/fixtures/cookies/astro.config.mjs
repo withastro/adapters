@@ -3,8 +3,6 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   output: 'server',
-  adapter: netlify({
-
-  }),
+  adapter: netlify(),
   site: `http://example.com`,
 });

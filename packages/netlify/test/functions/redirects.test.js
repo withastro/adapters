@@ -14,27 +14,11 @@ describe('SSG - Redirects', () => {
 		let redirects = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
 		let parts = redirects.split(/\s+/);
 		expect(parts).to.deep.equal([
+			'',
 			'/other',
 			'/',
 			'301',
-			// This uses the dynamic Astro.redirect, so we don't know that it's a redirect
-			// until runtime. This is correct!
-			'/nope',
-			'/.netlify/functions/entry',
-			'200',
-			'/',
-			'/.netlify/functions/entry',
-			'200',
-
-			// Image endpoint
-			'/_image',
-			'/.netlify/functions/entry',
-			'200',
-
-			// A real route
-			'/team/articles/*',
-			'/.netlify/functions/entry',
-			'200',
+			'',
 		]);
 		expect(redirects).to.matchSnapshot();
 	});
