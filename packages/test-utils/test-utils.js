@@ -1,19 +1,19 @@
-import { execa } from 'execa';
-import fastGlob from 'fast-glob';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execa } from 'execa';
+import fastGlob from 'fast-glob';
 import stripAnsi from 'strip-ansi';
 import { check } from './node_modules/astro/dist/cli/check/index.js';
-import { dev, preview } from './node_modules/astro/dist/core/index.js';
 import build from './node_modules/astro/dist/core/build/index.js';
-import sync from './node_modules/astro/dist/core/sync/index.js';
 import { RESOLVED_SPLIT_MODULE_ID } from './node_modules/astro/dist/core/build/plugins/plugin-ssr.js';
 import { getVirtualModulePageNameFromPath } from './node_modules/astro/dist/core/build/plugins/util.js';
 import { makeSplitEntryPointFileName } from './node_modules/astro/dist/core/build/static-build.js';
 import { mergeConfig, resolveConfig } from './node_modules/astro/dist/core/config/index.js';
+import { dev, preview } from './node_modules/astro/dist/core/index.js';
 import { nodeLogDestination } from './node_modules/astro/dist/core/logger/node.js';
+import sync from './node_modules/astro/dist/core/sync/index.js';
 
 // Disable telemetry when running tests
 process.env.ASTRO_TELEMETRY_DISABLED = true;
@@ -294,7 +294,12 @@ export async function parseCliDevStart(proc) {
 	const messages = stdout
 		.split('\n')
 		.filter((ln) => !!ln.trim())
-		.map((ln) => ln.replace(/[🚀┃]/g, '').replace(/\s+/g, ' ').trim());
+		.map((ln) =>
+			ln
+				.replace(/[🚀┃]/g, '')
+				.replace(/\s+/g, ' ')
+				.trim()
+		);
 
 	return { messages };
 }
