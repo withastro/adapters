@@ -176,8 +176,10 @@ export default function netlifyIntegration(): AstroIntegration {
 				await writeRedirects(routes, dir);
 				logger.info('Emitted _redirects');
 
-				await writeSSRFunction();
-				logger.info('Generated SSR Function');
+				if (_config.output !== "static") {
+					await writeSSRFunction();
+					logger.info('Generated SSR Function');
+				}
 
 				if (astroMiddlewareEntryPoint) {
 					await writeMiddleware(astroMiddlewareEntryPoint);

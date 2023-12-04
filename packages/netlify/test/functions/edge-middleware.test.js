@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url';
 import { expect } from 'chai';
 import fs from 'fs/promises';
-import { cli } from './test-utils.js';
+import { cli } from '../test-utils.js';
 
 describe('Middleware', () => {
 	it('should successfully build the middleware', async () => {

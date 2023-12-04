@@ -5,3 +5,9 @@ exports[`SSG - Redirects Creates a redirects file 1`] = `
 /other    /       301
 "
 `;
+
+exports[`SSR - Redirects Creates a redirects file 1`] = `
+"
+/other    /       301
+"
+`;

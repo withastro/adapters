@@ -1,11 +1,11 @@
 import { fileURLToPath } from 'url';
 import { expect } from 'chai';
 import fs from 'fs/promises';
-import { cli } from './test-utils.js';
+import { cli } from '../test-utils.js';
 
 const root = new URL('../functions/fixtures/redirects/', import.meta.url).toString();
 
-describe('SSG - Redirects', () => {
+describe('SSR - Redirects', () => {
 	before(async () => {
 		await cli('build', '--root', fileURLToPath(root));
 	});

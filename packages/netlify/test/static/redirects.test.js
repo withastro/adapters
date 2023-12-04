@@ -1,32 +1,18 @@
 import { expect } from 'chai';
-import { netlifyStatic } from '../../dist/index.js';
-import { loadFixture, testIntegration } from './test-utils.js';
+
+import { cli } from '../test-utils.js';
+import { fileURLToPath } from 'node:url';
+import * as fs from "node:fs/promises"
+
+const root = new URL('./fixtures/redirects/', import.meta.url).toString();
 
 describe('SSG - Redirects', () => {
-	/** @type {import('../../../astro/test/test-utils').Fixture} */
-	let fixture;
-
 	before(async () => {
-		fixture = await loadFixture({
-			root: new URL('./fixtures/redirects/', import.meta.url).toString(),
-			output: 'static',
-			adapter: netlifyStatic(),
-			site: `http://example.com`,
-			integrations: [testIntegration()],
-			redirects: {
-				'/other': '/',
-				'/two': {
-					status: 302,
-					destination: '/',
-				},
-				'/blog/[...slug]': '/team/articles/[...slug]',
-			},
-		});
-		await fixture.build();
+		await cli('build', '--root', fileURLToPath(root));
 	});
 
 	it('Creates a redirects file', async () => {
-		let redirects = await fixture.readFile('/_redirects');
+		const redirects = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
 		let parts = redirects.split(/\s+/);
 		expect(parts).to.deep.equal([
 			'/two',

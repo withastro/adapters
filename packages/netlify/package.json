@@ -29,7 +29,8 @@
   "scripts": {
     "build": "tsc",
     "test-fn": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/functions/",
-    "test": "pnpm test-fn",
+    "test-static": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/static/",
+    "test": "pnpm test-fn && pnpm test-static",
     "test:hosted": "mocha --exit --timeout 30000 test/hosted"
   },
   "dependencies": {
