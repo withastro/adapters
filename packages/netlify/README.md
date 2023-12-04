@@ -1,6 +1,6 @@
 # @astrojs/netlify
 
-This adapter allows Astro to deploy your SSR site to [Netlify](https://www.netlify.com/).
+This adapter allows Astro to deploy your On-Demand-Rendered site to [Netlify](https://www.netlify.com/).
 
 Learn how to deploy your Astro site in our [Netlify deployment guide](https://docs.astro.build/en/guides/deploy/netlify/).
 
@@ -16,13 +16,13 @@ Learn how to deploy your Astro site in our [Netlify deployment guide](https://do
 
 If you're using Astro as a static site builder—its behavior out of the box—you don't need an adapter.
 
-If you wish to [use server-side rendering (SSR)](https://docs.astro.build/en/guides/server-side-rendering/), Astro requires an adapter that matches your deployment runtime.
+If you wish to [use On-Demand Rendering, also known as Server-Side Rendering (SSR)](https://docs.astro.build/en/guides/server-side-rendering/), Astro requires an adapter that matches your deployment runtime.
 
 [Netlify](https://www.netlify.com/) is a deployment platform that allows you to host your site by connecting directly to your GitHub repository. This adapter enhances the Astro build process to prepare your project for deployment through Netlify.
 
 ## Installation
 
-Add the Netlify adapter to enable SSR in your Astro project with the following `astro add` command. This will install the adapter and make the appropriate changes to your `astro.config.mjs` file in one step.
+Add the Netlify adapter to enable On-Demand Rendering in your Astro project with the following `astro add` command. This will install the adapter and make the appropriate changes to your `astro.config.mjs` file in one step.
 
 ```sh
 # Using NPM
@@ -131,12 +131,23 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 > **Note**
 > You can still include a `public/_redirects` file for manual redirects. Any redirects you specify in the redirects config are appended to the end of your own.
 
-### Caching SSR Pages using Fine-Grained Cache Control
+### Caching On-Demand-Rendered Pages
 
-With [fine-grained cache control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/), Netlify supports
-standard caching headers like `CDN-Cache-Control` or `Vary`.
-This allows you to implement e.g. time to live (TTL) or [stale while revalidate (SWR)](https://docs.netlify.com/platform/caching/#stale-while-revalidate-directive) caching.
-Use these to add caching to your SSR Pages:
+On-demand-rendered pages that don't contain dynamic content can be cached to improve performance and lower resource usage.
+The easiest way to do this is to enable the `cacheOnDemandPages` option in the adapter, which will cache all on-demand-rendered pages for up to one year:
+
+```ts
+// astro.config.mjs
+export default defineConfig({
+  output: 'server',
+  adapter: netlify({
+    cacheOnDemandPages: true
+  }),
+});
+```
+
+For advanced usage, you can change this on a per-page basis by adding caching headers to your response from within your pages:
+
 
 ```astro
 ---
@@ -147,9 +158,13 @@ Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revali
 ---
 
 <Layout title="Astro on Netlify">
-  {new Date(Date.now())}
+  {new Date()}
 </Layout>
 ```
+
+With [fine-grained cache control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/), Netlify supports
+standard caching headers like `CDN-Cache-Control` or `Vary`.
+Refer to the docs to learn about implementing e.g. time to live (TTL) or stale while revalidate (SWR) caching: https://docs.netlify.com/platform/caching
 
 ## Examples
 

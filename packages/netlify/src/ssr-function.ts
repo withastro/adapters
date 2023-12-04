@@ -13,28 +13,42 @@ const clientAddressSymbol = Symbol.for('astro.clientAddress');
 export const createExports = (manifest: SSRManifest, _args: Args) => {
 	const app = new App(manifest);
 
-	async function handler(request: Request, context: Context) {
-		const routeData = app.match(request);
-		Reflect.set(request, clientAddressSymbol, context.ip);
+	function createHandler(integrationConfig: { cacheOnDemandPages: boolean }) {
+		return async function handler(request: Request, context: Context) {
+			const routeData = app.match(request);
+			Reflect.set(request, clientAddressSymbol, context.ip);
 
-		let locals: Record<string, unknown> = {};
+			let locals: Record<string, unknown> = {};
 
-		if (request.headers.has('x-astro-locals')) {
-			locals = JSON.parse(request.headers.get('x-astro-locals')!);
-		}
-
-		locals.netlify = { context };
-
-		const response = await app.render(request, routeData, locals);
-
-		if (app.setCookieHeaders) {
-			for (const setCookieHeader of app.setCookieHeaders(response)) {
-				response.headers.append('Set-Cookie', setCookieHeader);
+			if (request.headers.has('x-astro-locals')) {
+				locals = JSON.parse(request.headers.get('x-astro-locals')!);
 			}
-		}
 
-		return response;
+			locals.netlify = { context };
+
+			const response = await app.render(request, routeData, locals);
+
+			if (app.setCookieHeaders) {
+				for (const setCookieHeader of app.setCookieHeaders(response)) {
+					response.headers.append('Set-Cookie', setCookieHeader);
+				}
+			}
+
+			if (integrationConfig.cacheOnDemandPages) {
+				const hasCacheControl = [
+					'Cache-Control',
+					'CDN-Cache-Control',
+					'Netlify-CDN-Cache-Control',
+				].some((header) => response.headers.has(header));
+
+				if (!hasCacheControl) {
+					response.headers.append('CDN-Cache-Control', 'public, max-age=31536000, must-revalidate');
+				}
+			}
+
+			return response;
+		};
 	}
 
-	return { default: handler };
+	return { default: createHandler };
 };

@@ -18,7 +18,27 @@ const isStaticRedirect = (route: RouteData) =>
 
 const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {});
 
-export default function netlifyIntegration(): AstroIntegration {
+export interface NetlifyIntegrationConfig {
+	/**
+	 * If enabled, On-Demand-Rendered pages are cached for up to a year.
+	 * This is useful for pages that are not updated often, like a blog post,
+	 * but that you have too many of to pre-render at build time.
+	 * 
+	 * You can override this behavior on a per-page basis
+	 * by setting the `Cache-Control`, `CDN-Cache-Control` or `Netlify-CDN-Cache-Control` header
+	 * from within the Page:
+	 * 
+	 * ```astro
+	 * // src/pages/cached-clock.astro
+	 * Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate");
+	 * ---
+	 * <p>{Date.now()}</p>
+	 * ```
+	 */
+	cacheOnDemandPages?: boolean;
+}
+
+export default function netlifyIntegration(integrationConfig: NetlifyIntegrationConfig): AstroIntegration {
 	let _config: AstroConfig;
 	let outDir: URL;
 	let rootDir: URL;
@@ -57,8 +77,8 @@ export default function netlifyIntegration(): AstroIntegration {
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
 			`
-				import ssrRoute from './entry.mjs';
-				export default ssrRoute;
+				import createSSRHandler from './entry.mjs';
+				export default createSSRHandler(${JSON.stringify({ cacheOnDemandPages: Boolean(integrationConfig.cacheOnDemandPages) })});
 				export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
 			`
 		);

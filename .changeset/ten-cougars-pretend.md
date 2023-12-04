@@ -48,24 +48,21 @@ ODB continues to be supported by Netlify, but has since been replaced by the muc
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
 and then specifying the TTL on a per-page basis.
-In v4, you can use the cache-control headers instead:
-
-```diff lang="astro"
----
-// src/pages/index.astro
-import Layout from '../components/Layout.astro';
-
-- if (import.meta.env.PROD) {
--   Astro.locals.runtime.setBuildersTtl(45)
-- }
-+ Astro.response.headers.set('CDN-Cache-Control', "public, max-age=45, must-revalidate")
----
-```
+In v4, there's the `cacheOnDemandPages` option that works very similarly - take a look at the README to learn more.
 
 **Action Required:**
-Remove the `builders` config option, and replace all usage of `Astro.locals.runtime.setBuildersTtl()`
-with caching headers as seen above.
-See [Supported Cache Control Headers](https://docs.netlify.com/platform/caching/#supported-cache-control-headers) for more info on those.
+Replace the `builders` config option with `cacheOnDemandPages`.
+
+```diff lang="ts"
+// astro.config.mjs
+export default defineConfig({
+  // ...
+  adapter: netlify({
+-   builders: true
++   cacheOnDemandPages: true
+  }),
+});
+```
 
 ## `functionPerRoute` was removed
 
