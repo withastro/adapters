@@ -1,18 +1,16 @@
 import { expect } from 'chai';
-
-import { cli } from '../test-utils.js';
-import { fileURLToPath } from 'node:url';
-import * as fs from "node:fs/promises"
-
-const root = new URL('./fixtures/redirects/', import.meta.url).toString();
+import { loadFixture } from "@astrojs/test-utils"
 
 describe('SSG - Redirects', () => {
+	let fixture;
+
 	before(async () => {
-		await cli('build', '--root', fileURLToPath(root));
+		fixture = await loadFixture({ root: new URL('./fixtures/redirects/', import.meta.url) });
+		await fixture.build();
 	});
 
 	it('Creates a redirects file', async () => {
-		const redirects = await fs.readFile(new URL('./dist/_redirects', root), 'utf-8');
+		const redirects = await fixture.readFile('./_redirects');
 		let parts = redirects.split(/\s+/);
 		expect(parts).to.deep.equal([
 			'',

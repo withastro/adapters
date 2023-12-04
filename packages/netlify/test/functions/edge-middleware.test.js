@@ -1,16 +1,16 @@
-import { fileURLToPath } from 'url';
 import { expect } from 'chai';
-import fs from 'fs/promises';
-import { cli } from '../test-utils.js';
+import { loadFixture } from "@astrojs/test-utils"
 
 describe('Middleware', () => {
+	let fixture;
+
+	before(async () => {
+		fixture = await loadFixture({ root: new URL('./fixtures/middleware/', import.meta.url) });
+		await fixture.build();
+	});
+
 	it('should successfully build the middleware', async () => {
-		const root = new URL('./fixtures/middleware/', import.meta.url).toString();
-		await cli('build', '--root', fileURLToPath(root));
-		const contents = await fs.readFile(
-			new URL('./.netlify/edge-functions/middleware/middleware.mjs', root),
-			'utf-8'
-		);
+		const contents = await fixture.readFile('../.netlify/edge-functions/middleware/middleware.mjs')
 		expect(contents.includes('"Hello world"')).to.be.false;
 	});
 });

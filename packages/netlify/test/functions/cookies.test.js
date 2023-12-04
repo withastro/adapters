@@ -1,12 +1,12 @@
-import { fileURLToPath } from 'url';
 import { expect } from 'chai';
-import { cli } from '../test-utils.js';
-
-const root = new URL('./fixtures/cookies/', import.meta.url).toString();
+import { loadFixture } from "@astrojs/test-utils"
 
 describe('Cookies', () => {
+	let fixture;
+
 	before(async () => {
-		await cli('build', '--root', fileURLToPath(root));
+		fixture = await loadFixture({ root: new URL('./fixtures/cookies/', import.meta.url) });
+		await fixture.build();
 	});
 
 	it('Can set multiple', async () => {
