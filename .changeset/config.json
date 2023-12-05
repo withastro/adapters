@@ -8,5 +8,5 @@
     "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
         "onlyUpdatePeerDependentsWhenOutOfRange": true
     },
-    "ignore": ["@astrojs/netlify", "@test/*"]
+    "ignore": ["@astrojs/netlify", "@test/netlify-fourohfour","@test/netlify-base","@test/netlify-base64-response","@test/netlify-builders","@test/netlify-cookies","@test/netlify-dynamic","@test/netlify-middleware-with-handler-file", "@test/netlify-middleware-without-handler-file","@test/netlify-prerender","@test/netlify-redirects","@test/netlify-split-support","@test/netlify-hosted-astro-project"]
 }
