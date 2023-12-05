@@ -93,30 +93,30 @@ export default function netlifyIntegration(
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
 			`
-						import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
-						import { createContext, trySerializeLocals } from 'astro/middleware';
+			import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
+			import { createContext, trySerializeLocals } from 'astro/middleware';
 
-						export default async (request, context) => {
-							const ctx = createContext({ 
-								request,
-								params: {}
-							});
-							ctx.locals = { netlify: { context } }
-							const next = () => {
-								const { netlify, ...otherLocals } = ctx.locals;
-								request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
-								return context.next();
-							};
-						
-							return onRequest(ctx, next);
-						}
+			export default async (request, context) => {
+				const ctx = createContext({ 
+					request,
+					params: {}
+				});
+				ctx.locals = { netlify: { context } }
+				const next = () => {
+					const { netlify, ...otherLocals } = ctx.locals;
+					request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
+					return context.next();
+				};
+			
+				return onRequest(ctx, next);
+			}
 
-						export const config = {
-							name: "Astro Middleware",
-							generator: "@astrojs/netlify@${packageVersion}",
-							path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
-						};
-						`
+			export const config = {
+				name: "Astro Middleware",
+				generator: "@astrojs/netlify@${packageVersion}",
+				path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
+			};
+			`
 		);
 
 		// taking over bundling, because Netlify bundling trips over NPM modules
