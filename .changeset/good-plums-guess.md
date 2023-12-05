@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': patch
 ---
 
-Improves compatibility with the next version of Astro, 4.0. WASM modules previously would fail to load.
+Improves compatibility with Astro 4.0. using WASM modules
