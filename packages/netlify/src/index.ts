@@ -93,7 +93,7 @@ export default function netlifyIntegration(
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
 			`
-						import { onRequest } from "${entrypoint.pathname}";
+						import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
 						import { createContext, trySerializeLocals } from 'astro/middleware';
 
 						export default async (request, context) => {
