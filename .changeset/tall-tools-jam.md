@@ -1,5 +1,4 @@
 ---
-'@astrojs/cloudflare': patch
 '@astrojs/netlify': patch
 ---
 
