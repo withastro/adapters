@@ -2,4 +2,4 @@
 '@astrojs/netlify': minor
 ---
 
-Fixes `@astrojs/netlify` to make it compatible with Astro 4.0.
+Fixes an issue where this package could not be installed alongside Astro 4.0.
