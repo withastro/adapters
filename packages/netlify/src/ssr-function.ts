@@ -35,6 +35,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 			}
 
 			if (integrationConfig.cacheOnDemandPages) {
+				// any user-provided Cache-Control headers take precedence
 				const hasCacheControl = [
 					'Cache-Control',
 					'CDN-Cache-Control',
@@ -42,6 +43,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 				].some((header) => response.headers.has(header));
 
 				if (!hasCacheControl) {
+					// caches this page for up to a year
 					response.headers.append('CDN-Cache-Control', 'public, max-age=31536000, must-revalidate');
 				}
 			}
