@@ -100,6 +100,30 @@ declare namespace App {
 }
 ```
 
+It's only available during on-demand rendering.
+
+### Run Middleware in Edge Functions
+
+If you use Astro Middleware, the default behaviour is that it's applied to prerendered pages at build-time, and to on-demand-rendered pages at runtime.
+For prerendered pages, it can't be used to implement redirects, access control or custom response headers.
+If you need any of this, you should probably deploy run your Middleware on Netlify Edge Functions by enabling the `edgeMiddleware` option:
+
+```diff lang="js"
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import netlify from '@astrojs/netlify/functions';
+
+export default defineConfig({
+  output: 'server',
+  adapter: netlify({
++   edgeMiddleware: true,
+  }),
+});
+```
+
+This will deploy your Middleware as an Edge Function, and run it on all routes - including prerendered pages.
+This also means that locals specified in the Middleware won't be applied to any prerendered pages, because they've already been fully rendered at build-time.
+
 ### Image CDN
 
 This adapter integrates your site with [Netlify Image CDN](https://docs.netlify.com/image-cdn/), transforming images on-the-fly without impacting build times.

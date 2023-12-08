@@ -9,21 +9,6 @@ It simplifies the user-facing config, and resolves a number of bugs along the wa
 
 Here's what changes:
 
-## Middleware without configuration
-
-In v3, [Middleware](https://docs.astro.build/en/guides/middleware/) was deployed to the SSR Function by default.
-Enabling the `edgeMiddleware` option would change this behaviour to deploy it using Netlify Edge Functions instead, improving
-page speed and enabling the middleware to run on prerendered sites.
-
-In v4, this is the default setting.
-If your Astro site makes use of Middleware,
-it's deployed to an Edge Function where it runs super close to your users and is also applied to static sites.
-You can use this to implement customization or authorization logic!
-
-**Action Required:**
-If your site is using Middleware and you had `edgeMiddleware` enabled, nothing changes for you. You are free to remove the config field, as it is no longer necessary.
-If your site is using Middleware and you didn't have `edgeMiddleware` enabled, your Middleware will now be deployed to an Edge Function and start running on prerendered pages. Go through your prerendered pages to check if this requires any changes to the logic in your middleware.
-
 ## Netlify Context is automatically available via Locals
 
 In v3, you could use `netlify-edge-middleware.ts` to inject data from the Netlify context into your Astro locals.

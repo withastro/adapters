@@ -36,6 +36,18 @@ export interface NetlifyIntegrationConfig {
 	 * ```
 	 */
 	cacheOnDemandPages?: boolean;
+
+	/**
+	 * If disabled, Middleware is applied to prerendered pages at build-time, and to on-demand-rendered pages at runtime.
+	 * Only disable when your Middleware does not need to run on prerendered pages.
+	 * If you use Middleware to implement authentication, redirects or similar things, you should should likely enabled it.
+	 * 
+	 * If enabled, Astro Middleware is deployed as an Edge Function and applies to all routes.
+	 * Caveat: Locals set in Middleware are not applied to prerendered pages, because they've been rendered at build-time and are served from the CDN.
+	 * 
+	 * @default disabled
+	 */
+	edgeMiddleware?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -183,7 +195,7 @@ export default function netlifyIntegration(
 					exports: ['default'],
 					adapterFeatures: {
 						functionPerRoute: false,
-						edgeMiddleware: true,
+						edgeMiddleware: integrationConfig?.edgeMiddleware ?? true,
 					},
 					supportedAstroFeatures: {
 						hybridOutput: 'stable',
