@@ -19,6 +19,8 @@
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/netlify/",
   "exports": {
     ".": "./dist/index.js",
+    "./static": "./dist/static.js",
+    "./functions": "./dist/functions.js",
     "./ssr-function.js": "./dist/ssr-function.js",
     "./image-service.js": "./dist/image-service.js",
     "./package.json": "./package.json"
