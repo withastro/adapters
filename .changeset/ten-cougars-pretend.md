@@ -19,11 +19,30 @@ You can use this context to access information about the user (like geolocation 
 Remove the `netlify-edge-middleware.ts` or `netlify-edge-middleware.js` file.
 In your codebase, change all usage of locals injected through that file to use `Astro.locals.netlify.context` instead.
 
-### Image CDN
+## Image CDN
 
 v4 of this adapter integrates your Astro site with Netlify [Image CDN](https://docs.netlify.com/image-cdn/overview/).
 This allows transforming images on-the-fly without impacting build times.
 It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/), and enabled by default.
+
+## Render SSR on the Edge with Netlify Edge Functions
+
+v4 introduces the `edgeSSR` option. If enabled, on-demand-rendered pages (also known as SSR) are deployed via Netlify Edge Functions.
+If your rendering can happen fully on the edge, e.g. without querying from a central database,
+this can improve your TTFB by running closer to the user.
+Beware that Edge Functions are run in a Deno environment, so some code that relis on Node.js specifics might need changes.
+
+`edgeSSR` is disabled by default, and can be enabled via the adapter config:
+
+```diff lang="js"
+// astro.config.mjs
+export default defineConfig({
+  // ...
+  adapter: netlify({
++   edgeSSR: true
+  }),
+});
+```
 
 ## On-Demand Builders are no longer supported
 

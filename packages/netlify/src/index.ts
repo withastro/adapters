@@ -48,6 +48,16 @@ export interface NetlifyIntegrationConfig {
 	 * @default disabled
 	 */
 	edgeMiddleware?: boolean;
+
+	/**
+	 * If enabled, on-demand-rendered/SSR pages are deployed via Netlify Edge Functions.
+	 * If your rendering can happen fully on the edge, e.g. without querying from a central database,
+	 * this can improve your TTFB by running closer to the user.
+	 * This also changes the underlying runtime to Deno, which can break some code that relies on Node.js APIs.
+	 * 
+	 * @default disabled
+	 */
+	edgeSSR?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -59,10 +69,15 @@ export default function netlifyIntegration(
 	let astroMiddlewareEntryPoint: URL | undefined = undefined;
 
 	const ssrOutputDir = () => new URL('./.netlify/functions-internal/ssr/', rootDir);
+	const edgeSsrOutputDir = () => new URL('./.netlify/edge-functions/ssr/', rootDir);
 	const middlewareOutputDir = () => new URL('.netlify/edge-functions/middleware/', rootDir);
 
 	const cleanFunctions = async () =>
-		await Promise.all([clearDirectory(middlewareOutputDir()), clearDirectory(ssrOutputDir())]);
+		await Promise.all([
+			clearDirectory(middlewareOutputDir()),
+			clearDirectory(ssrOutputDir()),
+			clearDirectory(edgeSsrOutputDir()),
+		]);
 
 	async function writeRedirects(routes: RouteData[], dir: URL) {
 		const fallback = _config.output === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
@@ -87,17 +102,62 @@ export default function netlifyIntegration(
 		}
 	}
 
+	const ssrHandlerConfig = JSON.stringify({
+		cacheOnDemandPages: Boolean(integrationConfig?.cacheOnDemandPages),
+	});
+
 	async function writeSSRFunction() {
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
 			`
-				import createSSRHandler from './entry.mjs';
-				export default createSSRHandler(${JSON.stringify({
-					cacheOnDemandPages: Boolean(integrationConfig?.cacheOnDemandPages),
-				})});
-				export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
+			import createSSRHandler from './entry.mjs';
+			export default createSSRHandler(${ssrHandlerConfig});
+			export const config = {
+				name: "Astro SSR",
+				generator: "@astrojs/netlify@${packageVersion}",
+				path: "/*",
+				preferStatic: true
+			};
 			`
 		);
+	}
+
+	async function writeSSREdgeFunction(routes: RouteData[]) {
+		await mkdir(edgeSsrOutputDir(), { recursive: true });
+		const staticRoutes = routes.flatMap((route) => {
+			if (!route.prerender) return [];
+			if (!route.pathname) return [];
+			return [route.pathname, route.pathname + '/', route.pathname + '/index.html'];
+		});
+		const excludedPatterns = ['/.netlify/images', '/_astro/*', ...staticRoutes];
+		await writeFile(
+			new URL('./entry.mjs', edgeSsrOutputDir()),
+			`
+			import createSSRHandler from '../../functions-internal/ssr/entry.mjs';
+			export default createSSRHandler(${ssrHandlerConfig});
+			export const config = {
+				name: "Astro SSR",
+				generator: "@astrojs/netlify@${packageVersion}",
+				cache: "manual",
+				path: "/*",
+				excludedPath: ${JSON.stringify(excludedPatterns)},
+			};
+			`
+		);
+
+		// taking over bundling, because Netlify bundling trips over NPM modules
+		await build({
+			entryPoints: [fileURLToPath(new URL('./entry.mjs', edgeSsrOutputDir()))],
+			target: 'es2022',
+			platform: 'neutral',
+			mainFields: ['module', 'main', 'browser'],
+			external: ['sharp', 'node:*'],
+			outfile: fileURLToPath(new URL('./ssr.mjs', edgeSsrOutputDir())),
+			allowOverwrite: true,
+			format: 'esm',
+			bundle: true,
+			minify: false,
+		});
 	}
 
 	async function writeMiddleware(entrypoint: URL) {
@@ -126,7 +186,7 @@ export default function netlifyIntegration(
 			export const config = {
 				name: "Astro Middleware",
 				generator: "@astrojs/netlify@${packageVersion}",
-				path: "/*", excludedPath: ["/_astro/*", "/.netlify/images/*"]
+				path: "/*", excludedPath: ["/_astro/*", "/.netlify/images"]
 			};
 			`
 		);
@@ -203,7 +263,7 @@ export default function netlifyIntegration(
 						serverOutput: 'stable',
 						assets: {
 							// keeping this as experimental at least until Netlify Image CDN is out of beta
-							supportKind: 'experimental', 
+							supportKind: 'experimental',
 							// still using Netlify Image CDN instead
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
@@ -219,8 +279,13 @@ export default function netlifyIntegration(
 				logger.info('Emitted _redirects');
 
 				if (_config.output !== 'static') {
-					await writeSSRFunction();
-					logger.info('Generated SSR Function');
+					if (integrationConfig?.edgeSSR) {
+						await writeSSREdgeFunction(routes);
+						logger.info('Generated SSR Edge Function');
+					} else {
+						await writeSSRFunction();
+						logger.info('Generated SSR Function');
+					}
 				}
 
 				if (astroMiddlewareEntryPoint) {
