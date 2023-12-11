@@ -124,28 +124,6 @@ export default defineConfig({
 This will deploy your Middleware as an Edge Function, and run it on all routes - including prerendered pages.
 This also means that locals specified in the Middleware won't be applied to any prerendered pages, because they've already been fully rendered at build-time.
 
-## Render SSR on the Edge with Netlify Edge Functions
-
-On-demand-rendered pages, also known as SSR pages, are deployed to Netlify Functions by default.
-Deploy them to Edge Functions instead by enabling the `edgeSSR` option.
-
-If your rendering can happen fully on the edge, e.g. without querying from a central database,
-this can improve your TTFB by running closer to the user.
-Beware that Edge Functions are run in a Deno environment, so some code that relis on Node.js specifics might need changes.
-
-```diff lang="js"
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
-
-export default defineConfig({
-  // ...
-  adapter: netlify({
-+   edgeSSR: true
-  }),
-});
-```
-
 ### Image CDN
 
 This adapter integrates your site with [Netlify Image CDN](https://docs.netlify.com/image-cdn/), transforming images on-the-fly without impacting build times.
