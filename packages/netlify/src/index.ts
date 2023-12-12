@@ -261,7 +261,7 @@ export default function netlifyIntegration(
 					exports: ['default'],
 					adapterFeatures: {
 						functionPerRoute: false,
-						edgeMiddleware: integrationConfig?.edgeMiddleware ?? true,
+						edgeMiddleware: integrationConfig?.edgeMiddleware ?? false,
 					},
 					supportedAstroFeatures: {
 						hybridOutput: 'stable',
