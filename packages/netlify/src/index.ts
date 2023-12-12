@@ -6,6 +6,7 @@ import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { version as packageVersion } from '../package.json';
 import type { Context } from '@netlify/functions';
 import { AstroError } from 'astro/errors';
+import type { IncomingMessage } from 'http';
 
 export interface NetlifyLocals {
 	netlify: {
@@ -41,10 +42,10 @@ export interface NetlifyIntegrationConfig {
 	 * If disabled, Middleware is applied to prerendered pages at build-time, and to on-demand-rendered pages at runtime.
 	 * Only disable when your Middleware does not need to run on prerendered pages.
 	 * If you use Middleware to implement authentication, redirects or similar things, you should should likely enabled it.
-	 * 
+	 *
 	 * If enabled, Astro Middleware is deployed as an Edge Function and applies to all routes.
 	 * Caveat: Locals set in Middleware are not applied to prerendered pages, because they've been rendered at build-time and are served from the CDN.
-	 * 
+	 *
 	 * @default disabled
 	 */
 	edgeMiddleware?: boolean;
@@ -53,6 +54,10 @@ export interface NetlifyIntegrationConfig {
 export default function netlifyIntegration(
 	integrationConfig?: NetlifyIntegrationConfig
 ): AstroIntegration {
+	const isRunningInNetlify = Boolean(
+		process.env.NETLIFY || process.env.NETLIFY_LOCAL || process.env.NETLIFY_DEV
+	);
+
 	let _config: AstroConfig;
 	let outDir: URL;
 	let rootDir: URL;
@@ -144,6 +149,71 @@ export default function netlifyIntegration(
 		});
 	}
 
+	function getLocalDevNetlifyContext(req: IncomingMessage): Context {
+		const isHttps = req.headers['x-forwarded-proto'] === 'https';
+		const parseBase64JSON = <T = unknown>(header: string): T | undefined => {
+			if (typeof req.headers[header] === 'string') {
+				try {
+					return JSON.parse(Buffer.from(req.headers[header] as string, 'base64').toString('utf8'));
+				} catch {}
+			}
+		};
+
+		const context: Context = {
+			account: parseBase64JSON('x-nf-account-info') ?? {
+				id: 'mock-netlify-account-id',
+			},
+			deploy: {
+				id:
+					typeof req.headers['x-nf-deploy-id'] === 'string'
+						? req.headers['x-nf-deploy-id']
+						: 'mock-netlify-deploy-id',
+			},
+			site: parseBase64JSON('x-nf-site-info') ?? {
+				id: 'mock-netlify-site-id',
+				name: 'mock-netlify-site.netlify.app',
+				url: `${isHttps ? 'https' : 'http'}://localhost:${isRunningInNetlify ? 8888 : 4321}`,
+			},
+			geo: parseBase64JSON('x-nf-geo') ?? {
+				city: 'Mock City',
+				country: { code: 'mock', name: 'Mock Country' },
+				subdivision: { code: 'SD', name: 'Mock Subdivision' },
+
+				// @ts-expect-error: these are smhw missing from the Netlify types - fix is on the way
+				timezone: 'UTC',
+				longitude: 0,
+				latitude: 0,
+			},
+			ip:
+				typeof req.headers['x-nf-client-connection-ip'] === 'string'
+					? req.headers['x-nf-client-connection-ip']
+					: req.socket.remoteAddress ?? '127.0.0.1',
+			server: {
+				region: 'local-dev',
+			},
+			requestId:
+				typeof req.headers['x-nf-request-id'] === 'string'
+					? req.headers['x-nf-request-id']
+					: 'mock-netlify-request-id',
+			get cookies(): never {
+				throw new Error('Please use Astro.cookies instead.');
+			},
+			json: (input) => Response.json(input),
+			log: console.log,
+			next: () => {
+				throw new Error('`context.next` is not implemented for serverless functions');
+			},
+			get params(): never {
+				throw new Error("context.params don't contain any usable content in Astro.");
+			},
+			rewrite() {
+				throw new Error('context.rewrite is not available in Astro.');
+			},
+		};
+
+		return context;
+	}
+
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
@@ -152,10 +222,6 @@ export default function netlifyIntegration(
 				await cleanFunctions();
 
 				outDir = new URL('./dist/', rootDir);
-
-				const isRunningInNetlify = Boolean(
-					process.env.NETLIFY || process.env.NETLIFY_LOCAL || process.env.NETLIFY_DEV
-				);
 
 				updateConfig({
 					outDir,
@@ -203,7 +269,7 @@ export default function netlifyIntegration(
 						serverOutput: 'stable',
 						assets: {
 							// keeping this as experimental at least until Netlify Image CDN is out of beta
-							supportKind: 'experimental', 
+							supportKind: 'experimental',
 							// still using Netlify Image CDN instead
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
@@ -227,6 +293,18 @@ export default function netlifyIntegration(
 					await writeMiddleware(astroMiddlewareEntryPoint);
 					logger.info('Generated Middleware Edge Function');
 				}
+			},
+
+			// local dev
+			'astro:server:setup': async ({ server }) => {
+				server.middlewares.use((req, res, next) => {
+					const locals = Symbol.for('astro.locals');
+					Reflect.set(req, locals, {
+						...Reflect.get(req, locals),
+						netlify: { context: getLocalDevNetlifyContext(req) },
+					});
+					next();
+				});
 			},
 		},
 	};
