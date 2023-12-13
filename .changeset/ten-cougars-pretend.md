@@ -33,7 +33,7 @@ ODB continues to be supported by Netlify, but has since been replaced by the muc
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
 and then specifying the TTL on a per-page basis.
-In v4, there's the `cacheOnDemandPages` option that works very similarly - take a look at the README to learn more.
+In v4, a new `cacheOnDemandPages` option replaces this config option.
 
 **Action Required:**
 Replace the `builders` config option with `cacheOnDemandPages`.
@@ -52,7 +52,7 @@ export default defineConfig({
 ## `functionPerRoute` was removed
 
 In v3, the `functionPerRoute` option allowed the SSR routes to be split up into multiple Netlify Functions.
-In theory, this reduced bundle sizes of each individual function, and the speed-up in code parsing should speed up cold starts.
+This reduced the bundle sizes of each individual function, with the intention of speeding up code parsing, and therefore the time of cold starts.
 In practice, this benefit is often nullified by the increase in number of cold starts - more handlers means fewer requests per handler, means more cold starts.
 
 In v4, support for this deployment mode was removed.

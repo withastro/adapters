@@ -1,6 +1,6 @@
 # @astrojs/netlify
 
-This adapter allows Astro to deploy your On-Demand-Rendered site to [Netlify](https://www.netlify.com/).
+This adapter allows Astro to deploy your [`hybrid` or `server` rendered site](https://docs.astro.build/en/core-concepts/rendering-modes/#on-demand-rendered) to [Netlify](https://www.netlify.com/).
 
 Learn how to deploy your Astro site in our [Netlify deployment guide](https://docs.astro.build/en/guides/deploy/netlify/).
 
@@ -16,13 +16,13 @@ Learn how to deploy your Astro site in our [Netlify deployment guide](https://do
 
 If you're using Astro as a static site builder—its behavior out of the box—you don't need an adapter.
 
-If you wish to [use On-Demand Rendering, also known as Server-Side Rendering (SSR)](https://docs.astro.build/en/guides/server-side-rendering/), Astro requires an adapter that matches your deployment runtime.
+If you wish to [use on-demand rendering, also known as server-side rendering (SSR)](https://docs.astro.build/en/guides/server-side-rendering/), Astro requires an adapter that matches your deployment runtime.
 
 [Netlify](https://www.netlify.com/) is a deployment platform that allows you to host your site by connecting directly to your GitHub repository. This adapter enhances the Astro build process to prepare your project for deployment through Netlify.
 
 ## Installation
 
-Add the Netlify adapter to enable On-Demand Rendering in your Astro project with the following `astro add` command. This will install the adapter and make the appropriate changes to your `astro.config.mjs` file in one step.
+Add the Netlify adapter with the following `astro add` command. This will install the adapter and make the appropriate changes to your `astro.config.mjs` file in one step.
 
 ```sh
 # Using NPM
@@ -60,9 +60,9 @@ If you prefer to install the adapter manually instead, complete the following tw
 
 [Read the full deployment guide here.](https://docs.astro.build/en/guides/deploy/netlify/)
 
-After [performing a build](https://docs.astro.build/en/guides/deploy/#building-your-site-locally) the `.netlify/` folder will contain [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `.netlify/functions-internal/` and [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/) in the `.netlify/edge-functions/` folder.
+Follow the instructions to [build your site locally](https://docs.astro.build/en/guides/deploy/#building-your-site-locally). After building, you will have a `.netlify/` folder containing both [Netlify Functions](https://docs.netlify.com/functions/overview/) in the `.netlify/functions-internal/` folder and [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/) in the`.netlify/edge-functions/` folder.
 
-Now you can deploy. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
+To deploy your site, install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) and run:
 
 ```sh
 netlify deploy
@@ -84,7 +84,7 @@ const { geo: { city } } = Astro.locals.netlify.context
 <h1>Hello there, friendly visitor from {city}!</h1>
 ```
 
-If you're using TypeScript, you can get proper typings by updating your `src/env.d.ts` to use `NetlifyLocals`:
+If you're using TypeScript, you can get proper typings by updating `src/env.d.ts` to use `NetlifyLocals`:
 
 ```ts
 // src/env.d.ts
@@ -102,11 +102,11 @@ declare namespace App {
 
 It's only available during on-demand rendering.
 
-### Run Middleware in Edge Functions
+### Running Astro middleware in Edge Functions
 
-If you use Astro Middleware, the default behaviour is that it's applied to prerendered pages at build-time, and to on-demand-rendered pages at runtime.
-For prerendered pages, it can't be used to implement redirects, access control or custom response headers.
-If you need any of this, you should probably deploy run your Middleware on Netlify Edge Functions by enabling the `edgeMiddleware` option:
+Any Astro middleware is applied to pre-rendered pages at build-time, and to on-demand-rendered pages at runtime.
+
+To implement redirects, access control or custom response headers for pre-rendered pages, run your middleware on Netlify Edge Functions by enabling the `edgeMiddleware` option:
 
 ```diff lang="js"
 // astro.config.mjs
@@ -121,16 +121,15 @@ export default defineConfig({
 });
 ```
 
-This will deploy your Middleware as an Edge Function, and run it on all routes - including prerendered pages.
-This also means that locals specified in the Middleware won't be applied to any prerendered pages, because they've already been fully rendered at build-time.
+Configuring `edgeMiddleware: true` will deploy your middleware as an Edge Function, and run it on all routes - including pre-rendered pages. However, locals specified in the middleware won't be available to any pre-rendered pages, because they've already been fully-rendered at build-time.
 
-### Image CDN
+### Netlify Image CDN support
 
-This adapter integrates your site with [Netlify Image CDN](https://docs.netlify.com/image-cdn/), transforming images on-the-fly without impacting build times.
+This adapter uses the [Netlify Image CDN](https://docs.netlify.com/image-cdn/) to transform images on-the-fly without impacting build times.
 It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/) under the hood.
 
 > **Note**
-> This adapter does not support `image.domains` and `image.remotePatterns` config properties in your Astro config - use the `remote_images` field in `netlify.toml` instead: [Netlify Image CDN - Remote Path](https://docs.netlify.com/image-cdn/overview/#remote-path).
+> This adapter does not support the `image.domains` and `image.remotePatterns` config properties in your Astro config. To [specify remote paths for Netlify Image CDN](https://docs.netlify.com/image-cdn/overview/#remote-path), use the `remote_images` field in `netlify.toml`.
 
 ### Static sites & Redirects
 
@@ -155,10 +154,10 @@ Once you run `astro build` there will be a `dist/_redirects` file. Netlify will 
 > **Note**
 > You can still include a `public/_redirects` file for manual redirects. Any redirects you specify in the redirects config are appended to the end of your own.
 
-### Caching On-Demand-Rendered Pages
+### Caching Pages
 
-On-demand-rendered pages that don't contain dynamic content can be cached to improve performance and lower resource usage.
-The easiest way to do this is to enable the `cacheOnDemandPages` option in the adapter, which will cache all on-demand-rendered pages for up to one year:
+On-demand rendered pages without any dynamic content can be cached to improve performance and lower resource usage.
+Enabling the `cacheOnDemandPages` option in the adapter will cache all server-rendered pages for up to one year:
 
 ```ts
 // astro.config.mjs
@@ -170,7 +169,7 @@ export default defineConfig({
 });
 ```
 
-For advanced usage, you can change this on a per-page basis by adding caching headers to your response from within your pages:
+This can be changed on a per-page basis by adding caching headers to your response:
 
 
 ```astro
