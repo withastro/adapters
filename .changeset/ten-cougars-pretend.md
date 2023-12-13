@@ -28,12 +28,12 @@ It's implemented using an [Astro Image Service](https://docs.astro.build/en/refe
 ## On-Demand Builders are no longer supported
 
 On-Demand Builders (ODB) allows SSR-Rendered pages to be cached using a Time to Live (TTL) strategy.
-ODB continues to be supported by Netlify, but has since been replaced by the much more powerful
+While the Netlify platform continues to support existing pages with ODBs, there's now the much more powerful
 [Fine-Grained Cache Control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control).
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
 and then specifying the TTL on a per-page basis.
-In v4, a new `cacheOnDemandPages` option replaces this config option.
+In v4, a new `cacheOnDemandPages` option replaces this config option. Take a look at the README to learn more about this.
 
 **Action Required:**
 Replace the `builders` config option with `cacheOnDemandPages`.
