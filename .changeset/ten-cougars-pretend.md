@@ -25,11 +25,11 @@ v4 of this adapter integrates your Astro site with Netlify [Image CDN](https://d
 This allows transforming images on-the-fly without impacting build times.
 It's implemented using an [Astro Image Service](https://docs.astro.build/en/reference/image-service-reference/), and enabled by default.
 
-## On-Demand Builders are no longer supported
+## Replacement for On-Demand Builders
 
 On-Demand Builders (ODB) allows SSR-Rendered pages to be cached using a Time to Live (TTL) strategy.
-While the Netlify platform continues to support existing pages with ODBs, there's now the much more powerful
-[Fine-Grained Cache Control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control) that's recommended going forward.
+While the Netlify platform continues to support existing pages with ODBs, we now recommend using the much more powerful
+[Fine-Grained Cache Control](https://www.netlify.com/blog/swr-and-fine-grained-cache-control) going forward.
 
 In v3, you could deploy your SSR-Rendered Astro pages to ODBs by enabling the `builders` config option,
 and then specifying the TTL on a per-page basis.
