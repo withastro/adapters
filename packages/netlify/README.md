@@ -100,7 +100,7 @@ declare namespace App {
 }
 ```
 
-It's only available during on-demand rendering.
+This is not available on prerendered pages.
 
 ### Running Astro middleware in Edge Functions
 
