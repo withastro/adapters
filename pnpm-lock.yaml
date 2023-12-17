@@ -316,67 +316,19 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(@types/node@18.17.8)
 
-  packages/netlify/test/functions/fixtures/404:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/base:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/base64-response:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/builders:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
   packages/netlify/test/functions/fixtures/cookies:
     dependencies:
       '@astrojs/netlify':
         specifier: 'workspace:'
         version: link:../../../..
 
-  packages/netlify/test/functions/fixtures/dynamic-route:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/middleware-with-handler-file:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/middleware-without-handler-file:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/prerender:
+  packages/netlify/test/functions/fixtures/middleware:
     dependencies:
       '@astrojs/netlify':
         specifier: 'workspace:'
         version: link:../../../..
 
   packages/netlify/test/functions/fixtures/redirects:
-    dependencies:
-      '@astrojs/netlify':
-        specifier: 'workspace:'
-        version: link:../../../..
-
-  packages/netlify/test/functions/fixtures/split-support:
     dependencies:
       '@astrojs/netlify':
         specifier: 'workspace:'
@@ -390,6 +342,12 @@ importers:
       astro:
         specifier: ^4.0.0
         version: 4.0.0(@types/node@18.17.8)(typescript@5.2.2)
+
+  packages/netlify/test/static/fixtures/redirects:
+    dependencies:
+      '@astrojs/netlify':
+        specifier: 'workspace:'
+        version: link:../../../..
 
   packages/test-utils:
     dependencies:
