@@ -22,6 +22,10 @@ This package is maintained by Astro's Core team. You're welcome to submit an iss
 - [Code of Conduct][coc]
 - [Community Guide][community]
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a history of changes to this integration.
+
 ## License
 
 MIT
