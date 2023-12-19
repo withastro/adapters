@@ -8,11 +8,11 @@ Read the [`@astrojs/cloudflare` docs][docs]
 
 ## Support
 
-Get help in the [Astro Discord][discord]. Post questions in our `#support` forum, or visit our dedicated `#dev` channel to discuss current development and more!
+- Get help in the [Astro Discord][discord]. Post questions in our `#support` forum, or visit our dedicated `#dev` channel to discuss current development and more!
 
-You can also check our [Astro Integration Documentation][astro-integration] for more on integrations.
+- Check our [Astro Integration Documentation][astro-integration] for more on integrations.
 
-You can also submit bug reports and feature requests as [GitHub issues][issues].
+- Submit bug reports and feature requests as [GitHub issues][issues].
 
 ## Contributing
 
