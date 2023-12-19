@@ -2,6 +2,9 @@
   "name": "@test/astro-cloudflare-dev-runtime-pages",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "astro": "astro"
+  },
   "dependencies": {
     "@astrojs/cloudflare": "workspace:*",
     "astro": "^4.0.0"

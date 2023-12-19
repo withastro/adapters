@@ -9,7 +9,7 @@ import type { AstroConfig, AstroIntegrationLogger } from 'astro';
 import type { Json, ReplaceWorkersTypes, WorkerOptions } from 'miniflare';
 import type { Options } from '../index.js';
 
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import assert from 'node:assert';
 import { fileURLToPath } from 'url';
 import TOML from '@iarna/toml';
@@ -58,6 +58,7 @@ export type RUNTIME =
 	  };
 
 class LocalRuntime {
+	private _runtimeConfig: BASE_RUNTIME;
 	private _astroConfig: AstroConfig;
 	private _logger: AstroIntegrationLogger;
 	private _miniflare: Miniflare;
@@ -75,17 +76,19 @@ class LocalRuntime {
 	private secrets: Record<string, string> | undefined;
 	private cfObject: IncomingRequestCfProperties | undefined;
 
+	private _d1Bindings: Required<Pick<WorkerOptions, 'd1Databases'>>['d1Databases'];
 	public constructor(
 		astroConfig: AstroConfig,
 		runtimeConfig: BASE_RUNTIME,
 		logger: AstroIntegrationLogger
 	) {
 		this._astroConfig = astroConfig;
+		this._runtimeConfig = runtimeConfig;
 		this._logger = logger;
 
 		let varBindings: Required<Pick<WorkerOptions, 'bindings'>>['bindings'] = {};
 		let kvBindings: Required<Pick<WorkerOptions, 'kvNamespaces'>>['kvNamespaces'] = [];
-		let d1Bindings: Required<Pick<WorkerOptions, 'd1Databases'>>['d1Databases'] = [];
+		this._d1Bindings = [];
 		let r2Bindings: Required<Pick<WorkerOptions, 'r2Buckets'>>['r2Buckets'] = [];
 		let durableObjectBindings: Required<Pick<WorkerOptions, 'durableObjects'>>['durableObjects'] =
 			{};
@@ -100,7 +103,7 @@ class LocalRuntime {
 					kvBindings.push(bindingName);
 					break;
 				case 'd1':
-					d1Bindings.push(bindingName);
+					this._d1Bindings.push(bindingName);
 					break;
 				case 'r2':
 					r2Bindings.push(bindingName);
@@ -128,7 +131,7 @@ class LocalRuntime {
 					cacheWarnUsage: true,
 					cache: true,
 					bindings: varBindings,
-					d1Databases: d1Bindings,
+					d1Databases: this._d1Bindings,
 					r2Buckets: r2Bindings,
 					kvNamespaces: kvBindings,
 					durableObjects: durableObjectBindings,
@@ -191,7 +194,9 @@ class LocalRuntime {
 		const CF_ENDPOINT = 'https://workers.cloudflare.com/cf.json';
 		if (!this.cfObject) {
 			this.cfObject = await fetch(CF_ENDPOINT).then((res) => res.json());
-			mkdirSync(this._astroConfig.cacheDir);
+			if (!existsSync(this._astroConfig.cacheDir)) {
+				mkdirSync(this._astroConfig.cacheDir);
+			}
 			writeFileSync(
 				fileURLToPath(new URL('cf.json', this._astroConfig.cacheDir)),
 				JSON.stringify(this.cfObject),
@@ -203,6 +208,14 @@ class LocalRuntime {
 
 	public async dispose() {
 		await this._miniflare.dispose();
+	}
+
+	public getGroupedBindingKeys() {
+		return {
+			D1: Object.entries(this._runtimeConfig.bindings).map(([key, value]) => {
+				if(value.type === 'd1') return key;
+			}).filter(Boolean),
+		};
 	}
 }
 
