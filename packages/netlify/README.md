@@ -2,9 +2,6 @@
 
 This adapter allows Astro to deploy your [`hybrid` or `server` rendered site](https://docs.astro.build/en/core-concepts/rendering-modes/#on-demand-rendered) to [Netlify](https://www.netlify.com/).
 
-Learn how to deploy your Astro site in our [Netlify deployment guide](https://docs.astro.build/en/guides/deploy/netlify/).
-
-
 ## Documentation
 
 Read the [`@astrojs/netlify` docs][docs]
@@ -24,11 +21,6 @@ This package is maintained by Astro's Core team. You're welcome to submit an iss
 - [Contributor Manual][contributing]
 - [Code of Conduct][coc]
 - [Community Guide][community]
-
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a history of changes to this integration.
 
 ## License
 
