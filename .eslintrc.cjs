@@ -3,22 +3,16 @@ const { builtinModules } = require('module');
 module.exports = {
 	extends: [
 		'plugin:@typescript-eslint/recommended-type-checked',
-		'plugin:@typescript-eslint/stylistic-type-checked',
-		'prettier',
+		'plugin:@typescript-eslint/stylistic-type-checked'
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
 		tsconfigRootDir: __dirname,
 	},
-	plugins: ['@typescript-eslint', 'prettier', 'no-only-tests'],
+	plugins: ['@typescript-eslint', 'no-only-tests'],
 	rules: {
 		// These off/configured-differently-by-default rules fit well for us
-		'@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{ argsIgnorePattern: '^_', ignoreRestSiblings: true },
-		],
 		'no-only-tests/no-only-tests': 'error',
 		'@typescript-eslint/no-shadow': ['error'],
 		'no-console': 'warn',

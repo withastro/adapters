@@ -442,7 +442,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						.filter((file: string) => cloudflareSpecialFiles.indexOf(file) < 0)
 						.map((file: string) => `/${file.replace(/\\/g, '/')}`);
 
-					for (let page of pages) {
+					for (const page of pages) {
 						let pagePath = prependForwardSlash(page.pathname);
 						if (_config.base !== '/') {
 							const base = _config.base.endsWith('/') ? _config.base.slice(0, -1) : _config.base;

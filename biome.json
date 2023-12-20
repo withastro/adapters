@@ -29,6 +29,11 @@
     "enabled": true
   },
   "linter": {
-    "enabled": false
+    "enabled": true,
+    "rules": {
+      "suspicious": {
+        "noConsoleLog": "warn"
+      }
+    }
   }
 }

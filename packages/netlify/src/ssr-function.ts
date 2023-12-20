@@ -6,7 +6,7 @@ import { applyPolyfills } from 'astro/app/node';
 applyPolyfills();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Args {}
+export type Args = {}
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 

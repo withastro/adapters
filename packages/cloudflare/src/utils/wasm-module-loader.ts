@@ -59,7 +59,7 @@ export default wasmModule
 				return base64Module;
 			} else {
 				// just some shared ID
-				let hash = hashString(base64);
+				const hash = hashString(base64);
 				// emit the wasm binary as an asset file, to be picked up later by the esbuild bundle for the worker.
 				// give it a shared deterministic name to make things easy for esbuild to switch on later
 				const assetName = path.basename(filePath).split('.')[0] + '.' + hash + '.wasm';

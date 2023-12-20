@@ -16,6 +16,8 @@
     "test": "turbo run test --concurrency=1 --filter=astro --filter=create-astro --filter=\"@astrojs/*\"",
     "benchmark": "astro-benchmark",
     "lint": "eslint . --report-unused-disable-directives",
+    "lint:biome": "biome lint ./",
+    "lint:fix": "biome lint --apply ./",
     "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format",
     "preinstall": "npx only-allow pnpm"
   },

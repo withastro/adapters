@@ -121,7 +121,7 @@ export async function loadFixture(inlineConfig) {
 		`http://${config.server.host || 'localhost'}:${config.server.port}${url.replace(/^\/?/, '/')}`;
 
 	// A map of files that have been edited.
-	let fileEdits = new Map();
+	const fileEdits = new Map();
 
 	const resetAllFiles = () => {
 		for (const [, reset] of fileEdits) {
@@ -142,7 +142,7 @@ export async function loadFixture(inlineConfig) {
 	// Also do it on process exit, just in case.
 	process.on('exit', resetAllFiles);
 
-	let fixtureId = new Date().valueOf();
+	const fixtureId = new Date().valueOf();
 	let devServer;
 
 	return {
