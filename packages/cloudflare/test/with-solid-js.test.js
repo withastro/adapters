@@ -31,7 +31,7 @@ describe('SolidJS', () => {
 	});
 
 	it('renders the solid component', async () => {
-		const res = await fetch("http://127.0.0.1:8788/");
+		const res = await fetch('http://127.0.0.1:8788/');
 		expect(res.status).to.equal(200);
 		const html = await res.text();
 		const $ = cheerio.load(html);

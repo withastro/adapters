@@ -6,7 +6,7 @@ import { applyPolyfills } from 'astro/app/node';
 applyPolyfills();
 
 // biome-ignore lint/complexity/noBannedTypes: safe to use in this case
-export type Args = {}
+export type Args = {};
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
@@ -22,7 +22,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 
 			if (request.headers.has('x-astro-locals')) {
 				// biome-ignore lint/style/noNonNullAssertion: safe because we checked before
-				locals  = JSON.parse(request.headers.get('x-astro-locals')!);
+				locals = JSON.parse(request.headers.get('x-astro-locals')!);
 			}
 
 			locals.netlify = { context };

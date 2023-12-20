@@ -279,8 +279,7 @@ export class LocalWorkersRuntime extends LocalRuntime {
 	}
 }
 
-export class LocalPagesRuntime extends LocalRuntime {
-}
+export class LocalPagesRuntime extends LocalRuntime {}
 
 let localRuntime: LocalPagesRuntime | LocalWorkersRuntime | undefined;
 export function getLocalRuntime(

@@ -21,11 +21,11 @@ function findWranglerToml(
 ): string | undefined {
 	if (preferJson) {
 		return (
-			findUpSync("wrangler.json", { cwd: referencePath }) ??
-			findUpSync("wrangler.toml", { cwd: referencePath })
+			findUpSync('wrangler.json', { cwd: referencePath }) ??
+			findUpSync('wrangler.toml', { cwd: referencePath })
 		);
 	}
-	return findUpSync("wrangler.toml", { cwd: referencePath });
+	return findUpSync('wrangler.toml', { cwd: referencePath });
 }
 type File = {
 	file?: string;
@@ -118,7 +118,7 @@ function getVarsForDev(config: any, configPath: string | undefined): any {
 			...loaded.parsed,
 		};
 	}
-		return config.vars;
+	return config.vars;
 }
 
 function parseConfig() {
