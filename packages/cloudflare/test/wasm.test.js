@@ -30,7 +30,7 @@ describe('WasmImport', () => {
 	});
 
 	it('can render', async () => {
-		const res = await fetch(`http://127.0.0.1:8788/add/40/2`);
+		const res = await fetch("http://127.0.0.1:8788/add/40/2");
 		expect(res.status).to.equal(200);
 		const json = await res.json();
 		expect(json).to.deep.equal({ answer: 42 });
