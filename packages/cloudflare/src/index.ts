@@ -270,7 +270,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						});
 					}
 
-					const outputFiles: Array<string> = await glob(`**/*`, {
+					const outputFiles: Array<string> = await glob("**/*", {
 						cwd: outputDir,
 						filesOnly: true,
 					});
@@ -411,19 +411,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							if (route.component === 'src/pages/404.astro' && route.prerender === false)
 								notFoundIsSSR = true;
 							const includePattern =
-								'/' +
-								route.segments
+								`/${route.segments
 									.flat()
 									.map((segment) => (segment.dynamic ? '*' : segment.content))
-									.join('/');
+									.join('/')}`;
 
 							const regexp = new RegExp(
-								'^\\/' +
-									route.segments
+								`^\\/${route.segments
 										.flat()
 										.map((segment) => (segment.dynamic ? '(.*)' : segment.content))
-										.join('\\/') +
-									'$'
+										.join('\\/')}$`
 							);
 
 							return {
@@ -467,7 +464,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								const parts = line.split(' ');
 								if (parts.length < 2) {
 									return null;
-								} else {
+								}
 									// convert /products/:id to /products/*
 									return (
 										parts[0]
@@ -475,7 +472,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 											// remove query params as they are not supported by cloudflare
 											.replace(/\?.*$/, '')
 									);
-								}
 							})
 							.filter(
 								(line, index, arr) => line !== null && arr.indexOf(line) === index

@@ -17,7 +17,7 @@
     "benchmark": "astro-benchmark",
     "lint": "eslint . --report-unused-disable-directives",
     "lint:biome": "biome lint ./",
-    "lint:fix": "biome lint --apply ./",
+    "lint:fix": "biome lint --apply-unsafe ./",
     "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format",
     "preinstall": "npx only-allow pnpm"
   },

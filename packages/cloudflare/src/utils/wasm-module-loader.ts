@@ -57,12 +57,12 @@ export default wasmModule
 			if (isDev) {
 				// no need to wire up the assets in dev mode, just rewrite
 				return base64Module;
-			} else {
+			}
 				// just some shared ID
 				const hash = hashString(base64);
 				// emit the wasm binary as an asset file, to be picked up later by the esbuild bundle for the worker.
 				// give it a shared deterministic name to make things easy for esbuild to switch on later
-				const assetName = path.basename(filePath).split('.')[0] + '.' + hash + '.wasm';
+				const assetName = `${path.basename(filePath).split('.')[0]}.${hash}.wasm`;
 				this.emitFile({
 					type: 'asset',
 					// put it explicitly in the _astro assets directory with `fileName` rather than `name` so that
@@ -75,7 +75,7 @@ export default wasmModule
 				// however, by default, the SSG generator cannot import the .wasm as a module, so embed as a base64 string
 				const chunkId = this.emitFile({
 					type: 'prebuilt-chunk',
-					fileName: assetName + '.mjs',
+					fileName: `${assetName}.mjs`,
 					code: base64Module,
 				});
 
@@ -83,7 +83,6 @@ export default wasmModule
 import wasmModule from "__WASM_ASSET__${chunkId}.wasm.mjs";
 export default wasmModule;
 	`;
-			}
 		},
 
 		// output original wasm file relative to the chunk

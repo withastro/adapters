@@ -280,13 +280,6 @@ export class LocalWorkersRuntime extends LocalRuntime {
 }
 
 export class LocalPagesRuntime extends LocalRuntime {
-	public constructor(
-		astroConfig: AstroConfig,
-		runtimeConfig: Extract<RUNTIME, { type: 'pages' }>,
-		logger: AstroIntegrationLogger
-	) {
-		super(astroConfig, runtimeConfig, logger);
-	}
 }
 
 let localRuntime: LocalPagesRuntime | LocalWorkersRuntime | undefined;

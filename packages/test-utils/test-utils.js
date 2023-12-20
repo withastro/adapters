@@ -152,7 +152,7 @@ export async function loadFixture(inlineConfig) {
 				teardownCompiler: false,
 			});
 		},
-		sync: async (extraInlineConfig = {}, opts) => {
+		sync: async (extraInlineConfig, opts) => {
 			return sync(mergeConfig(inlineConfig, extraInlineConfig), opts);
 		},
 		check: async (opts) => {
