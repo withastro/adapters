@@ -178,12 +178,12 @@ export function getDOBindings(): Record<
 > {
 	const { rawConfig } = parseConfig();
 	if (!rawConfig) return {};
-	if (!rawConfig?.durable_objects) return {};
+	if (!rawConfig.durable_objects) return {};
 	const output = new Object({}) as Record<
 		string,
 		{ scriptName?: string | undefined; unsafeUniqueKey?: string | undefined; className: string }
 	>;
-	const bindings = rawConfig?.durable_objects.bindings;
+	const bindings = rawConfig.durable_objects.bindings;
 	for (const binding of bindings) {
 		Reflect.set(output, binding.name, { className: binding.class_name });
 	}
