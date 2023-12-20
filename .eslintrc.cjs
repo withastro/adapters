@@ -2,8 +2,7 @@ const { builtinModules } = require('module');
 
 module.exports = {
 	extends: [
-		'plugin:@typescript-eslint/recommended-type-checked',
-		'plugin:@typescript-eslint/stylistic-type-checked'
+		'plugin:@typescript-eslint/recommended-type-checked'
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -14,8 +13,8 @@ module.exports = {
 	rules: {
 		// These off/configured-differently-by-default rules fit well for us
 		'no-only-tests/no-only-tests': 'error',
-		'@typescript-eslint/no-shadow': ['error'],
-		'no-console': 'warn',
+		'@typescript-eslint/no-shadow': "off",
+		'no-console': 'off',
 
 		// Todo: do we want these?
 		'@typescript-eslint/array-type': 'off',
@@ -74,19 +73,6 @@ module.exports = {
 			rules: {
 				'no-console': 'off',
 			},
-		},
-		{
-			files: ['packages/integrations/**/*.ts'],
-			rules: {
-				'no-console': ['error', { allow: ['warn', 'error', 'info', 'debug'] }],
-			},
-		},
-		{
-			files: ['benchmark/**/*.js'],
-			rules: {
-				'@typescript-eslint/no-unused-vars': 'off',
-				'no-console': 'off',
-			},
-		},
+		}
 	],
 };

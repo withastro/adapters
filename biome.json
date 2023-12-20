@@ -32,7 +32,8 @@
     "enabled": true,
     "rules": {
       "suspicious": {
-        "noConsoleLog": "warn"
+        "noConsoleLog": "off",
+        "noExplicitAny": "off"
       }
     }
   }
