@@ -1,9 +1,7 @@
 const { builtinModules } = require('module');
 
 module.exports = {
-	extends: [
-		'plugin:@typescript-eslint/recommended-type-checked'
-	],
+	extends: ['plugin:@typescript-eslint/recommended-type-checked'],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
@@ -13,10 +11,10 @@ module.exports = {
 	rules: {
 		// These off/configured-differently-by-default rules fit well for us
 		'no-only-tests/no-only-tests': 'error',
-		'@typescript-eslint/no-shadow': "off",
+		'@typescript-eslint/no-shadow': 'off',
 		'no-console': 'off',
-		'@typescript-eslint/no-unused-vars': "off",
-		"@typescript-eslint/ban-types": "off",
+		'@typescript-eslint/no-unused-vars': 'off',
+		'@typescript-eslint/ban-types': 'off',
 		// Todo: do we want these?
 		'@typescript-eslint/array-type': 'off',
 		'@typescript-eslint/ban-ts-comment': 'off',
@@ -74,6 +72,6 @@ module.exports = {
 			rules: {
 				'no-console': 'off',
 			},
-		}
+		},
 	],
 };
