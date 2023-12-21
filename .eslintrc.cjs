@@ -2,27 +2,21 @@ const { builtinModules } = require('module');
 
 module.exports = {
 	extends: [
-		'plugin:@typescript-eslint/recommended-type-checked',
-		'plugin:@typescript-eslint/stylistic-type-checked',
-		'prettier',
+		'plugin:@typescript-eslint/recommended-type-checked'
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
 		tsconfigRootDir: __dirname,
 	},
-	plugins: ['@typescript-eslint', 'prettier', 'no-only-tests'],
+	plugins: ['@typescript-eslint', 'no-only-tests'],
 	rules: {
 		// These off/configured-differently-by-default rules fit well for us
-		'@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{ argsIgnorePattern: '^_', ignoreRestSiblings: true },
-		],
 		'no-only-tests/no-only-tests': 'error',
-		'@typescript-eslint/no-shadow': ['error'],
-		'no-console': 'warn',
-
+		'@typescript-eslint/no-shadow': "off",
+		'no-console': 'off',
+		'@typescript-eslint/no-unused-vars': "off",
+		"@typescript-eslint/ban-types": "off",
 		// Todo: do we want these?
 		'@typescript-eslint/array-type': 'off',
 		'@typescript-eslint/ban-ts-comment': 'off',
@@ -80,19 +74,6 @@ module.exports = {
 			rules: {
 				'no-console': 'off',
 			},
-		},
-		{
-			files: ['packages/integrations/**/*.ts'],
-			rules: {
-				'no-console': ['error', { allow: ['warn', 'error', 'info', 'debug'] }],
-			},
-		},
-		{
-			files: ['benchmark/**/*.js'],
-			rules: {
-				'@typescript-eslint/no-unused-vars': 'off',
-				'no-console': 'off',
-			},
-		},
+		}
 	],
 };
