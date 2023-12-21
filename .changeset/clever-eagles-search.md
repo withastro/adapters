@@ -2,4 +2,4 @@
 "@astrojs/netlify": patch
 ---
 
-Update Netlify README.md
+Updates Netlify README.md
