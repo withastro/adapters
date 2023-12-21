@@ -20,7 +20,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 
 			let locals: Record<string, unknown> = {};
 
-			let astroLocalsHeader = request.headers.get('x-astro-locals');
+			const astroLocalsHeader = request.headers.get('x-astro-locals');
 			if (astroLocalsHeader) {
 				locals = JSON.parse(astroLocalsHeader);
 			}
