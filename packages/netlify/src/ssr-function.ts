@@ -20,9 +20,9 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 
 			let locals: Record<string, unknown> = {};
 
-			if (request.headers.has('x-astro-locals')) {
-				// biome-ignore lint/style/noNonNullAssertion: safe because we checked before
-				locals = JSON.parse(request.headers.get('x-astro-locals')!);
+			let astroLocalsHeader = request.headers.get('x-astro-locals');
+			if (astroLocalsHeader) {
+				locals = JSON.parse(astroLocalsHeader);
 			}
 
 			locals.netlify = { context };
