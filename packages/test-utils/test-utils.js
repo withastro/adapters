@@ -113,6 +113,7 @@ export async function loadFixture(inlineConfig) {
 	else if (!path.isAbsolute(root)) {
 		throw new Error("Must provide { root: '.../fixtures/...' } with an absolute path");
 	}
+	// biome-ignore lint/style/noParameterAssign: safe?
 	inlineConfig = { ...inlineConfig, root };
 	// Load the config.
 	const { astroConfig: config } = await resolveConfig(inlineConfig, 'dev');
@@ -121,7 +122,7 @@ export async function loadFixture(inlineConfig) {
 		`http://${config.server.host || 'localhost'}:${config.server.port}${url.replace(/^\/?/, '/')}`;
 
 	// A map of files that have been edited.
-	let fileEdits = new Map();
+	const fileEdits = new Map();
 
 	const resetAllFiles = () => {
 		for (const [, reset] of fileEdits) {
@@ -142,7 +143,7 @@ export async function loadFixture(inlineConfig) {
 	// Also do it on process exit, just in case.
 	process.on('exit', resetAllFiles);
 
-	let fixtureId = new Date().valueOf();
+	const fixtureId = new Date().valueOf();
 	let devServer;
 
 	return {
@@ -152,7 +153,7 @@ export async function loadFixture(inlineConfig) {
 				teardownCompiler: false,
 			});
 		},
-		sync: async (extraInlineConfig = {}, opts) => {
+		sync: async (extraInlineConfig, opts) => {
 			return sync(mergeConfig(inlineConfig, extraInlineConfig), opts);
 		},
 		check: async (opts) => {

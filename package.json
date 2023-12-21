@@ -12,10 +12,11 @@
     "build": "turbo run build --filter=\"@astrojs/*\"",
     "build:ci": "turbo run build:ci --filter=\"@astrojs/*\"",
     "format:ci": "pnpm run format",
-    "format": "biome check --apply ./ && prettier -w \"**/*\" --ignore-unknown --cache",
+    "format": "biome check --linter-enabled=false --apply ./ && prettier -w \"**/*\" --ignore-unknown --cache",
     "test": "turbo run test --concurrency=1 --filter=astro --filter=create-astro --filter=\"@astrojs/*\"",
     "benchmark": "astro-benchmark",
-    "lint": "eslint . --report-unused-disable-directives",
+    "lint": "biome lint ./ && eslint . --report-unused-disable-directives",
+    "lint:fix": "biome lint --apply ./",
     "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format",
     "preinstall": "npx only-allow pnpm"
   },
