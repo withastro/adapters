@@ -2,4 +2,4 @@
 "@astrojs/cloudflare": patch
 ---
 
-Update Cloudflare README.md
+Updates Cloudflare README.md
