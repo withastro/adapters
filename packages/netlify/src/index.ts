@@ -49,7 +49,7 @@ export interface NetlifyIntegrationConfig {
 	 * If enabled, Astro Middleware is deployed as an Edge Function and applies to all routes.
 	 * Caveat: Locals set in Middleware are not applied to prerendered pages, because they've been rendered at build-time and are served from the CDN.
 	 *
-	 * @default disabled
+	 * @default {false}
 	 */
 	edgeMiddleware?: boolean;
 
@@ -59,7 +59,7 @@ export interface NetlifyIntegrationConfig {
 	 * 
 	 * If disabled, Astro's built-in image optimization is run at build-time instead.
 	 * 
-	 * @default enabled
+	 * @default {true}
 	 */
 	imageCDN?: boolean
 }
