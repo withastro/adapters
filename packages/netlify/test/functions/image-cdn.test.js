@@ -26,5 +26,18 @@ describe('Image CDN', () => {
 
       process.env.NETLIFY = undefined
     })
+
+    it("respects image CDN opt-out", async () => {
+      process.env.NETLIFY = 'true'
+      process.env.DISABLE_IMAGE_CDN = 'true'
+      const fixture = await loadFixture({ root });
+			await fixture.build();
+
+      const astronautPage = await fixture.readFile('astronaut/index.html');
+      expect(astronautPage).contains(`src="/_astro/astronaut.`)
+
+      process.env.NETLIFY = undefined
+      process.env.DISABLE_IMAGE_CDN = undefined
+    })
   })
 });

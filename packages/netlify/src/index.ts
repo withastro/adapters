@@ -52,6 +52,13 @@ export interface NetlifyIntegrationConfig {
 	 * @default disabled
 	 */
 	edgeMiddleware?: boolean;
+
+	/**
+	 * TODO: write docs
+	 * 
+	 * @default enabled
+	 */
+	imageCDN?: boolean
 }
 
 export default function netlifyIntegration(
@@ -226,6 +233,8 @@ export default function netlifyIntegration(
 
 				outDir = new URL('./dist/', rootDir);
 
+				const enableImageCDN = isRunningInNetlify && (integrationConfig?.imageCDN ?? true);
+
 				updateConfig({
 					outDir,
 					build: {
@@ -242,7 +251,7 @@ export default function netlifyIntegration(
 					},
 					image: {
 						service: {
-							entrypoint: isRunningInNetlify ? '@astrojs/netlify/image-service.js' : undefined,
+							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
 				});
