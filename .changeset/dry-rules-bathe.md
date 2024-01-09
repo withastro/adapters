@@ -2,4 +2,4 @@
 '@astrojs/netlify': patch
 ---
 
-only cache GET/HEAD requests with cacheOnDemandPages
+Fixes cacheOnDemandPages setting to only cache GET/HEAD requests by default
