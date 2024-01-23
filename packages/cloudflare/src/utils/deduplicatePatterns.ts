@@ -17,7 +17,7 @@ export function deduplicatePatterns(patterns: string[]) {
 		}
 	}
 
-	return [...new Set(patterns)]
+	return uniquePatterns
 		.sort((a, b) => a.length - b.length)
 		.filter((pattern) => {
 			if (openPatterns.some((p) => p.test(pattern))) return false;
