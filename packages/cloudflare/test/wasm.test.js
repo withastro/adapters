@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url';
-import { expect } from 'chai';
+import { describe, it, before, after } from 'node:test';
+import * as assert from 'node:assert/strict';
 import { astroCli, wranglerCli } from './_test-utils.js';
 
 const root = new URL('./fixtures/wasm/', import.meta.url);
@@ -31,8 +32,8 @@ describe('WasmImport', () => {
 
 	it('can render', async () => {
 		const res = await fetch('http://127.0.0.1:8788/add/40/2');
-		expect(res.status).to.equal(200);
+		assert.equal(res.status, 200);
 		const json = await res.json();
-		expect(json).to.deep.equal({ answer: 42 });
+		assert.deepEqual(json, { answer: 42 });
 	});
 });
