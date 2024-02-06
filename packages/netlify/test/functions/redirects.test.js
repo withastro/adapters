@@ -1,6 +1,5 @@
 import { createServer } from 'http';
 import { loadFixture } from '@astrojs/test-utils';
-import { expect } from 'chai';
 import { describe, it, before } from 'node:test';
 import * as assert from 'node:assert/strict';
 
@@ -16,7 +15,7 @@ describe('SSR - Redirects', () => {
 		const redirects = await fixture.readFile('./_redirects');
 		const parts = redirects.split(/\s+/);
 		assert.deepEqual(parts,['', '/other', '/', '301', '']);
-		// TODO: not sure how to implement snapshot testing yet
+		// TODO: Snapshots are not supported in Node.js test yet
 		expect(redirects).to.matchSnapshot();
 	});
 
