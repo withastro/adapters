@@ -1,6 +1,8 @@
 import { createServer } from 'http';
 import { loadFixture } from '@astrojs/test-utils';
 import { expect } from 'chai';
+import { describe, it, before } from 'node:test';
+import * as assert from 'node:assert/strict';
 
 describe('SSR - Redirects', () => {
 	let fixture;
@@ -13,7 +15,8 @@ describe('SSR - Redirects', () => {
 	it('Creates a redirects file', async () => {
 		const redirects = await fixture.readFile('./_redirects');
 		const parts = redirects.split(/\s+/);
-		expect(parts).to.deep.equal(['', '/other', '/', '301', '']);
+		assert.deepEqual(parts,['', '/other', '/', '301', '']);
+		// TODO: not sure how to implement snapshot testing yet
 		expect(redirects).to.matchSnapshot();
 	});
 
@@ -24,7 +27,7 @@ describe('SSR - Redirects', () => {
 		} catch {
 			hasErrored = true;
 		}
-		expect(hasErrored).to.equal(true, 'this file should not exist');
+		assert.equal(hasErrored,true, 'this file should not exist');
 	});
 
 	it('renders static 404 page', async () => {
@@ -34,9 +37,9 @@ describe('SSR - Redirects', () => {
 		);
 		const { default: handler } = await import(entryURL);
 		const resp = await handler(new Request('http://example.com/nonexistant-page'), {});
-		expect(resp.status).to.equal(404);
+		assert.equal(resp.status,404);
 		const text = await resp.text();
-		expect(text).to.contain('This is my static 404 page');
+		assert.equal(text.includes('This is my static 404 page'),true);
 	});
 
 	it('does not pass through 404 request', async () => {
@@ -53,8 +56,8 @@ describe('SSR - Redirects', () => {
 		);
 		const { default: handler } = await import(entryURL);
 		const resp = await handler(new Request('http://localhost:5678/nonexistant-page'), {});
-		expect(resp.status).to.equal(404);
-		expect(testServerCalls).to.equal(0);
+		assert.equal(resp.status,404);
+		assert.equal(testServerCalls,0);
 		testServer.close();
 	});
 });
