@@ -1,12 +1,12 @@
-import { use } from 'chai';
-import chaiJestSnapshot from 'chai-jest-snapshot';
+// import { use } from 'chai';
+// import chaiJestSnapshot from 'chai-jest-snapshot';
 
-use(chaiJestSnapshot);
+// use(chaiJestSnapshot);
 
-before(() => {
-	chaiJestSnapshot.resetSnapshotRegistry();
-});
+// before(() => {
+// 	chaiJestSnapshot.resetSnapshotRegistry();
+// });
 
-beforeEach(function () {
-	chaiJestSnapshot.configureUsingMochaContext(this);
-});
+// beforeEach(function () {
+// 	chaiJestSnapshot.configureUsingMochaContext(this);
+// });
