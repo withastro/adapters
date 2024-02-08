@@ -44,7 +44,7 @@
     "tiny-glob": "^0.2.9"
   },
   "peerDependencies": {
-    "astro": "^4.3.5"
+    "astro": "^4.2.0"
   },
   "devDependencies": {
     "execa": "^8.0.1",

@@ -41,7 +41,7 @@
     "esbuild": "^0.19.5"
   },
   "peerDependencies": {
-    "astro": "^4.3.5"
+    "astro": "^4.2.0"
   },
   "devDependencies": {
     "@netlify/edge-functions": "^2.0.0",
