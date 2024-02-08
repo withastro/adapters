@@ -13,11 +13,11 @@ describe('WasmDirectoryImport', () => {
 		wrangler = wranglerCli(fileURLToPath(root));
 		await new Promise((resolve) => {
 			wrangler.stdout.on('data', (data) => {
-				console.log('[stdout]', data.toString());
+				// console.log('[stdout]', data.toString());
 				if (data.toString().includes('http://127.0.0.1:8788')) resolve();
 			});
 			wrangler.stderr.on('data', (data) => {
-				console.log('[stderr]', data.toString());
+				// console.log('[stderr]', data.toString());
 			});
 		});
 	});
@@ -25,7 +25,7 @@ describe('WasmDirectoryImport', () => {
 	after((done) => {
 		wrangler.kill();
 		setTimeout(() => {
-			console.log('CLEANED');
+			// console.log('CLEANED');
 			done();
 		}, 1000);
 	});

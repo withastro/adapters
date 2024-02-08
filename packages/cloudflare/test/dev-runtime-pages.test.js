@@ -21,7 +21,7 @@ describe('DevRuntimePages', () => {
 	after((done) => {
 		cli.kill();
 		setTimeout(() => {
-			console.log('CLEANED');
+			// console.log('CLEANED');
 			done();
 		}, 1000);
 	});
