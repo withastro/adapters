@@ -31,8 +31,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "node --test --test-timeout=30000 **/*.test.js",
-    "test:match": "node --test --test-timeout=30000 --test-name-pattern"
+    "test": "node --test **/*.test.js",
+    "test:match": "node --test --test-name-pattern"
   },
   "dependencies": {
     "@astrojs/underscore-redirects": "^0.3.3",
