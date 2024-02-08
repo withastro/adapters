@@ -32,7 +32,7 @@
     "build": "tsc",
     "test-fn": "node --test ./test/functions/*.test.js",
     "test-static": "node --test ./test/static/*.test.js",
-    "test": "pnpm test-fn && pnpm test-static",
+    "test": "pnpm run test-fn && pnpm run test-static",
     "test:hosted": "node --test ./test/hosted/*.test.js"
   },
   "dependencies": {

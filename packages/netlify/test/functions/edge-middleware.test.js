@@ -1,5 +1,5 @@
 import { loadFixture } from '@astrojs/test-utils';
-import { describe, it, before } from 'node:test';
+import { describe, it, beforeEach, afterEach } from 'node:test';
 import * as assert from 'node:assert/strict';
 
 describe('Middleware', () => {
@@ -7,7 +7,7 @@ describe('Middleware', () => {
 
 	describe('edgeMiddleware: false', () => {
 		let fixture;
-		before(async () => {
+		beforeEach(async () => {
 			process.env.EDGE_MIDDLEWARE = 'false';
 			fixture = await loadFixture({ root });
 			await fixture.build();
@@ -22,11 +22,15 @@ describe('Middleware', () => {
 			const prerenderedPage = await fixture.readFile('prerender/index.html');
 			assert.equal(prerenderedPage.includes('<title>Middleware</title>'),true);
 		});
+
+		afterEach(() => {
+			delete process.env.EDGE_MIDDLEWARE;
+		})
 	});
 
 	describe('edgeMiddleware: true', () => {
 		let fixture;
-		before(async () => {
+		beforeEach(async () => {
 			process.env.EDGE_MIDDLEWARE = 'true';
 			fixture = await loadFixture({ root });
 			await fixture.build();
@@ -43,5 +47,9 @@ describe('Middleware', () => {
 			const prerenderedPage = await fixture.readFile('prerender/index.html');
 			assert.equal(prerenderedPage.includes('<title></title>'),true);
 		});
+
+		afterEach(() => {
+			delete process.env.EDGE_MIDDLEWARE;
+		})
 	});
 });
