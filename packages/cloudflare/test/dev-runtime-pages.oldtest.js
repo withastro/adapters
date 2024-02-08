@@ -11,7 +11,9 @@ describe('DevRuntimePages', () => {
 		cli = astroCli(fileURLToPath(root), 'dev', '--host', '127.0.0.1');
 		await new Promise((resolve) => {
 			cli.stdout.on('data', (data) => {
+				console.log(data)
 				if (data.includes('http://127.0.0.1:4321/')) {
+					console.log('RESOLVING');
 					resolve();
 				}
 			});
