@@ -1,7 +1,7 @@
-import { run } from 'node:test';
-import { spec } from 'node:test/reporters';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { run } from 'node:test';
+import { spec } from 'node:test/reporters';
 import { pathToFileURL } from 'node:url';
 import arg from 'arg';
 import glob from 'tiny-glob';
