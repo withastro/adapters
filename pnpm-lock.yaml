@@ -97,8 +97,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -124,8 +124,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -137,8 +137,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -150,8 +150,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/external-image-service:
     dependencies:
@@ -159,8 +159,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/function-per-route:
     dependencies:
@@ -168,8 +168,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/hybrid:
     dependencies:
@@ -177,8 +177,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -186,8 +186,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/prerender:
     dependencies:
@@ -195,8 +195,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -204,8 +204,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/wasm:
     dependencies:
@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/wasm-directory:
     dependencies:
@@ -222,8 +222,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/wasm-function-per-route:
     dependencies:
@@ -231,8 +231,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -243,8 +243,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(solid-js@1.7.11)
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
       solid-js:
         specifier: ^1.7.11
         version: 1.7.11
@@ -255,8 +255,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/netlify:
     dependencies:
@@ -283,8 +283,8 @@ importers:
         specifier: ^18.17.8
         version: 18.19.2
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
       chai:
         specifier: ^4.3.10
         version: 4.3.10
@@ -340,8 +340,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -352,8 +352,8 @@ importers:
   packages/test-utils:
     dependencies:
       astro:
-        specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.19.2)(typescript@5.3.2)
+        specifier: ^4.3.5
+        version: 4.3.5(@types/node@18.19.2)(typescript@5.3.2)
       execa:
         specifier: ^8
         version: 8.0.1
@@ -443,8 +443,8 @@ packages:
     resolution: {integrity: sha512-jkY7bCVxl27KeZsSxIZ+pqACe+g8VQUdTiSJRj/sXYdIaZlW3ZMq4qF2M17P/oDt3LBq0zLNwQr4Cb7fSpRGxQ==}
     dev: true
 
-  /@astrojs/compiler@2.4.2:
-    resolution: {integrity: sha512-aPdo8rtdN1eBmyERfP5TnYZOnImLYZ8VPHl0eKhFaWIcEIRYhT5NHSohCwtiKcv1M+BprZWRQymojJ3uuk+x7Q==}
+  /@astrojs/compiler@2.5.3:
+    resolution: {integrity: sha512-jzj01BRv/fmo+9Mr2FhocywGzEYiyiP2GVHje1ziGNU6c97kwhYGsnvwMkHrncAy9T9Vi54cjaMK7UE4ClX4vA==}
 
   /@astrojs/internal-helpers@0.2.1:
     resolution: {integrity: sha512-06DD2ZnItMwUnH81LBLco3tWjcZ1lGU9rLCCBaeUCGYe9cI0wKyY2W3kDyoW1I6GmcWgt1fu+D1CTvz+FIKf8A==}
@@ -485,8 +485,8 @@ packages:
       - typescript
     dev: true
 
-  /@astrojs/markdown-remark@4.1.0:
-    resolution: {integrity: sha512-JnIy6zk+6f/SgSVMZecZFxQt0faT1uBckwYCuBxKH1hYYJsal8OOe+tx6JxfnyaV+xViyjUvQ28mmn+p/F5LkQ==}
+  /@astrojs/markdown-remark@4.2.1:
+    resolution: {integrity: sha512-2RQBIwrq+2qPYtp99bH+eL5hfbK0BoxXla85lHsRpIX/IsGqFrPX6pXI2cbWPihBwGbKCdxS6uZNX2QerZWwpQ==}
     dependencies:
       '@astrojs/prism': 3.0.0
       github-slugger: 2.0.0
@@ -2710,14 +2710,14 @@ packages:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
     dev: true
 
-  /astro@4.2.0(@types/node@18.19.2)(typescript@5.3.2):
-    resolution: {integrity: sha512-zx6Po3h5+VEkG1vwowaXC2T42317Gbs4d5lflkEYzUUseEQn8HMtqTwlbIoFCfyYTc4Kvo+4zEgbGsPjsybiaw==}
+  /astro@4.3.5(@types/node@18.19.2)(typescript@5.3.2):
+    resolution: {integrity: sha512-7jPffNlcmDO94NlkWe/hUWta/pIjlx1LVD/DZb/fyjT1Jv+7mGhKZBIjkDfeVpequW70mep8cAS5RM7Pxa0Gdg==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
-      '@astrojs/compiler': 2.4.2
+      '@astrojs/compiler': 2.5.3
       '@astrojs/internal-helpers': 0.2.1
-      '@astrojs/markdown-remark': 4.1.0
+      '@astrojs/markdown-remark': 4.2.1
       '@astrojs/telemetry': 3.0.4
       '@babel/core': 7.23.5
       '@babel/generator': 7.23.5
@@ -2735,6 +2735,7 @@ packages:
       clsx: 2.0.0
       common-ancestor-path: 1.0.1
       cookie: 0.6.0
+      cssesc: 3.0.0
       debug: 4.3.4(supports-color@8.1.1)
       deterministic-object-hash: 2.0.2
       devalue: 4.3.2
@@ -2773,8 +2774,8 @@ packages:
       tsconfck: 3.0.0(typescript@5.3.2)
       unist-util-visit: 5.0.0
       vfile: 6.0.1
-      vite: 5.0.11(@types/node@18.19.2)
-      vitefu: 0.2.5(vite@5.0.11)
+      vite: 5.1.0(@types/node@18.19.2)
+      vitefu: 0.2.5(vite@5.1.0)
       which-pm: 2.1.1
       yargs-parser: 21.1.1
       zod: 3.22.4
@@ -3300,6 +3301,11 @@ packages:
     resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}
     engines: {node: '>= 6'}
     dev: true
+
+  /cssesc@3.0.0:
+    resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
+    engines: {node: '>=4'}
+    hasBin: true
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
@@ -6077,6 +6083,15 @@ packages:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: true
+
+  /postcss@8.4.35:
+    resolution: {integrity: sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==}
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      nanoid: 3.3.7
+      picocolors: 1.0.0
+      source-map-js: 1.0.2
 
   /prebuild-install@7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
@@ -7555,8 +7570,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@5.0.11(@types/node@18.19.2):
-    resolution: {integrity: sha512-XBMnDjZcNAw/G1gEiskiM1v6yzM4GE5aMGvhWTlHAYYhxb7S3/V1s3m2LDHa8Vh6yIWYYB0iJwsEaS523c4oYA==}
+  /vite@5.1.0(@types/node@18.19.2):
+    resolution: {integrity: sha512-STmSFzhY4ljuhz14bg9LkMTk3d98IO6DIArnTY6MeBwiD1Za2StcQtz7fzOUnRCqrHSD5+OS2reg4HOz1eoLnw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -7585,7 +7600,7 @@ packages:
     dependencies:
       '@types/node': 18.19.2
       esbuild: 0.19.8
-      postcss: 8.4.32
+      postcss: 8.4.35
       rollup: 4.6.1
     optionalDependencies:
       fsevents: 2.3.3
@@ -7599,7 +7614,7 @@ packages:
         optional: true
     dev: false
 
-  /vitefu@0.2.5(vite@5.0.11):
+  /vitefu@0.2.5(vite@5.1.0):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
@@ -7607,7 +7622,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 5.0.11(@types/node@18.19.2)
+      vite: 5.1.0(@types/node@18.19.2)
 
   /volar-service-css@0.0.16(@volar/language-service@1.10.10):
     resolution: {integrity: sha512-gK/XD35t/P3SQrUuS8LMlCnE2ItIk+kXI6gPvBYl1NZ7O+tLH8rUWXA32YgpwNoITxYrm/G1seaq08zs4aiPvg==}
