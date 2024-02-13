@@ -7,8 +7,8 @@ describe('Image CDN', () => {
 
 	describe('when running outside of netlify', () => {
 		afterEach(() => {
-			delete process.env.NETLIFY;
-			delete process.env.DISABLE_IMAGE_CDN;
+			process.env.NETLIFY = undefined;
+			process.env.DISABLE_IMAGE_CDN = undefined;
 		});
 
 		it('does not enable Image CDN', async () => {
@@ -22,8 +22,8 @@ describe('Image CDN', () => {
 
 	describe('when running inside of netlify', () => {
 		afterEach(() => {
-			delete process.env.NETLIFY;
-			delete process.env.DISABLE_IMAGE_CDN;
+			process.env.NETLIFY = undefined;
+			process.env.DISABLE_IMAGE_CDN = undefined;
 		});
 
 		it('enables Netlify Image CDN', async () => {

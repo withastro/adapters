@@ -15,9 +15,8 @@ describe('SSR - Redirects', () => {
 		const redirects = await fixture.readFile('./_redirects');
 		const parts = redirects.split(/\s+/);
 		assert.deepEqual(parts,['', '/other', '/', '301', '']);
-		// TODO: Snapshots are not supported in Node.js test yet (https://github.com/nodejs/node/issues/48260)
-		// expect(redirects).to.matchSnapshot();
-		assert.equal(true,true);
+		// Snapshots are not supported in Node.js test yet (https://github.com/nodejs/node/issues/48260)
+		assert.equal(redirects,'\n/other    /       301\n');
 	});
 
 	it('Does not create .html files', async () => {

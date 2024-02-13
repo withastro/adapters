@@ -24,7 +24,7 @@ describe('Middleware', () => {
 		});
 
 		afterEach(() => {
-			delete process.env.EDGE_MIDDLEWARE;
+			process.env.EDGE_MIDDLEWARE = undefined;
 		})
 	});
 
@@ -49,7 +49,7 @@ describe('Middleware', () => {
 		});
 
 		afterEach(() => {
-			delete process.env.EDGE_MIDDLEWARE;
+			process.env.EDGE_MIDDLEWARE = undefined;
 		})
 	});
 });
