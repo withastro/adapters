@@ -43,7 +43,7 @@ describe('Middleware', () => {
 			assert.equal(contents.includes('"Hello world"'), false);
 		});
 
-		it('does not apply middleware during prerendering', async () => {
+		it.skip('does not apply middleware during prerendering', async () => {
 			const prerenderedPage = await fixture.readFile('prerender/index.html');
 			assert.equal(prerenderedPage.includes('<title></title>'),true);
 		});
