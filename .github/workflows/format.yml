@@ -16,27 +16,27 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           # Needs access to push to main
           token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-      
+        uses: pnpm/action-setup@v3
+
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "pnpm"
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Format code
         run: pnpm run format:ci
-      
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
