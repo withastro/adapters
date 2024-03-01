@@ -37,6 +37,14 @@ export default defineConfig({
 					type: 'durable-object',
 					className: 'DO_PROD',
 				},
+				AUTH: {
+					type: 'service-binding',
+					address: '127.0.0.1:8787'
+				},
+				LOGOUT: {
+					type: 'service-binding',
+					address: '127.0.0.1:8787'
+				}
 			},
 		},
 	}),
