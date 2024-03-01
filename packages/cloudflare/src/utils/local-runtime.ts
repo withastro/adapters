@@ -42,7 +42,7 @@ type BASE_RUNTIME = {
 				};
 		  }
 		| ({
-				type: 'service-binding';
+				type: 'service';
 		  } & (
 				| {
 						address: string;
@@ -123,7 +123,7 @@ class LocalRuntime {
 						scriptName: bindingData.service?.name,
 					};
 					break;
-				case 'service-binding':
+				case 'service':
 					if ('address' in bindingData) {
 						// Pages mode
 						const isHttps = bindingData.protocol === 'https';
@@ -309,7 +309,7 @@ export class LocalWorkersRuntime extends LocalRuntime {
 		if (_wranglerConfig?.services) {
 			for (const service of _wranglerConfig.services) {
 				runtimeConfigWithWrangler.bindings[service.binding] = {
-					type: 'service-binding',
+					type: 'service',
 					service: service.service,
 				};
 			}
