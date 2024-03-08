@@ -1,10 +1,7 @@
 const { builtinModules } = require('node:module');
 
 module.exports = {
-	extends: [
-		'plugin:@typescript-eslint/recommended-type-checked',
-		'prettier',
-	],
+	extends: ['plugin:@typescript-eslint/recommended-type-checked', 'prettier'],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
@@ -16,8 +13,6 @@ module.exports = {
 		'no-only-tests/no-only-tests': 'error',
 		'@typescript-eslint/no-shadow': 'off',
 		'no-console': 'off',
-		'@typescript-eslint/no-unused-vars': 'off',
-		'@typescript-eslint/ban-types': 'off',
 		// Todo: do we want these?
 		'@typescript-eslint/no-unused-vars': 'off',
 		'@typescript-eslint/ban-types': 'off',
