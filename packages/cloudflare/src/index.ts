@@ -137,7 +137,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								},
 								cf: cf,
 								caches: caches,
-								waitUntil: (_promise: Promise<any>) => {
+								waitUntil: (_promise: Promise<unknown>) => {
 									return;
 								},
 							},
@@ -270,7 +270,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						});
 					}
 
-					const outputFiles: Array<string> = await glob("**/*", {
+					const outputFiles: Array<string> = await glob('**/*', {
 						cwd: outputDir,
 						filesOnly: true,
 					});
@@ -410,17 +410,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						.map((route) => {
 							if (route.component === 'src/pages/404.astro' && route.prerender === false)
 								notFoundIsSSR = true;
-							const includePattern =
-								`/${route.segments
-									.flat()
-									.map((segment) => (segment.dynamic ? '*' : segment.content))
-									.join('/')}`;
+							const includePattern = `/${route.segments
+								.flat()
+								.map((segment) => (segment.dynamic ? '*' : segment.content))
+								.join('/')}`;
 
 							const regexp = new RegExp(
 								`^\\/${route.segments
-										.flat()
-										.map((segment) => (segment.dynamic ? '(.*)' : segment.content))
-										.join('\\/')}$`
+									.flat()
+									.map((segment) => (segment.dynamic ? '(.*)' : segment.content))
+									.join('\\/')}$`
 							);
 
 							return {
@@ -465,13 +464,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								if (parts.length < 2) {
 									return null;
 								}
-									// convert /products/:id to /products/*
-									return (
-										parts[0]
-											.replace(/\/:.*?(?=\/|$)/g, '/*')
-											// remove query params as they are not supported by cloudflare
-											.replace(/\?.*$/, '')
-									);
+								// convert /products/:id to /products/*
+								return (
+									parts[0]
+										.replace(/\/:.*?(?=\/|$)/g, '/*')
+										// remove query params as they are not supported by cloudflare
+										.replace(/\?.*$/, '')
+								);
 							})
 							.filter(
 								(line, index, arr) => line !== null && arr.indexOf(line) === index
@@ -541,11 +540,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 					const includeStrategyLength = includeStrategy
 						? includeStrategy.include.length + includeStrategy.exclude.length
-						: Infinity;
+						: Number.POSITIVE_INFINITY;
 
 					const excludeStrategyLength = excludeStrategy
 						? excludeStrategy.include.length + excludeStrategy.exclude.length
-						: Infinity;
+						: Number.POSITIVE_INFINITY;
 
 					const winningStrategy = notFoundIsSSR
 						? excludeStrategy

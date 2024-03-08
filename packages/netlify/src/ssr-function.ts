@@ -5,8 +5,8 @@ import { applyPolyfills } from 'astro/app/node';
 
 applyPolyfills();
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export type Args = {}
+// biome-ignore lint/complexity/noBannedTypes: legit usage
+export type Args = {};
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
@@ -21,6 +21,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 			let locals: Record<string, unknown> = {};
 
 			if (request.headers.has('x-astro-locals')) {
+				// biome-ignore lint/style/noNonNullAssertion: checked by the if-clause
 				locals = JSON.parse(request.headers.get('x-astro-locals')!);
 			}
 

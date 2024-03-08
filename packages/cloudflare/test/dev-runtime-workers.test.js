@@ -26,28 +26,28 @@ describe('DevRuntimeWorkers', () => {
 	});
 
 	it('exists', async () => {
-		const res = await fetch("http://127.0.0.1:4321/");
+		const res = await fetch('http://127.0.0.1:4321/');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasRuntime').text()).to.contain('true');
 	});
 
 	it('adds cf object', async () => {
-		const res = await fetch("http://127.0.0.1:4321/");
+		const res = await fetch('http://127.0.0.1:4321/');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasCF').text()).to.equal('true');
 	});
 
 	it('adds cache mocking', async () => {
-		const res = await fetch("http://127.0.0.1:4321/caches");
+		const res = await fetch('http://127.0.0.1:4321/caches');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasCACHE').text()).to.equal('true');
 	});
 
 	it('adds D1 mocking', async () => {
-		const res = await fetch("http://127.0.0.1:4321/d1");
+		const res = await fetch('http://127.0.0.1:4321/d1');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasDB').text()).to.equal('true');
@@ -56,7 +56,7 @@ describe('DevRuntimeWorkers', () => {
 	});
 
 	it('adds R2 mocking', async () => {
-		const res = await fetch("http://127.0.0.1:4321/r2");
+		const res = await fetch('http://127.0.0.1:4321/r2');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasBUCKET').text()).to.equal('true');
@@ -65,7 +65,7 @@ describe('DevRuntimeWorkers', () => {
 	});
 
 	it('adds KV mocking', async () => {
-		const res = await fetch("http://127.0.0.1:4321/kv");
+		const res = await fetch('http://127.0.0.1:4321/kv');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasKV').text()).to.equal('true');
@@ -74,7 +74,7 @@ describe('DevRuntimeWorkers', () => {
 	});
 
 	it('adds DO mocking', async () => {
-		const res = await fetch("http://127.0.0.1:4321/do");
+		const res = await fetch('http://127.0.0.1:4321/do');
 		const html = await res.text();
 		const $ = cheerio.load(html);
 		expect($('#hasDO').text()).to.equal('true');

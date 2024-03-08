@@ -1,11 +1,11 @@
-import type { IncomingMessage } from 'http';
-import { fileURLToPath } from 'url';
+import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import type { IncomingMessage } from 'node:http';
+import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
-import { appendFile, mkdir, readFile, rm, writeFile } from 'fs/promises';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')

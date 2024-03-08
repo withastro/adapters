@@ -9,9 +9,9 @@ import type { AstroConfig, AstroIntegrationLogger } from 'astro';
 import type { Json, ReplaceWorkersTypes, WorkerOptions } from 'miniflare';
 import type { Options } from '../index.js';
 
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import assert from 'node:assert';
-import { fileURLToPath } from 'url';
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import TOML from '@iarna/toml';
 import { AstroError } from 'astro/errors';
 import dotenv from 'dotenv';
@@ -279,8 +279,7 @@ export class LocalWorkersRuntime extends LocalRuntime {
 	}
 }
 
-export class LocalPagesRuntime extends LocalRuntime {
-}
+export class LocalPagesRuntime extends LocalRuntime {}
 
 let localRuntime: LocalPagesRuntime | LocalWorkersRuntime | undefined;
 export function getLocalRuntime(

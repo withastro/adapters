@@ -13,6 +13,7 @@ import type {} from '@cloudflare/workers-types/experimental';
 import TOML from '@iarna/toml';
 import dotenv from 'dotenv';
 import { findUpSync } from 'find-up';
+// biome-ignore lint/suspicious/noExplicitAny: legitimate usage
 let _wrangler: any;
 
 function findWranglerToml(
@@ -21,11 +22,11 @@ function findWranglerToml(
 ): string | undefined {
 	if (preferJson) {
 		return (
-			findUpSync("wrangler.json", { cwd: referencePath }) ??
-			findUpSync("wrangler.toml", { cwd: referencePath })
+			findUpSync('wrangler.json', { cwd: referencePath }) ??
+			findUpSync('wrangler.toml', { cwd: referencePath })
 		);
 	}
-	return findUpSync("wrangler.toml", { cwd: referencePath });
+	return findUpSync('wrangler.toml', { cwd: referencePath });
 }
 type File = {
 	file?: string;
@@ -108,6 +109,7 @@ function tryLoadDotEnv(path: string): DotEnv | undefined {
 export function loadDotEnv(path: string): DotEnv | undefined {
 	return tryLoadDotEnv(path);
 }
+// biome-ignore lint/suspicious/noExplicitAny: legitimate usage?
 function getVarsForDev(config: any, configPath: string | undefined): any {
 	const configDir = resolve(dirname(configPath ?? '.'));
 	const devVarsPath = resolve(configDir, '.dev.vars');
@@ -118,11 +120,12 @@ function getVarsForDev(config: any, configPath: string | undefined): any {
 			...loaded.parsed,
 		};
 	}
-		return config.vars;
+	return config.vars;
 }
 
 function parseConfig() {
 	if (_wrangler) return _wrangler;
+	// biome-ignore lint/suspicious/noImplicitAnyLet: to fix
 	let rawConfig;
 	const configPath = findWranglerToml(process.cwd(), false); // false = args.experimentalJsonConfig
 	if (!configPath) {
@@ -183,7 +186,8 @@ export function getDOBindings(): Record<
 		string,
 		{ scriptName?: string | undefined; unsafeUniqueKey?: string | undefined; className: string }
 	>;
-	for (const binding of rawConfig?.durable_objects.bindings) {
+	const bindings = rawConfig?.durable_objects.bindings;
+	for (const binding of bindings) {
 		Reflect.set(output, binding.name, { className: binding.class_name });
 	}
 	return output;

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.6.0/schema.json",
   "files": {
     "ignore": [
       "**/dist",
@@ -32,7 +32,7 @@
     "enabled": true,
     "rules": {
       "suspicious": {
-        "noConsoleLog": "warn"
+        "noConsoleLog": "off"
       }
     }
   }
