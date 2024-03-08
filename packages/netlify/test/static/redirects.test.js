@@ -1,5 +1,6 @@
+import * as assert from 'node:assert/strict';
+import { before, describe, it } from 'node:test';
 import { loadFixture } from '@astrojs/test-utils';
-import { expect } from 'chai';
 
 describe('SSG - Redirects', () => {
 	let fixture;
@@ -12,7 +13,7 @@ describe('SSG - Redirects', () => {
 	it('Creates a redirects file', async () => {
 		const redirects = await fixture.readFile('./_redirects');
 		const parts = redirects.split(/\s+/);
-		expect(parts).to.deep.equal([
+		assert.deepEqual(parts, [
 			'',
 
 			'/two',

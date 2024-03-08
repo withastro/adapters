@@ -13,7 +13,6 @@ import type {} from '@cloudflare/workers-types/experimental';
 import TOML from '@iarna/toml';
 import dotenv from 'dotenv';
 import { findUpSync } from 'find-up';
-// biome-ignore lint/suspicious/noExplicitAny: legitimate usage
 let _wrangler: any;
 
 function findWranglerToml(
@@ -109,7 +108,6 @@ function tryLoadDotEnv(path: string): DotEnv | undefined {
 export function loadDotEnv(path: string): DotEnv | undefined {
 	return tryLoadDotEnv(path);
 }
-// biome-ignore lint/suspicious/noExplicitAny: legitimate usage?
 function getVarsForDev(config: any, configPath: string | undefined): any {
 	const configDir = resolve(dirname(configPath ?? '.'));
 	const devVarsPath = resolve(configDir, '.dev.vars');
@@ -125,7 +123,6 @@ function getVarsForDev(config: any, configPath: string | undefined): any {
 
 function parseConfig() {
 	if (_wrangler) return _wrangler;
-	// biome-ignore lint/suspicious/noImplicitAnyLet: to fix
 	let rawConfig;
 	const configPath = findWranglerToml(process.cwd(), false); // false = args.experimentalJsonConfig
 	if (!configPath) {
@@ -181,12 +178,12 @@ export function getDOBindings(): Record<
 > {
 	const { rawConfig } = parseConfig();
 	if (!rawConfig) return {};
-	if (!rawConfig?.durable_objects) return {};
+	if (!rawConfig.durable_objects) return {};
 	const output = new Object({}) as Record<
 		string,
 		{ scriptName?: string | undefined; unsafeUniqueKey?: string | undefined; className: string }
 	>;
-	const bindings = rawConfig?.durable_objects.bindings;
+	const bindings = rawConfig.durable_objects.bindings;
 	for (const binding of bindings) {
 		Reflect.set(output, binding.name, { className: binding.class_name });
 	}

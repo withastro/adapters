@@ -5,29 +5,46 @@ import { applyPolyfills } from 'astro/app/node';
 
 applyPolyfills();
 
-// biome-ignore lint/complexity/noBannedTypes: legit usage
-export type Args = {};
+// biome-ignore lint/complexity/noBannedTypes: safe to use in this case
+export interface Args {
+	middlewareSecret: string;
+}
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
-export const createExports = (manifest: SSRManifest, _args: Args) => {
+export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
 
-	function createHandler(integrationConfig: { cacheOnDemandPages: boolean }) {
+	function createHandler(integrationConfig: {
+		cacheOnDemandPages: boolean;
+		notFoundContent?: string;
+	}) {
 		return async function handler(request: Request, context: Context) {
 			const routeData = app.match(request);
-			Reflect.set(request, clientAddressSymbol, context.ip);
+			if (!routeData && typeof integrationConfig.notFoundContent !== 'undefined') {
+				return new Response(integrationConfig.notFoundContent, {
+					status: 404,
+					headers: { 'Content-Type': 'text/html; charset=utf-8' },
+				});
+			}
 
+			Reflect.set(request, clientAddressSymbol, context.ip);
 			let locals: Record<string, unknown> = {};
 
-			if (request.headers.has('x-astro-locals')) {
-				// biome-ignore lint/style/noNonNullAssertion: checked by the if-clause
-				locals = JSON.parse(request.headers.get('x-astro-locals')!);
+			const astroLocalsHeader = request.headers.get('x-astro-locals');
+			const middlewareSecretHeader = request.headers.get('x-astro-middleware-secret');
+			if (astroLocalsHeader) {
+				if (middlewareSecretHeader !== middlewareSecret) {
+					return new Response('Forbidden', { status: 403 });
+				}
+				// hide the secret from the rest of user and library code
+				request.headers.delete('x-astro-middleware-secret');
+				locals = JSON.parse(astroLocalsHeader);
 			}
 
 			locals.netlify = { context };
 
-			const response = await app.render(request, routeData, locals);
+			const response = await app.render(request, { routeData, locals });
 
 			if (app.setCookieHeaders) {
 				for (const setCookieHeader of app.setCookieHeaders(response)) {
@@ -36,6 +53,8 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 			}
 
 			if (integrationConfig.cacheOnDemandPages) {
+				const isCacheableMethod = ['GET', 'HEAD'].includes(request.method);
+
 				// any user-provided Cache-Control headers take precedence
 				const hasCacheControl = [
 					'Cache-Control',
@@ -43,7 +62,7 @@ export const createExports = (manifest: SSRManifest, _args: Args) => {
 					'Netlify-CDN-Cache-Control',
 				].some((header) => response.headers.has(header));
 
-				if (!hasCacheControl) {
+				if (isCacheableMethod && !hasCacheControl) {
 					// caches this page for up to a year
 					response.headers.append('CDN-Cache-Control', 'public, max-age=31536000, must-revalidate');
 				}

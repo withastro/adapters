@@ -1,5 +1,61 @@
 # @astrojs/netlify
 
+## 5.1.3
+
+### Patch Changes
+
+- [#163](https://github.com/withastro/adapters/pull/163) [`bc9ee99c7333ae29e4d4184059c09650330fd0d9`](https://github.com/withastro/adapters/commit/bc9ee99c7333ae29e4d4184059c09650330fd0d9) Thanks [@OiYouYeahYou](https://github.com/OiYouYeahYou)! - Fixes an issue where some astro CLI commands failed with `crypto is not defined` on Astro 4.4.0 and earlier.
+
+## 5.1.2
+
+### Patch Changes
+
+- [#160](https://github.com/withastro/adapters/pull/160) [`994985547c2d2bc8c66b76f996257e68f8187a14`](https://github.com/withastro/adapters/commit/994985547c2d2bc8c66b76f996257e68f8187a14) Thanks [@lilnasy](https://github.com/lilnasy)! - Fixes an issue where enabling `edgeMiddleware` failed to bundle a dependency (`cssesc`) introduced in Astro 4.2.5.
+
+## 5.1.1
+
+### Patch Changes
+
+- [#162](https://github.com/withastro/adapters/pull/162) [`07217c07e89d4596b464d05c4873e7039aa616f4`](https://github.com/withastro/adapters/commit/07217c07e89d4596b464d05c4873e7039aa616f4) Thanks [@Skn0tt](https://github.com/Skn0tt)! - Fixes bug where prerendered 404 pages were served as `text/plain` instead of `text/html` for hybrid/server apps, leading to browsers displaying source code instead of rendering it
+
+## 5.1.0
+
+### Minor Changes
+
+- [#152](https://github.com/withastro/adapters/pull/152) [`816bdc42e0665904e418dd0137bd6a7c8c74307f`](https://github.com/withastro/adapters/commit/816bdc42e0665904e418dd0137bd6a7c8c74307f) Thanks [@lilnasy](https://github.com/lilnasy)! - Implements verification for edge middleware. This is a security measure to ensure that your serverless functions are only ever called by your edge middleware and not by a third party.
+
+  When `edgeMiddleware` is enabled, the serverless function will now respond with `403 Forbidden` for requests that are not verified to have come from the generated edge middleware. No user action is necessary.
+
+## 5.0.1
+
+### Patch Changes
+
+- [#143](https://github.com/withastro/adapters/pull/143) [`06bae52f26d1df1368581aa859f332141db00c1b`](https://github.com/withastro/adapters/commit/06bae52f26d1df1368581aa859f332141db00c1b) Thanks [@Skn0tt](https://github.com/Skn0tt)! - Fixes a bug in the Netlify Adapter where prerendered 404.astro pages weren't shown on hybrid/server deployments.
+
+## 5.0.0
+
+### Major Changes
+
+- [#130](https://github.com/withastro/adapters/pull/130) [`2b5aaa4cfeda4bc7f1bf8db6210162c495866a95`](https://github.com/withastro/adapters/commit/2b5aaa4cfeda4bc7f1bf8db6210162c495866a95) Thanks [@asdfjkalsdfla](https://github.com/asdfjkalsdfla)! - Updates the internals of the integration to support Astro 4.0. See this [upstream pull request](https://github.com/withastro/astro/pull/9199) for additional details. **Warning:** Make sure to upgrade your Astro version to `>4.2` as previous versions are no longer supported.
+
+## 4.1.1
+
+### Patch Changes
+
+- [#127](https://github.com/withastro/adapters/pull/127) [`36434f0c631cb963c748a11679cf7a96cd605d8e`](https://github.com/withastro/adapters/commit/36434f0c631cb963c748a11679cf7a96cd605d8e) Thanks [@Skn0tt](https://github.com/Skn0tt)! - Updates the behavior of the `cacheOnDemandPages` setting to only cache GET/HEAD requests by default
+
+## 4.1.0
+
+### Minor Changes
+
+- [#120](https://github.com/withastro/adapters/pull/120) [`cf39b9d`](https://github.com/withastro/adapters/commit/cf39b9ddb3c3f7db563c67ac9a6e88857862b694) Thanks [@Skn0tt](https://github.com/Skn0tt)! - Adds opt-out option for Image CDN.
+
+## 4.0.2
+
+### Patch Changes
+
+- [#117](https://github.com/withastro/adapters/pull/117) [`89f7c01`](https://github.com/withastro/adapters/commit/89f7c017e2190c288d257560d1cb2cf8cca8f2cb) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Updates Netlify README.md
+
 ## 4.0.1
 
 ### Patch Changes

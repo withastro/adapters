@@ -1,6 +1,7 @@
+import * as assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
+import { before, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { expect } from 'chai';
 import { astroCli } from './_test-utils.js';
 
 const root = new URL('./fixtures/directory-mode/', import.meta.url);
@@ -11,12 +12,12 @@ describe('Directory mode', () => {
 
 	it('generates functions folder inside the project root', () => {
 		const testURL = new URL('functions', root);
-		expect(existsSync(fileURLToPath(testURL))).to.be.true;
+		assert.equal(existsSync(fileURLToPath(testURL)), true);
 	});
 
 	it('generates functions file inside the project root', () => {
 		const testURL = new URL('functions/[[path]].js', root);
-		expect(existsSync(fileURLToPath(testURL))).to.be.true;
+		assert.equal(existsSync(fileURLToPath(testURL)), true);
 	});
 
 	it('generates a redirects file', () => {
@@ -24,9 +25,9 @@ describe('Directory mode', () => {
 		try {
 			const _redirects = readFileSync(fileURLToPath(testURL), 'utf-8');
 			const parts = _redirects.split(/\s+/);
-			expect(parts).to.deep.equal(['/old', '/', '301']);
+			assert.deepEqual(parts, ['/old', '/', '301']);
 		} catch (e) {
-			expect(false).to.equal(true);
+			assert.equal(false, true);
 		}
 	});
 });

@@ -1,4 +1,4 @@
-import type { Request as CFRequest, CacheStorage, EventContext } from '@cloudflare/workers-types';
+import type { CacheStorage, EventContext, Request as CFRequest } from '@cloudflare/workers-types';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { getProcessEnvProxy, isNode } from '../util.js';
@@ -8,7 +8,7 @@ if (!isNode) {
 }
 export interface DirectoryRuntime<T extends object = object> {
 	runtime: {
-		waitUntil: (promise: Promise<unknown>) => void;
+		waitUntil: (promise: Promise<any>) => void;
 		env: EventContext<unknown, string, unknown>['env'] & T;
 		cf: CFRequest['cf'];
 		caches: CacheStorage;
@@ -24,7 +24,6 @@ export function createExports(manifest: SSRManifest) {
 
 		// TODO: remove this any cast in the future
 		// REF: the type cast to any is needed because the Cloudflare Env Type is not assignable to type 'ProcessEnv'
-		// biome-ignore lint/suspicious/noExplicitAny: remove in the future
 		process.env = env as any;
 
 		const { pathname } = new URL(request.url);
@@ -42,7 +41,7 @@ export function createExports(manifest: SSRManifest) {
 
 		const locals: DirectoryRuntime = {
 			runtime: {
-				waitUntil: (promise: Promise<unknown>) => {
+				waitUntil: (promise: Promise<any>) => {
 					context.waitUntil(promise);
 				},
 				env: context.env,
@@ -51,7 +50,7 @@ export function createExports(manifest: SSRManifest) {
 			},
 		};
 
-		const response = await app.render(request, routeData, locals);
+		const response = await app.render(request, { routeData, locals });
 
 		if (app.setCookieHeaders) {
 			for (const setCookieHeader of app.setCookieHeaders(response)) {

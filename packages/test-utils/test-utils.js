@@ -113,7 +113,8 @@ export async function loadFixture(inlineConfig) {
 	else if (!path.isAbsolute(root)) {
 		throw new Error("Must provide { root: '.../fixtures/...' } with an absolute path");
 	}
-	inlineConfig.root = root;
+	// biome-ignore lint/style/noParameterAssign: safe?
+	inlineConfig = { ...inlineConfig, root };
 	// Load the config.
 	const { astroConfig: config } = await resolveConfig(inlineConfig, 'dev');
 
@@ -294,7 +295,12 @@ export async function parseCliDevStart(proc) {
 	const messages = stdout
 		.split('\n')
 		.filter((ln) => !!ln.trim())
-		.map((ln) => ln.replace(/[🚀┃]/gu, '').replace(/\s+/g, ' ').trim());
+		.map((ln) =>
+			ln
+				.replace(/[🚀┃]/g, '')
+				.replace(/\s+/g, ' ')
+				.trim()
+		);
 
 	return { messages };
 }

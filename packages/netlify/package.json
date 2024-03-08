@@ -1,7 +1,7 @@
 {
   "name": "@astrojs/netlify",
   "description": "Deploy your site to Netlify",
-  "version": "4.0.1",
+  "version": "5.1.3",
   "type": "module",
   "types": "./dist/index.d.ts",
   "author": "withastro",
@@ -25,10 +25,10 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc",
-    "test-fn": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/functions/",
-    "test-static": "mocha --exit --timeout 20000 --file \"./test/setup.js\" test/static/",
-    "test": "pnpm test-fn && pnpm test-static",
-    "test:hosted": "mocha --exit --timeout 30000 test/hosted"
+    "test-fn": "astro-scripts test \"test/functions/*.test.js\"",
+    "test-static": "astro-scripts test \"test/static/*.test.js\"",
+    "test": "pnpm run test-fn && pnpm run test-static",
+    "test:hosted": "astro-scripts test \"test/hosted/*.test.js\""
   },
   "dependencies": {
     "@astrojs/underscore-redirects": "^0.3.3",
@@ -36,23 +36,21 @@
     "esbuild": "^0.19.5"
   },
   "peerDependencies": {
-    "astro": "^3.0.0 || ^4.0.0"
+    "astro": "^4.2.0"
   },
   "devDependencies": {
     "@netlify/edge-functions": "^2.0.0",
     "@netlify/edge-handler-types": "^0.34.1",
     "@types/node": "^18.17.8",
-    "astro": "^4.0.0",
-    "chai": "^4.3.10",
-    "chai-jest-snapshot": "^2.0.0",
+    "astro": "^4.3.5",
     "cheerio": "1.0.0-rc.12",
     "execa": "^8.0.1",
     "fast-glob": "^3.3.1",
-    "mocha": "^10.2.0",
     "strip-ansi": "^7.1.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
-    "@astrojs/test-utils": "workspace:*"
+    "@astrojs/test-utils": "workspace:*",
+    "astro-scripts": "workspace:*"
   },
   "astro": {
     "external": true

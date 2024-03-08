@@ -15,6 +15,7 @@ import { prepareImageConfig } from './utils/image-config.js';
 import { getLocalRuntime, getRuntimeConfig } from './utils/local-runtime.js';
 import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { rewriteWasmImportPath } from './utils/rewriteWasmImportPath.js';
+import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
@@ -22,7 +23,7 @@ export type { DirectoryRuntime } from './entrypoints/server.directory.js';
 export type Options = {
 	mode?: 'directory' | 'advanced';
 	functionPerRoute?: boolean;
-	imageService?: 'passthrough' | 'cloudflare';
+	imageService?: 'passthrough' | 'cloudflare' | 'compile';
 	/** Configure automatic `routes.json` generation */
 	routes?: {
 		/** Strategy for generating `include` and `exclude` patterns
@@ -137,7 +138,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								},
 								cf: cf,
 								caches: caches,
-								waitUntil: (_promise: Promise<unknown>) => {
+								waitUntil: (_promise: Promise<any>) => {
 									return;
 								},
 							},
@@ -226,10 +227,20 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							relative(absolutePagesDirname, pathsGroup[0]),
 							functionsUrl
 						);
+
+						const esbuildPlugins = [];
+						if (args?.imageService === 'compile') {
+							esbuildPlugins.push(patchSharpBundle());
+						}
+
 						const relativePathToAssets = relative(
 							dirname(fileURLToPath(urlWithinFunctions)),
 							fileURLToPath(assetsUrl)
 						);
+						if (args?.wasmModuleImports) {
+							esbuildPlugins.push(rewriteWasmImportPath({ relativePathToAssets }));
+						}
+
 						await esbuild.build({
 							target: 'es2022',
 							platform: 'browser',
@@ -264,9 +275,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							logOverride: {
 								'ignored-bare-import': 'silent',
 							},
-							plugins: !args?.wasmModuleImports
-								? []
-								: [rewriteWasmImportPath({ relativePathToAssets })],
+							plugins: esbuildPlugins,
 						});
 					}
 
@@ -313,6 +322,21 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					// A URL for the final build path after renaming
 					const finalBuildUrl = pathToFileURL(buildPath.replace(/\.mjs$/, '.js'));
 
+					const esbuildPlugins = [];
+					if (args?.imageService === 'compile') {
+						esbuildPlugins.push(patchSharpBundle());
+					}
+
+					if (args?.wasmModuleImports) {
+						esbuildPlugins.push(
+							rewriteWasmImportPath({
+								relativePathToAssets: isModeDirectory
+									? relative(fileURLToPath(functionsUrl), fileURLToPath(assetsUrl))
+									: relative(fileURLToPath(_buildConfig.client), fileURLToPath(assetsUrl)),
+							})
+						);
+					}
+
 					await esbuild.build({
 						target: 'es2022',
 						platform: 'browser',
@@ -346,15 +370,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						logOverride: {
 							'ignored-bare-import': 'silent',
 						},
-						plugins: !args?.wasmModuleImports
-							? []
-							: [
-									rewriteWasmImportPath({
-										relativePathToAssets: isModeDirectory
-											? relative(fileURLToPath(functionsUrl), fileURLToPath(assetsUrl))
-											: relative(fileURLToPath(_buildConfig.client), fileURLToPath(assetsUrl)),
-									}),
-							  ],
+						plugins: esbuildPlugins,
 					});
 
 					// Rename to worker.js
@@ -538,31 +554,64 @@ export default function createIntegration(args?: Options): AstroIntegration {
 									exclude: deduplicatePatterns(staticPathList.concat(args?.routes?.exclude ?? [])),
 							  };
 
-					const includeStrategyLength = includeStrategy
-						? includeStrategy.include.length + includeStrategy.exclude.length
-						: Number.POSITIVE_INFINITY;
+					switch (args?.routes?.strategy) {
+						case 'include':
+							await fs.promises.writeFile(
+								new URL('./_routes.json', _config.outDir),
+								JSON.stringify(
+									{
+										version: 1,
+										...includeStrategy,
+									},
+									null,
+									2
+								)
+							);
+							break;
 
-					const excludeStrategyLength = excludeStrategy
-						? excludeStrategy.include.length + excludeStrategy.exclude.length
-						: Number.POSITIVE_INFINITY;
+						case 'exclude':
+							await fs.promises.writeFile(
+								new URL('./_routes.json', _config.outDir),
+								JSON.stringify(
+									{
+										version: 1,
+										...excludeStrategy,
+									},
+									null,
+									2
+								)
+							);
+							break;
 
-					const winningStrategy = notFoundIsSSR
-						? excludeStrategy
-						: includeStrategyLength <= excludeStrategyLength
-						  ? includeStrategy
-						  : excludeStrategy;
+						default: {
+							const includeStrategyLength = includeStrategy
+								? includeStrategy.include.length + includeStrategy.exclude.length
+								: Infinity;
 
-					await fs.promises.writeFile(
-						new URL('./_routes.json', _config.outDir),
-						JSON.stringify(
-							{
-								version: 1,
-								...winningStrategy,
-							},
-							null,
-							2
-						)
-					);
+							const excludeStrategyLength = excludeStrategy
+								? excludeStrategy.include.length + excludeStrategy.exclude.length
+								: Infinity;
+
+							const winningStrategy = notFoundIsSSR
+								? excludeStrategy
+								: includeStrategyLength <= excludeStrategyLength
+								  ? includeStrategy
+								  : excludeStrategy;
+
+							await fs.promises.writeFile(
+								new URL('./_routes.json', _config.outDir),
+								JSON.stringify(
+									{
+										version: 1,
+										...winningStrategy,
+									},
+									null,
+									2
+								)
+							);
+						}
+						break;
+					}
 				}
 			},
 		},

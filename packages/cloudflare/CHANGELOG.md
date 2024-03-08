@@ -1,5 +1,63 @@
 # @astrojs/cloudflare
 
+## 9.1.0
+
+### Minor Changes
+
+- [#179](https://github.com/withastro/adapters/pull/179) [`6ad25929ce37344d9de7063643434ca0b01df306`](https://github.com/withastro/adapters/commit/6ad25929ce37344d9de7063643434ca0b01df306) Thanks [@F0rce](https://github.com/F0rce)! - Adds [Service bindings](https://developers.cloudflare.com/workers/configuration/bindings/about-service-bindings/) to the runtime bindings.
+
+## 9.0.2
+
+### Patch Changes
+
+- [#171](https://github.com/withastro/adapters/pull/171) [`0463483141c2a09ed983fd8053e6bee6d4b0567d`](https://github.com/withastro/adapters/commit/0463483141c2a09ed983fd8053e6bee6d4b0567d) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an error with automatic deduplication of `_routes.json` for more complex project structures
+
+## 9.0.1
+
+### Patch Changes
+
+- [#168](https://github.com/withastro/adapters/pull/168) [`25908149cd5b9e82d6746529e44473ae93be6e32`](https://github.com/withastro/adapters/commit/25908149cd5b9e82d6746529e44473ae93be6e32) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an error where the `astro dev` command would fail if the cache directory already existed
+
+## 9.0.0
+
+### Major Changes
+
+- [#130](https://github.com/withastro/adapters/pull/130) [`2b5aaa4cfeda4bc7f1bf8db6210162c495866a95`](https://github.com/withastro/adapters/commit/2b5aaa4cfeda4bc7f1bf8db6210162c495866a95) Thanks [@asdfjkalsdfla](https://github.com/asdfjkalsdfla)! - Updates the internals of the integration to support Astro 4.0. See this [upstream pull request](https://github.com/withastro/astro/pull/9199) for additional details. **Warning:** Make sure to upgrade your Astro version to `>4.2` as previous versions are no longer supported.
+
+### Patch Changes
+
+- [#137](https://github.com/withastro/adapters/pull/137) [`d67df0e24ad0d9fca317f01e877f3dc650831488`](https://github.com/withastro/adapters/commit/d67df0e24ad0d9fca317f01e877f3dc650831488) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue with `_routes.json` generation, where duplicates where not removed correctly and an explicit user strategy setting was ignored.
+
+## 8.1.0
+
+### Minor Changes
+
+- [#58](https://github.com/withastro/adapters/pull/58) [`ecdb8f5bc21b19cc86e581711a1c360fc723a007`](https://github.com/withastro/adapters/commit/ecdb8f5bc21b19cc86e581711a1c360fc723a007) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Adds the option to only run image optimization on images during build-time. **Warning:** This mode does not work with on-demand (SSR) image optimization.
+
+  ```diff
+  import {defineConfig} from "astro/config";
+  import cloudflare from '@astrojs/cloudflare';
+
+  export default defineConfig({
+    output: 'server'
+    adapter: cloudflare({
+  +   imageService: 'compile'
+    }),
+  })
+  ```
+
+## 8.0.2
+
+### Patch Changes
+
+- [#125](https://github.com/withastro/adapters/pull/125) [`200dea9`](https://github.com/withastro/adapters/commit/200dea9d5a98e9348b2368b846f385ab850ca053) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Updates miniflare version
+
+## 8.0.1
+
+### Patch Changes
+
+- [#108](https://github.com/withastro/adapters/pull/108) [`63fa4e6`](https://github.com/withastro/adapters/commit/63fa4e6acfabc398460be788120c03329198a02d) Thanks [@sarah11918](https://github.com/sarah11918)! - Updates Cloudflare README.md
+
 ## 8.0.0
 
 ### Major Changes

@@ -1,11 +1,13 @@
-import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import type { IncomingMessage } from 'node:http';
-import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'crypto';
+import type { IncomingMessage } from 'http';
+import { fileURLToPath } from 'url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
+import { appendFile, mkdir, readFile, rm, writeFile } from 'fs/promises';
+import type { Args } from './ssr-function.js';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -49,9 +51,19 @@ export interface NetlifyIntegrationConfig {
 	 * If enabled, Astro Middleware is deployed as an Edge Function and applies to all routes.
 	 * Caveat: Locals set in Middleware are not applied to prerendered pages, because they've been rendered at build-time and are served from the CDN.
 	 *
-	 * @default disabled
+	 * @default {false}
 	 */
 	edgeMiddleware?: boolean;
+
+	/**
+	 * If enabled, Netlify Image CDN is used for image optimization.
+	 * This transforms images on-the-fly without impacting build times.
+	 *
+	 * If disabled, Astro's built-in image optimization is run at build-time instead.
+	 *
+	 * @default {true}
+	 */
+	imageCDN?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -65,6 +77,8 @@ export default function netlifyIntegration(
 	let outDir: URL;
 	let rootDir: URL;
 	let astroMiddlewareEntryPoint: URL | undefined = undefined;
+	// Secret used to verify that the caller is the astro-generated edge middleware and not a third-party
+	const middlewareSecret = randomUUID();
 
 	const ssrOutputDir = () => new URL('./.netlify/functions-internal/ssr/', rootDir);
 	const middlewareOutputDir = () => new URL('.netlify/edge-functions/middleware/', rootDir);
@@ -95,13 +109,14 @@ export default function netlifyIntegration(
 		}
 	}
 
-	async function writeSSRFunction() {
+	async function writeSSRFunction(notFoundContent?: string) {
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
 			`
 				import createSSRHandler from './entry.mjs';
 				export default createSSRHandler(${JSON.stringify({
 					cacheOnDemandPages: Boolean(integrationConfig?.cacheOnDemandPages),
+					notFoundContent,
 				})});
 				export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
 			`
@@ -125,6 +140,7 @@ export default function netlifyIntegration(
 				const next = () => {
 					const { netlify, ...otherLocals } = ctx.locals;
 					request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
+					request.headers.set("x-astro-middleware-secret", "${middlewareSecret}");
 					return context.next();
 				};
 			
@@ -144,6 +160,7 @@ export default function netlifyIntegration(
 			entryPoints: [fileURLToPath(new URL('./entry.mjs', middlewareOutputDir()))],
 			target: 'es2022',
 			platform: 'neutral',
+			mainFields: ['module', 'main'],
 			outfile: fileURLToPath(new URL('./middleware.mjs', middlewareOutputDir())),
 			allowOverwrite: true,
 			format: 'esm',
@@ -226,6 +243,8 @@ export default function netlifyIntegration(
 
 				outDir = new URL('./dist/', rootDir);
 
+				const enableImageCDN = isRunningInNetlify && (integrationConfig?.imageCDN ?? true);
+
 				updateConfig({
 					outDir,
 					build: {
@@ -242,7 +261,7 @@ export default function netlifyIntegration(
 					},
 					image: {
 						service: {
-							entrypoint: isRunningInNetlify ? '@astrojs/netlify/image-service.js' : undefined,
+							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
 				});
@@ -258,14 +277,17 @@ export default function netlifyIntegration(
 					);
 				}
 
+				const edgeMiddleware = integrationConfig?.edgeMiddleware ?? false;
+
 				setAdapter({
 					name: '@astrojs/netlify',
 					serverEntrypoint: '@astrojs/netlify/ssr-function.js',
 					exports: ['default'],
 					adapterFeatures: {
 						functionPerRoute: false,
-						edgeMiddleware: integrationConfig?.edgeMiddleware ?? false,
+						edgeMiddleware,
 					},
+					args: { middlewareSecret } satisfies Args,
 					supportedAstroFeatures: {
 						hybridOutput: 'stable',
 						staticOutput: 'stable',
@@ -288,7 +310,11 @@ export default function netlifyIntegration(
 				logger.info('Emitted _redirects');
 
 				if (_config.output !== 'static') {
-					await writeSSRFunction();
+					let notFoundContent = undefined;
+					try {
+						notFoundContent = await readFile(new URL('./404.html', dir), 'utf8');
+					} catch {}
+					await writeSSRFunction(notFoundContent);
 					logger.info('Generated SSR Function');
 				}
 

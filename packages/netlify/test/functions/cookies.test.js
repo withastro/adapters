@@ -1,5 +1,6 @@
+import * as assert from 'node:assert/strict';
+import { before, describe, it } from 'node:test';
 import { loadFixture } from '@astrojs/test-utils';
-import { expect } from 'chai';
 
 describe('Cookies', () => {
 	let fixture;
@@ -19,8 +20,28 @@ describe('Cookies', () => {
 			new Request('http://example.com/login', { method: 'POST', body: '{}' }),
 			{}
 		);
-		expect(resp.status).to.equal(301);
-		expect(resp.headers.get('location')).to.equal('/');
-		expect(resp.headers.getSetCookie()).to.eql(['foo=foo; HttpOnly', 'bar=bar; HttpOnly']);
+		assert.equal(resp.status, 301);
+		assert.equal(resp.headers.get('location'), '/');
+		assert.deepEqual(resp.headers.getSetCookie(), ['foo=foo; HttpOnly', 'bar=bar; HttpOnly']);
+	});
+
+	it('renders dynamic 404 page', async () => {
+		const entryURL = new URL(
+			'./fixtures/cookies/.netlify/functions-internal/ssr/ssr.mjs',
+			import.meta.url
+		);
+		const { default: handler } = await import(entryURL);
+		const resp = await handler(
+			new Request('http://example.com/nonexistant-page', {
+				headers: {
+					'x-test': 'bar',
+				},
+			}),
+			{}
+		);
+		assert.equal(resp.status, 404);
+		const text = await resp.text();
+		assert.equal(text.includes('This is my custom 404 page'), true);
+		assert.equal(text.includes('x-test: bar'), true);
 	});
 });

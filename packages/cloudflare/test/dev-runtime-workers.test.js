@@ -1,5 +1,6 @@
+import * as assert from 'node:assert/strict';
+import { after, before, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { expect } from 'chai';
 import * as cheerio from 'cheerio';
 import { astroCli } from './_test-utils.js';
 
@@ -20,7 +21,7 @@ describe('DevRuntimeWorkers', () => {
 	after((done) => {
 		cli.kill();
 		setTimeout(() => {
-			console.log('CLEANED');
+			// console.log('CLEANED');
 			done();
 		}, 1000);
 	});
@@ -29,54 +30,62 @@ describe('DevRuntimeWorkers', () => {
 		const res = await fetch('http://127.0.0.1:4321/');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasRuntime').text()).to.contain('true');
+		assert.equal($('#hasRuntime').text().includes('true'), true);
 	});
 
 	it('adds cf object', async () => {
 		const res = await fetch('http://127.0.0.1:4321/');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasCF').text()).to.equal('true');
+		assert.equal($('#hasCF').text(), 'true');
 	});
 
 	it('adds cache mocking', async () => {
 		const res = await fetch('http://127.0.0.1:4321/caches');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasCACHE').text()).to.equal('true');
+		assert.equal($('#hasCACHE').text(), 'true');
 	});
 
 	it('adds D1 mocking', async () => {
 		const res = await fetch('http://127.0.0.1:4321/d1');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasDB').text()).to.equal('true');
-		expect($('#hasPRODDB').text()).to.equal('true');
-		expect($('#hasACCESS').text()).to.equal('true');
+		assert.equal($('#hasDB').text(), 'true');
+		assert.equal($('#hasPRODDB').text(), 'true');
+		assert.equal($('#hasACCESS').text(), 'true');
 	});
 
 	it('adds R2 mocking', async () => {
 		const res = await fetch('http://127.0.0.1:4321/r2');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasBUCKET').text()).to.equal('true');
-		expect($('#hasPRODBUCKET').text()).to.equal('true');
-		expect($('#hasACCESS').text()).to.equal('true');
+		assert.equal($('#hasBUCKET').text(), 'true');
+		assert.equal($('#hasPRODBUCKET').text(), 'true');
+		assert.equal($('#hasACCESS').text(), 'true');
 	});
 
 	it('adds KV mocking', async () => {
 		const res = await fetch('http://127.0.0.1:4321/kv');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasKV').text()).to.equal('true');
-		expect($('#hasPRODKV').text()).to.equal('true');
-		expect($('#hasACCESS').text()).to.equal('true');
+		assert.equal($('#hasKV').text(), 'true');
+		assert.equal($('#hasPRODKV').text(), 'true');
+		assert.equal($('#hasACCESS').text(), 'true');
 	});
 
 	it('adds DO mocking', async () => {
 		const res = await fetch('http://127.0.0.1:4321/do');
 		const html = await res.text();
 		const $ = cheerio.load(html);
-		expect($('#hasDO').text()).to.equal('true');
+		assert.equal($('#hasDO').text(), 'true');
+	});
+
+	it('adds service bindings mocking', async () => {
+		const res = await fetch('http://127.0.0.1:4321/services');
+		const html = await res.text();
+		const $ = cheerio.load(html);
+		assert.equal($('#hasAUTH').text(), 'true');
+		assert.equal($('#hasLOGOUT').text(), 'true');
 	});
 });

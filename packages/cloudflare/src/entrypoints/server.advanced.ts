@@ -1,7 +1,7 @@
 import type {
-	Request as CFRequest,
 	CacheStorage,
 	ExecutionContext,
+	Request as CFRequest,
 } from '@cloudflare/workers-types';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
@@ -17,7 +17,7 @@ type Env = {
 
 export interface AdvancedRuntime<T extends object = object> {
 	runtime: {
-		waitUntil: (promise: Promise<unknown>) => void;
+		waitUntil: (promise: Promise<any>) => void;
 		env: Env & T;
 		cf: CFRequest['cf'];
 		caches: CacheStorage;
@@ -30,7 +30,6 @@ export function createExports(manifest: SSRManifest) {
 	const fetch = async (request: Request & CFRequest, env: Env, context: ExecutionContext) => {
 		// TODO: remove this any cast in the future
 		// REF: the type cast to any is needed because the Cloudflare Env Type is not assignable to type 'ProcessEnv'
-		// biome-ignore lint/suspicious/noExplicitAny: todo
 		process.env = env as any;
 
 		const { pathname } = new URL(request.url);
@@ -49,7 +48,7 @@ export function createExports(manifest: SSRManifest) {
 
 		const locals: AdvancedRuntime = {
 			runtime: {
-				waitUntil: (promise: Promise<unknown>) => {
+				waitUntil: (promise: Promise<any>) => {
 					context.waitUntil(promise);
 				},
 				env: env,
@@ -58,7 +57,7 @@ export function createExports(manifest: SSRManifest) {
 			},
 		};
 
-		const response = await app.render(request, routeData, locals);
+		const response = await app.render(request, { routeData, locals });
 
 		if (app.setCookieHeaders) {
 			for (const setCookieHeader of app.setCookieHeaders(response)) {

@@ -6,12 +6,12 @@ import type {
 	R2Bucket,
 } from '@cloudflare/workers-types/experimental';
 import type { AstroConfig, AstroIntegrationLogger } from 'astro';
-import type { Json, ReplaceWorkersTypes, WorkerOptions } from 'miniflare';
+import type { ExternalServer, Json, ReplaceWorkersTypes, WorkerOptions } from 'miniflare';
 import type { Options } from '../index.js';
 
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import assert from 'node:assert';
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from 'url';
 import TOML from '@iarna/toml';
 import { AstroError } from 'astro/errors';
 import dotenv from 'dotenv';
@@ -41,6 +41,17 @@ type BASE_RUNTIME = {
 					env?: string;
 				};
 		  }
+		| ({
+				type: 'service';
+		  } & (
+				| {
+						address: string;
+						protocol?: 'http' | 'https';
+				  }
+				| {
+						service: string;
+				  }
+		  ))
 	>;
 };
 
@@ -89,6 +100,7 @@ class LocalRuntime {
 		const r2Bindings: Required<Pick<WorkerOptions, 'r2Buckets'>>['r2Buckets'] = [];
 		const durableObjectBindings: Required<Pick<WorkerOptions, 'durableObjects'>>['durableObjects'] =
 			{};
+		const serviceBindings: Required<Pick<WorkerOptions, 'serviceBindings'>>['serviceBindings'] = {};
 
 		for (const bindingName in runtimeConfig.bindings) {
 			const bindingData = runtimeConfig.bindings[bindingName];
@@ -111,6 +123,23 @@ class LocalRuntime {
 						scriptName: bindingData.service?.name,
 					};
 					break;
+				case 'service':
+					if ('address' in bindingData) {
+						// Pages mode
+						const isHttps = bindingData.protocol === 'https';
+
+						const serviceBindingConfig: ExternalServer = isHttps
+							? { address: bindingData.address, https: {} }
+							: { address: bindingData.address, http: {} };
+
+						serviceBindings[bindingName] = {
+							external: serviceBindingConfig,
+						};
+					} else if ('service' in bindingData) {
+						// Worker mode
+						serviceBindings[bindingName] = bindingData.service;
+					}
+					break;
 			}
 		}
 
@@ -132,6 +161,7 @@ class LocalRuntime {
 					r2Buckets: r2Bindings,
 					kvNamespaces: kvBindings,
 					durableObjects: durableObjectBindings,
+					serviceBindings: serviceBindings,
 				},
 			],
 		});
@@ -191,7 +221,9 @@ class LocalRuntime {
 		const CF_ENDPOINT = 'https://workers.cloudflare.com/cf.json';
 		if (!this.cfObject) {
 			this.cfObject = await fetch(CF_ENDPOINT).then((res) => res.json());
-			mkdirSync(this._astroConfig.cacheDir);
+			if (!existsSync(this._astroConfig.cacheDir)) {
+				mkdirSync(this._astroConfig.cacheDir);
+			}
 			writeFileSync(
 				fileURLToPath(new URL('cf.json', this._astroConfig.cacheDir)),
 				JSON.stringify(this.cfObject),
@@ -274,12 +306,29 @@ export class LocalWorkersRuntime extends LocalRuntime {
 				};
 			}
 		}
+		if (_wranglerConfig?.services) {
+			for (const service of _wranglerConfig.services) {
+				runtimeConfigWithWrangler.bindings[service.binding] = {
+					type: 'service',
+					service: service.service,
+				};
+			}
+		}
 
 		super(astroConfig, runtimeConfigWithWrangler, logger);
 	}
 }
 
-export class LocalPagesRuntime extends LocalRuntime {}
+export class LocalPagesRuntime extends LocalRuntime {
+	// biome-ignore lint/complexity/noUselessConstructor: not types information yet, so we need to disable the rule for the time being
+	public constructor(
+		astroConfig: AstroConfig,
+		runtimeConfig: Extract<RUNTIME, { type: 'pages' }>,
+		logger: AstroIntegrationLogger
+	) {
+		super(astroConfig, runtimeConfig, logger);
+	}
+}
 
 let localRuntime: LocalPagesRuntime | LocalWorkersRuntime | undefined;
 export function getLocalRuntime(
