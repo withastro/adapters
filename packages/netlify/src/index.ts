@@ -24,6 +24,76 @@ const isStaticRedirect = (route: RouteData) =>
 
 const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {});
 
+type RemotePattern = AstroConfig['image']['remotePatterns'][number];
+
+export function remotePatternToRegex({
+	protocol,
+	hostname,
+	port,
+	pathname,
+}: RemotePattern): string {
+	let regexStr = '';
+
+	if (protocol) {
+		regexStr += `${protocol}://`;
+	} else {
+		regexStr += '[a-z]+://'; // Default to matching any protocol
+	}
+
+	if (hostname) {
+		if (hostname.startsWith('**.')) {
+			regexStr += '([a-z0-9]+\\.)*';
+			hostname = hostname.substring(3); // Remove '**.' from the beginning
+		} else if (hostname.startsWith('*.')) {
+			regexStr += '([a-z0-9]+\\.)?';
+			hostname = hostname.substring(2); // Remove '*.' from the beginning
+		}
+		regexStr += hostname.replace(/\./g, '\\.');
+	} else {
+		regexStr += '[a-z0-9.-]+';
+	}
+
+	if (port) {
+		regexStr += `:${port}`;
+	} else {
+		regexStr += '(:[0-9]+)?'; // Default to matching any port
+	}
+
+	if (pathname) {
+		if (pathname.endsWith('/**')) {
+			// Match any path. Return early because there's no need to add more to the regex
+			return regexStr + `(\\${pathname.replace('/**', '')}.*)`;
+		}
+		if (pathname.endsWith('/*')) {
+			// Match one level of path
+			regexStr += `(\\${pathname.replace('/*', '')}\/[^/?#]+)\/?`;
+		} else {
+			regexStr += `(\\${pathname})`; // Exact match
+		}
+	} else {
+		// Default to matching any path
+		regexStr += '(\\/[^?#]*)?';
+	}
+	// Match query
+	regexStr += '([?][^#]*)?';
+	return regexStr;
+}
+
+async function writeNetlifyDeployConfig(config: AstroConfig) {
+	const remoteImages: Array<string> = [];
+	remoteImages.push(...config.image.domains.map((domain) => `https?:/\/${domain}\/.*`));
+	remoteImages.push(...config.image.remotePatterns.map(remotePatternToRegex));
+
+	const deployConfigDir = new URL('.netlify/deploy/v1/', config.root);
+	await mkdir(deployConfigDir, { recursive: true });
+	await writeFile(
+		new URL('./config.json', deployConfigDir),
+		JSON.stringify({
+			images: { remote_images: remoteImages },
+		})
+	);
+}
+
 export interface NetlifyIntegrationConfig {
 	/**
 	 * If enabled, On-Demand-Rendered pages are cached for up to a year.
@@ -127,7 +197,7 @@ export default function netlifyIntegration(
 		await mkdir(middlewareOutputDir(), { recursive: true });
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
-			`
+			/* ts */ `
 			import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
 			import { createContext, trySerializeLocals } from 'astro/middleware';
 
@@ -266,15 +336,12 @@ export default function netlifyIntegration(
 					},
 				});
 			},
-			'astro:config:done': ({ config, setAdapter }) => {
+			'astro:config:done': async ({ config, setAdapter }) => {
 				rootDir = config.root;
 				_config = config;
 
-				if (config.image.domains.length || config.image.remotePatterns.length) {
-					throw new AstroError(
-						"config.image.domains and config.image.remotePatterns aren't supported by the Netlify adapter.",
-						'See https://github.com/withastro/adapters/tree/main/packages/netlify#image-cdn for more.'
-					);
+				if (config.image?.domains?.length || config.image?.remotePatterns?.length) {
+					await writeNetlifyDeployConfig(config);
 				}
 
 				const edgeMiddleware = integrationConfig?.edgeMiddleware ?? false;

@@ -1,5 +1,5 @@
 import * as assert from 'node:assert/strict';
-import { after, describe, it } from 'node:test';
+import { after, before, describe, it } from 'node:test';
 import { loadFixture } from '@astrojs/test-utils';
 
 describe('Image CDN', () => {
@@ -38,6 +38,60 @@ describe('Image CDN', () => {
 
 			const astronautPage = await fixture.readFile('astronaut/index.html');
 			assert.equal(astronautPage.includes(`src="/_astro/astronaut.`), true);
+		});
+	});
+
+	describe('remote image config', () => {
+		let regexes;
+
+		before(async () => {
+			const fixture = await loadFixture({ root });
+			await fixture.build();
+
+			const config = await fixture.readFile('../.netlify/deploy/v1/config.json');
+			if (config) {
+				regexes = JSON.parse(config).images.remote_images.map((pattern) => new RegExp(pattern));
+			}
+		});
+
+		it('generates remote image config patterns', async () => {
+			assert.equal(regexes?.length, 2);
+		});
+
+		it('generates correct config for domains', async () => {
+			const domain = regexes[0];
+			assert.equal(domain.test('https://example.net/image.jpg'), true);
+			assert.equal(
+				domain.test('https://www.example.net/image.jpg'),
+				false,
+				'subdomain should not match'
+			);
+			assert.equal(domain.test('http://example.net/image.jpg'), true, 'http should match');
+			assert.equal(
+				domain.test('https://example.net/subdomain/image.jpg'),
+				true,
+				'subpath should match'
+			);
+		});
+
+		it('generates correct config for remotePatterns', async () => {
+			const patterns = regexes[1];
+			assert.equal(patterns.test('https://example.org/images/1.jpg'), true);
+			assert.equal(
+				patterns.test('https://www.example.org/images/2.jpg'),
+				true,
+				'www subdomain should match'
+			);
+			assert.equal(
+				patterns.test('https://www.subdomain.example.org/images/2.jpg'),
+				false,
+				'second level subdomain should not match'
+			);
+			assert.equal(
+				patterns.test('https://example.org/not-images/2.jpg'),
+				false,
+				'wrong path should not match'
+			);
 		});
 	});
 });
