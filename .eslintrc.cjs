@@ -1,7 +1,7 @@
-const { builtinModules } = require('module');
+const { builtinModules } = require('node:module');
 
 module.exports = {
-	extends: ['plugin:@typescript-eslint/recommended-type-checked'],
+	extends: ['plugin:@typescript-eslint/recommended-type-checked', 'prettier'],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
@@ -13,9 +13,10 @@ module.exports = {
 		'no-only-tests/no-only-tests': 'error',
 		'@typescript-eslint/no-shadow': 'off',
 		'no-console': 'off',
+		// Todo: do we want these?
 		'@typescript-eslint/no-unused-vars': 'off',
 		'@typescript-eslint/ban-types': 'off',
-		// Todo: do we want these?
+		'@typescript-eslint/no-empty-interface': 'off',
 		'@typescript-eslint/array-type': 'off',
 		'@typescript-eslint/ban-ts-comment': 'off',
 		'@typescript-eslint/class-literal-property-style': 'off',
@@ -48,19 +49,6 @@ module.exports = {
 		'prefer-const': 'off',
 	},
 	overrides: [
-		{
-			// Ensure Node builtins aren't included in Astro's server runtime
-			files: ['packages/astro/src/runtime/**/*.ts'],
-			rules: {
-				'no-restricted-imports': [
-					'error',
-					{
-						paths: [...builtinModules],
-						patterns: ['node:*'],
-					},
-				],
-			},
-		},
 		{
 			files: ['packages/**/test/*.js', 'packages/**/*.js'],
 			env: {

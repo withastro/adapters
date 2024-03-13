@@ -28,7 +28,6 @@ env:
   # 7 GiB by default on GitHub, setting to 6 GiB
   # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
   NODE_OPTIONS: --max-old-space-size=6144
-
 jobs:
   # Build primes out Turbo build cache and pnpm cache
   build:
@@ -72,6 +71,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: build
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Disable git crlf
         run: git config --global core.autocrlf false
@@ -94,11 +96,8 @@ jobs:
       - name: Build Packages
         run: pnpm run build
 
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Format Check
-        run: pnpm run format --check
+      - name: CI checks (format and linting)
+        run: pnpm run ci
 
   test:
     name: "Test: ${{ matrix.os }} (node@${{ matrix.NODE_VERSION }})"
