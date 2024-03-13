@@ -11,7 +11,7 @@ export default defineConfig({
 				protocol: 'https',
 				hostname: 'images.unsplash.com',
 				pathname: '/photo-1567674867291-b2595ac53ab4',
-			}
-		]
-	}
+			},
+		],
+	},
 });

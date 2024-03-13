@@ -41,14 +41,14 @@ export function remotePatternToRegex({
 		regexStr += `${protocol}://`;
 	} else {
 		// Default to matching any protocol
-		regexStr += '[a-z]+://'; 
+		regexStr += '[a-z]+://';
 	}
 
 	if (hostname) {
 		if (hostname.startsWith('**.')) {
 			// match any number of subdomains
 			regexStr += '([a-z0-9]+\\.)*';
-			hostname = hostname.substring(3); 
+			hostname = hostname.substring(3);
 		} else if (hostname.startsWith('*.')) {
 			// match one subdomain
 			regexStr += '([a-z0-9]+\\.)?';
@@ -64,20 +64,20 @@ export function remotePatternToRegex({
 		regexStr += `:${port}`;
 	} else {
 		// Default to matching any port
-		regexStr += '(:[0-9]+)?'; 
+		regexStr += '(:[0-9]+)?';
 	}
 
 	if (pathname) {
 		if (pathname.endsWith('/**')) {
 			// Match any path. Return early because there's no need to add more to the regex
-			return  `${regexStr}(\\${pathname.replace('/**', '')}.*)`;
+			return `${regexStr}(\\${pathname.replace('/**', '')}.*)`;
 		}
 		if (pathname.endsWith('/*')) {
 			// Match one level of path
 			regexStr += `(\\${pathname.replace('/*', '')}\/[^/?#]+)\/?`;
 		} else {
 			// Exact match
-			regexStr += `(\\${pathname})`; 
+			regexStr += `(\\${pathname})`;
 		}
 	} else {
 		// Default to matching any path
