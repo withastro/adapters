@@ -62,7 +62,7 @@ export function remotePatternToRegex({
 	if (pathname) {
 		if (pathname.endsWith('/**')) {
 			// Match any path. Return early because there's no need to add more to the regex
-			return regexStr + `(\\${pathname.replace('/**', '')}.*)`;
+			return  `${regexStr}(\\${pathname.replace('/**', '')}.*)`;
 		}
 		if (pathname.endsWith('/*')) {
 			// Match one level of path
