@@ -26,6 +26,9 @@ const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {}
 
 type RemotePattern = AstroConfig['image']['remotePatterns'][number];
 
+/**
+ * Convert a remote pattern object to a regex string
+ */
 export function remotePatternToRegex({
 	protocol,
 	hostname,
@@ -37,17 +40,21 @@ export function remotePatternToRegex({
 	if (protocol) {
 		regexStr += `${protocol}://`;
 	} else {
-		regexStr += '[a-z]+://'; // Default to matching any protocol
+		// Default to matching any protocol
+		regexStr += '[a-z]+://'; 
 	}
 
 	if (hostname) {
 		if (hostname.startsWith('**.')) {
+			// match any number of subdomains
 			regexStr += '([a-z0-9]+\\.)*';
-			hostname = hostname.substring(3); // Remove '**.' from the beginning
+			hostname = hostname.substring(3); 
 		} else if (hostname.startsWith('*.')) {
+			// match one subdomain
 			regexStr += '([a-z0-9]+\\.)?';
 			hostname = hostname.substring(2); // Remove '*.' from the beginning
 		}
+		// Escape dots in the hostname
 		regexStr += hostname.replace(/\./g, '\\.');
 	} else {
 		regexStr += '[a-z0-9.-]+';
@@ -56,7 +63,8 @@ export function remotePatternToRegex({
 	if (port) {
 		regexStr += `:${port}`;
 	} else {
-		regexStr += '(:[0-9]+)?'; // Default to matching any port
+		// Default to matching any port
+		regexStr += '(:[0-9]+)?'; 
 	}
 
 	if (pathname) {
@@ -68,7 +76,8 @@ export function remotePatternToRegex({
 			// Match one level of path
 			regexStr += `(\\${pathname.replace('/*', '')}\/[^/?#]+)\/?`;
 		} else {
-			regexStr += `(\\${pathname})`; // Exact match
+			// Exact match
+			regexStr += `(\\${pathname})`; 
 		}
 	} else {
 		// Default to matching any path
@@ -81,9 +90,12 @@ export function remotePatternToRegex({
 
 async function writeNetlifyDeployConfig(config: AstroConfig) {
 	const remoteImages: Array<string> = [];
+	// Domains get a simple regex match
 	remoteImages.push(...config.image.domains.map((domain) => `https?:/\/${domain}\/.*`));
+	// Remote patterns need to be converted to regex
 	remoteImages.push(...config.image.remotePatterns.map(remotePatternToRegex));
 
+	// See https://docs.netlify.com/image-cdn/create-integration/
 	const deployConfigDir = new URL('.netlify/deploy/v1/', config.root);
 	await mkdir(deployConfigDir, { recursive: true });
 	await writeFile(
