@@ -35,7 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Format code
-        run: pnpm run ci
+        run: pnpm run format
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
