@@ -55,7 +55,7 @@ describe('Image CDN', () => {
 		});
 
 		it('generates remote image config patterns', async () => {
-			assert.equal(regexes?.length, 2);
+			assert.equal(regexes?.length, 3);
 		});
 
 		it('generates correct config for domains', async () => {
@@ -72,11 +72,22 @@ describe('Image CDN', () => {
 				true,
 				'subpath should match'
 			);
+			const subdomain = regexes[1];
+			assert.equal(
+				subdomain.test('https://secret.example.edu/image.jpg'),
+				true,
+				'should match subdomains'
+			);
+			assert.equal(
+				subdomain.test('https://secretxexample.edu/image.jpg'),
+				false,
+				'should not use dots in domains as wildcards'
+			);
 		});
 
 		it('generates correct config for remotePatterns', async () => {
-			const patterns = regexes[1];
-			assert.equal(patterns.test('https://example.org/images/1.jpg'), true);
+			const patterns = regexes[2];
+			assert.equal(patterns.test('https://example.org/images/1.jpg'), true, 'should match domain');
 			assert.equal(
 				patterns.test('https://www.example.org/images/2.jpg'),
 				true,

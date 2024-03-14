@@ -91,7 +91,9 @@ export function remotePatternToRegex({
 async function writeNetlifyDeployConfig(config: AstroConfig) {
 	const remoteImages: Array<string> = [];
 	// Domains get a simple regex match
-	remoteImages.push(...config.image.domains.map((domain) => `https?:/\/${domain}\/.*`));
+	remoteImages.push(
+		...config.image.domains.map((domain) => `https?:/\/${domain.replaceAll('.', '\\.')}\/.*`)
+	);
 	// Remote patterns need to be converted to regex
 	remoteImages.push(...config.image.remotePatterns.map(remotePatternToRegex));
 
