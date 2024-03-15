@@ -4,7 +4,7 @@ import type { IncomingMessage } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
-import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
+import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
@@ -29,12 +29,12 @@ type RemotePattern = AstroConfig['image']['remotePatterns'][number];
 /**
  * Convert a remote pattern object to a regex string
  */
-export function remotePatternToRegex({
-	protocol,
-	hostname,
-	port,
-	pathname,
-}: RemotePattern): string {
+export function remotePatternToRegex(
+	pattern: RemotePattern,
+	logger: AstroIntegrationLogger
+): string | undefined {
+	let { protocol, hostname, port, pathname } = pattern;
+
 	let regexStr = '';
 
 	if (protocol) {
@@ -69,8 +69,8 @@ export function remotePatternToRegex({
 
 	if (pathname) {
 		if (pathname.endsWith('/**')) {
-			// Match any path. Return early because there's no need to add more to the regex
-			return `${regexStr}(\\${pathname.replace('/**', '')}.*)`;
+			// Match any path.
+			regexStr += `(\\${pathname.replace('/**', '')}.*)`;
 		}
 		if (pathname.endsWith('/*')) {
 			// Match one level of path
@@ -83,19 +83,35 @@ export function remotePatternToRegex({
 		// Default to matching any path
 		regexStr += '(\\/[^?#]*)?';
 	}
-	// Match query
-	regexStr += '([?][^#]*)?';
+	if (!regexStr.endsWith('.*)')) {
+		// Match query, but only if it's not already matched by the pathname
+		regexStr += '([?][^#]*)?';
+	}
+	try {
+		new RegExp(regexStr);
+	} catch (e) {
+		logger.warn(
+			`Could not generate a valid regex from the remotePattern "${JSON.stringify(
+				pattern
+			)}". Please check the syntax.`
+		);
+		return undefined;
+	}
 	return regexStr;
 }
 
-async function writeNetlifyDeployConfig(config: AstroConfig) {
+async function writeNetlifyDeployConfig(config: AstroConfig, logger: AstroIntegrationLogger) {
 	const remoteImages: Array<string> = [];
 	// Domains get a simple regex match
 	remoteImages.push(
-		...config.image.domains.map((domain) => `https?:/\/${domain.replaceAll('.', '\\.')}\/.*`)
+		...config.image.domains.map((domain) => `https?:\/\/${domain.replaceAll('.', '\\.')}\/.*`)
 	);
-	// Remote patterns need to be converted to regex
-	remoteImages.push(...config.image.remotePatterns.map(remotePatternToRegex));
+	// Remote patterns need to be converted to regexes
+	remoteImages.push(
+		...config.image.remotePatterns
+			.map((pattern) => remotePatternToRegex(pattern, logger))
+			.filter(Boolean as unknown as (pattern?: string) => pattern is string)
+	);
 
 	// See https://docs.netlify.com/image-cdn/create-integration/
 	const deployConfigDir = new URL('.netlify/deploy/v1/', config.root);
@@ -350,12 +366,12 @@ export default function netlifyIntegration(
 					},
 				});
 			},
-			'astro:config:done': async ({ config, setAdapter }) => {
+			'astro:config:done': async ({ config, setAdapter, logger }) => {
 				rootDir = config.root;
 				_config = config;
 
 				if (config.image?.domains?.length || config.image?.remotePatterns?.length) {
-					await writeNetlifyDeployConfig(config);
+					await writeNetlifyDeployConfig(config, logger);
 				}
 
 				const edgeMiddleware = integrationConfig?.edgeMiddleware ?? false;

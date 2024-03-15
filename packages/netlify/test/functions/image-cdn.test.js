@@ -1,5 +1,6 @@
 import * as assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
+import { remotePatternToRegex } from '@astrojs/netlify';
 import { loadFixture } from '@astrojs/test-utils';
 
 describe('Image CDN', () => {
@@ -102,6 +103,26 @@ describe('Image CDN', () => {
 				patterns.test('https://example.org/not-images/2.jpg'),
 				false,
 				'wrong path should not match'
+			);
+		});
+
+		it('warns when remotepatterns generates an invalid regex', async (t) => {
+			const logger = {
+				warn: t.mock.fn(),
+			};
+			const regex = remotePatternToRegex(
+				{
+					hostname: '*.examp[le.org',
+					pathname: '/images/*',
+				},
+				logger
+			);
+			assert.strictEqual(regex, undefined);
+			const calls = logger.warn.mock.calls;
+			assert.strictEqual(calls.length, 1);
+			assert.equal(
+				calls[0].arguments[0],
+				'Could not generate a valid regex from the remotePattern "{"hostname":"*.examp[le.org","pathname":"/images/*"}". Please check the syntax.'
 			);
 		});
 	});
