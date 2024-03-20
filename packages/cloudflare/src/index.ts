@@ -21,10 +21,19 @@ import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 export type { DirectoryRuntime } from './entrypoints/server.directory.js';
 export type Options = {
+	/**
+	 * @deprecated This option is deprecated and will be removed in v10. Official support for `mode: 'directory'` will be dropped in v10.
+	 */
 	mode?: 'directory' | 'advanced';
+	/**
+	 * @deprecated This option is deprecated and will be removed in v10. Official support for `functionPerRoute: true` will be dropped in v10.
+	 */
 	functionPerRoute?: boolean;
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
-	/** Configure automatic `routes.json` generation */
+	/**
+	 * Configure automatic `routes.json` generation
+	 * @deprecated This option is deprecated and will be removed in v10. You can still create a custom `_routes.json` file, use cli to generate a base `_routes.json` or let the adapter generate one for you during build.
+	 * */
 	routes?: {
 		/** Strategy for generating `include` and `exclude` patterns
 		 * - `auto`: Will use the strategy that generates the least amount of entries.
@@ -40,6 +49,7 @@ export type Options = {
 	/**
 	 * { mode: 'off' }: current behaviour (wrangler is needed)
 	 * { mode: 'local', ... }: adds cf request object, locals bindings, env vars/secrets which are defined by the user to `astro.dev` with `Astro.locals.runtime` / `context.locals.runtime`
+	 * @deprecated This option is deprecated and will be removed in v10. v10 will introduce a new setting for this: `platformProxy`
 	 */
 	runtime?:
 		| { mode: 'off' }
