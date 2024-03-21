@@ -1,0 +1,20 @@
+---
+export const partial = true;
+---
+
+<div>
+	<button onclick="fetchHome(this)">Env</button>
+	<button>D1</button>
+</div>
+
+<script is:inline>
+	var fetchHome = function (element) {
+		console.log(element.getRootNode());
+		fetch('/_dev-toolbar-app/cloudflare/home')
+			.then((res) => res.text())
+			.then((html) => {
+				const el = document.createRange().createContextualFragment(html);
+				element.getRootNode().querySelector('#target').replaceChildren(el);
+			});
+	};
+</script>
