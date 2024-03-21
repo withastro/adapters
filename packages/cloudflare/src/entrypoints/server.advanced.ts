@@ -1,6 +1,6 @@
 import type {
-	Request as CLOUDFLARE_REQUEST,
 	CacheStorage as CLOUDFLARE_CACHESTORAGE,
+	Request as CLOUDFLARE_REQUEST,
 	ExecutionContext,
 } from '@cloudflare/workers-types';
 import type { SSRManifest } from 'astro';
@@ -23,7 +23,11 @@ export interface AdvancedRuntime<T extends object = object> {
 export function createExports(manifest: SSRManifest) {
 	const app = new App(manifest);
 
-	const fetch = async (request: Request & CFRequest, env: Env, context: ExecutionContext) => {
+	const fetch = async (
+		request: Request & CLOUDFLARE_REQUEST,
+		env: Env,
+		context: ExecutionContext
+	) => {
 		// TODO: remove this any cast in the future
 		// REF: the type cast to any is needed because the Cloudflare Env Type is not assignable to type 'ProcessEnv'
 		process.env = env as any;

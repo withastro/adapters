@@ -7,15 +7,15 @@ import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
 import glob from 'tiny-glob';
 import { getPlatformProxy } from 'wrangler';
-import { getAdapter } from './getAdapter.js';
 import { deduplicatePatterns } from './utils/deduplicatePatterns.js';
-import { prepareImageConfig } from './utils/image-config.js';
+import { setImageConfig } from './utils/image-config.js';
 import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 
 export type Options = {
+	/** Options for handling images. */
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
 	routes?: {
 		/**
@@ -44,20 +44,12 @@ export type Options = {
 		/** Configuration persistence settings. Default '.wrangler/state/v3' */
 		persist?: boolean | { path: string };
 	};
+	/** Enable WebAssembly support */
 	wasmModuleImports?: boolean;
 };
 
-interface BuildConfig {
-	server: URL;
-	client: URL;
-	assets: string;
-	serverEntry: string;
-	split?: boolean;
-}
-
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
-	let _buildConfig: BuildConfig;
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -65,7 +57,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 			'astro:config:setup': ({ command, config, updateConfig, logger }) => {
 				updateConfig({
 					build: {
-						client: new URL(`.${config.base}`, config.outDir),
+						client: new URL(`.${config.base}/`, config.outDir),
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
 						redirects: false,
@@ -78,19 +70,38 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							}),
 						],
 					},
-					image: prepareImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
+					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
 				});
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
-				setAdapter(getAdapter());
 				_config = config;
-				_buildConfig = config.build;
 
-				if (_config.output === 'static') {
+				if (config.output === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
 					);
 				}
+
+				setAdapter({
+					name: '@astrojs/cloudflare',
+					serverEntrypoint: '@astrojs/cloudflare/entrypoints/server.advanced.js',
+					exports: ['default'],
+					adapterFeatures: {
+						functionPerRoute: false,
+						edgeMiddleware: false,
+					},
+					supportedAstroFeatures: {
+						serverOutput: 'stable',
+						hybridOutput: 'stable',
+						staticOutput: 'unsupported',
+						i18nDomains: 'experimental',
+						assets: {
+							supportKind: 'stable',
+							isSharpCompatible: false,
+							isSquooshCompatible: false,
+						},
+					},
+				});
 			},
 			'astro:server:setup': async ({ server, logger }) => {
 				if (args?.platformProxy?.enabled === true) {
@@ -146,7 +157,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
 					vite.ssr.noExternal = true;
-					vite.ssr.external = _config.vite?.ssr?.external ?? [];
+					vite.ssr.external = _config.vite.ssr?.external ?? [];
 
 					vite.build ||= {};
 					vite.build.rollupOptions ||= {};
@@ -154,14 +165,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					// @ts-expect-error
 					vite.build.rollupOptions.output.banner ||= 'globalThis.process ??= {};';
 
-					vite.build.rollupOptions.external = _config.vite?.build?.rollupOptions?.external ?? [];
-
-					// Cloudflare env is only available per request. This isn't feasible for code that access env vars
-					// in a global way, so we shim their access as `process.env.*`. This is not the recommended way for users to access environment variables. But we'll add this for compatibility for chosen variables. Mainly to support `@astrojs/db`
-					vite.define = {
-						'process.env': 'process.env',
-						...vite.define,
-					};
+					vite.build.rollupOptions.external = _config.vite.build?.rollupOptions?.external ?? [];
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir }) => {
@@ -172,7 +176,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					for (const file of cloudflareSpecialFiles) {
 						try {
 							await fs.promises.rename(
-								new URL(file, _buildConfig.client),
+								new URL(file, _config.build.client),
 								new URL(file, _config.outDir)
 							);
 						} catch (e) {
@@ -219,7 +223,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						});
 
 					const staticPathList: Array<string> = (
-						await glob(`${fileURLToPath(_buildConfig.client)}/**/*`, {
+						await glob(`${fileURLToPath(_config.build.client)}/**/*`, {
 							cwd: fileURLToPath(_config.outDir),
 							filesOnly: true,
 							dot: true,
