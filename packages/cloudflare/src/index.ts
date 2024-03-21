@@ -8,6 +8,7 @@ import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
 import esbuild from 'esbuild';
 import glob from 'tiny-glob';
+import { getPlatformProxy } from 'wrangler';
 import { getAdapter } from './getAdapter.js';
 import { deduplicatePatterns } from './utils/deduplicatePatterns.js';
 import { prepareImageConfig } from './utils/image-config.js';
@@ -15,7 +16,6 @@ import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { rewriteWasmImportPath } from './utils/rewriteWasmImportPath.js';
 import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
-import { getPlatformProxy } from 'wrangler';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 
