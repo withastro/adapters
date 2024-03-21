@@ -30,12 +30,10 @@
   "dependencies": {
     "@astrojs/underscore-redirects": "^0.3.3",
     "@cloudflare/workers-types": "^4.20240320.1",
-    "miniflare": "^3.20240314.0",
-    "@iarna/toml": "^2.2.5",
-    "dotenv": "^16.3.1",
+    "miniflare": "^3.20240320.0",
     "esbuild": "^0.19.5",
-    "find-up": "^6.3.0",
-    "tiny-glob": "^0.2.9"
+    "tiny-glob": "^0.2.9",
+    "wrangler": "^3.36.0"
   },
   "peerDependencies": {
     "astro": "^4.2.0"
@@ -43,11 +41,9 @@
   "devDependencies": {
     "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
-    "@types/iarna__toml": "^2.0.2",
     "strip-ansi": "^7.1.0",
     "astro": "^4.5.8",
     "cheerio": "1.0.0-rc.12",
-    "wrangler": "^3.36.0",
     "@astrojs/test-utils": "workspace:*",
     "astro-scripts": "workspace:*"
   },

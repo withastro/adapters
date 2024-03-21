@@ -1,5 +1,4 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
-import type { LocalPagesRuntime, LocalWorkersRuntime, RUNTIME } from './utils/local-runtime.js';
 
 import * as fs from 'node:fs';
 import * as os from 'node:os';
@@ -12,11 +11,11 @@ import glob from 'tiny-glob';
 import { getAdapter } from './getAdapter.js';
 import { deduplicatePatterns } from './utils/deduplicatePatterns.js';
 import { prepareImageConfig } from './utils/image-config.js';
-import { getLocalRuntime, getRuntimeConfig } from './utils/local-runtime.js';
 import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { rewriteWasmImportPath } from './utils/rewriteWasmImportPath.js';
 import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
+import { getPlatformProxy } from 'wrangler';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 
@@ -37,21 +36,18 @@ export type Options = {
 		exclude?: string[];
 	};
 	/**
-	 * @deprecated Removed in v10. Configure bindings in `wrangler.toml`. Leveraging Cloudflare's API simplifies setup and ensures full compatibility with Wrangler configurations. Use `platformProxy` instead.
+	 * Proxy configuration for the platform.
 	 */
-	runtime?:
-		| { mode: 'off' }
-		| {
-				mode: Extract<RUNTIME, { type: 'pages' }>['mode'];
-				type: Extract<RUNTIME, { type: 'pages' }>['type'];
-				persistTo?: Extract<RUNTIME, { type: 'pages' }>['persistTo'];
-				bindings?: Extract<RUNTIME, { type: 'pages' }>['bindings'];
-		  }
-		| {
-				mode: Extract<RUNTIME, { type: 'workers' }>['mode'];
-				type: Extract<RUNTIME, { type: 'workers' }>['type'];
-				persistTo?: Extract<RUNTIME, { type: 'workers' }>['persistTo'];
-		  };
+	platformProxy?: {
+		/** Toggle the proxy. Default `undefined`, which equals to `false`. */
+		enabled?: boolean;
+		/** Path to the configuration file. Default `wrangler.toml`. */
+		configPath?: string;
+		/** Enable experimental support for JSON configuration. Default `false`. */
+		experimentalJsonConfig?: boolean;
+		/** Configuration persistence settings. Default '.wrangler/state/v3' */
+		persist?: boolean | { path: string };
+	};
 	wasmModuleImports?: boolean;
 };
 
@@ -66,11 +62,8 @@ interface BuildConfig {
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 	let _buildConfig: BuildConfig;
-	let _localRuntime: LocalPagesRuntime | LocalWorkersRuntime;
 
 	const SERVER_BUILD_FOLDER = '/$server_build/';
-
-	const runtimeMode = getRuntimeConfig(args?.runtime);
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -112,39 +105,27 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					);
 				}
 			},
-			'astro:server:setup': ({ server, logger }) => {
-				if (runtimeMode.mode === 'local') {
+			'astro:server:setup': async ({ server, logger }) => {
+				if (args?.platformProxy?.enabled === true) {
+					const platformProxy = await getPlatformProxy({
+						configPath: args.platformProxy.configPath ?? 'wrangler.toml',
+						experimentalJsonConfig: args.platformProxy.experimentalJsonConfig ?? false,
+						persist: args.platformProxy.persist ?? true,
+					});
+
+					const clientLocalsSymbol = Symbol.for('astro.locals');
+
 					server.middlewares.use(async function middleware(req, res, next) {
-						_localRuntime = getLocalRuntime(_config, runtimeMode, logger);
-
-						const bindings = await _localRuntime.getBindings();
-						const secrets = await _localRuntime.getSecrets();
-						const caches = await _localRuntime.getCaches();
-						const cf = await _localRuntime.getCF();
-
-						const clientLocalsSymbol = Symbol.for('astro.locals');
 						Reflect.set(req, clientLocalsSymbol, {
 							runtime: {
-								env: {
-									CF_PAGES_URL: `http://${req.headers.host}`,
-									...bindings,
-									...secrets,
-								},
-								cf: cf,
-								caches: caches,
-								waitUntil: (_promise: Promise<any>) => {
-									return;
-								},
+								env: platformProxy.env,
+								cf: platformProxy.cf,
+								caches: platformProxy.caches,
+								ctx: platformProxy.ctx,
 							},
 						});
 						next();
 					});
-				}
-			},
-			'astro:server:done': async ({ logger }) => {
-				if (_localRuntime) {
-					logger.info('Cleaning up the local Cloudflare runtime.');
-					await _localRuntime.dispose();
 				}
 			},
 			'astro:build:setup': ({ vite, target }) => {
