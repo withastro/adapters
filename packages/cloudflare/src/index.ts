@@ -22,34 +22,30 @@ export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 export type { DirectoryRuntime } from './entrypoints/server.directory.js';
 export type Options = {
 	/**
-	 * @deprecated This option is deprecated and will be removed in v10. Official support for `mode: 'directory'` will be dropped in v10.
+	 * @deprecated Removed in v10. The 'directory' mode was discontinued because it redundantly bundles code, slowing down your site. Prefer using Astro API Endpoints over `/functions`. The new default mode is 'advanced'.
 	 */
 	mode?: 'directory' | 'advanced';
 	/**
-	 * @deprecated This option is deprecated and will be removed in v10. Official support for `functionPerRoute: true` will be dropped in v10.
+	 * @deprecated Removed in v10. This setting is obsolete as Cloudflare handles all functions in a single execution context, negating the need for multiple functions per project.
 	 */
 	functionPerRoute?: boolean;
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
-	/**
-	 * Configure automatic `routes.json` generation
-	 * @deprecated This option is deprecated and will be removed in v10. You can still create a custom `_routes.json` file, use cli to generate a base `_routes.json` or let the adapter generate one for you during build.
-	 * */
 	routes?: {
-		/** Strategy for generating `include` and `exclude` patterns
-		 * - `auto`: Will use the strategy that generates the least amount of entries.
-		 * - `include`: For each page or endpoint in your application that is not prerendered, an entry in the `include` array will be generated. For each page that is prerendered and whoose path is matched by an `include` entry, an entry in the `exclude` array will be generated.
-		 * - `exclude`: One `"/*"` entry in the `include` array will be generated. For each page that is prerendered, an entry in the `exclude` array will be generated.
-		 * */
+		/**
+		 * @deprecated Removed in v10. You will have two options going forward, using auto generated `_route.json` file or provide your own one in `public/_routes.json`. The previous method caused confusion and inconsistencies.
+		 */
 		strategy?: 'auto' | 'include' | 'exclude';
-		/** Additional `include` patterns */
+		/**
+		 * @deprecated Removed in v10. Use `routes.extend.include` instead.
+		 */
 		include?: string[];
-		/** Additional `exclude` patterns */
+		/**
+		 * @deprecated Removed in v10. Use `routes.extend.exclude` instead.
+		 */
 		exclude?: string[];
 	};
 	/**
-	 * { mode: 'off' }: current behaviour (wrangler is needed)
-	 * { mode: 'local', ... }: adds cf request object, locals bindings, env vars/secrets which are defined by the user to `astro.dev` with `Astro.locals.runtime` / `context.locals.runtime`
-	 * @deprecated This option is deprecated and will be removed in v10. v10 will introduce a new setting for this: `platformProxy`
+	 * @deprecated Removed in v10. Configure bindings in `wrangler.toml`. Leveraging Cloudflare's API simplifies setup and ensures full compatibility with Wrangler configurations. Use `platformProxy` instead.
 	 */
 	runtime?:
 		| { mode: 'off' }
