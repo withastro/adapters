@@ -1,15 +1,14 @@
-import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
+import type { AstroConfig, AstroIntegration, RouteData, RoutePart } from 'astro';
 
-import * as fs from 'node:fs';
-import * as os from 'node:os';
-import { fileURLToPath } from 'node:url';
+import { createReadStream } from 'node:fs';
+import { appendFile, rename, stat } from 'node:fs/promises';
+import { createInterface } from 'node:readline/promises';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
-import glob from 'tiny-glob';
 import { getPlatformProxy } from 'wrangler';
-import { deduplicatePatterns } from './utils/deduplicatePatterns.js';
+import { removeLeadingForwardSlash } from './utils/assets.js';
+import { default as createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
-import { prependForwardSlash } from './utils/prependForwardSlash.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
@@ -17,19 +16,29 @@ export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 export type Options = {
 	/** Options for handling images. */
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
+	/** Configuration for `_routes.json` generation. A _routes.json file controls when your Function is invoked. This file will include three different properties:
+	 *
+	 * - version: Defines the version of the schema. Currently there is only one version of the schema (version 1), however, we may add more in the future and aim to be backwards compatible.
+	 * - include: Defines routes that will be invoked by Functions. Accepts wildcard behavior.
+	 * - exclude: Defines routes that will not be invoked by Functions. Accepts wildcard behavior. `exclude` always take priority over `include`.
+	 *
+	 * Wildcards match any number of path segments (slashes). For example, `/users/*` will match everything after the `/users/` path.
+	 *
+	 */
 	routes?: {
-		/**
-		 * @deprecated Removed in v10. You will have two options going forward, using auto generated `_route.json` file or provide your own one in `public/_routes.json`. The previous method caused confusion and inconsistencies.
-		 */
-		strategy?: 'auto' | 'include' | 'exclude';
-		/**
-		 * @deprecated Removed in v10. Use `routes.extend.include` instead.
-		 */
-		include?: string[];
-		/**
-		 * @deprecated Removed in v10. Use `routes.extend.exclude` instead.
-		 */
-		exclude?: string[];
+		/** Extend `_routes.json` */
+		extend: {
+			/** Paths which should be routed to the SSR function */
+			include?: {
+				/** Generally this is in pathname format, but does support wildcards, e.g. `/users`, `/products/*` */
+				pattern: string;
+			}[];
+			/** Paths which should be routed as static assets */
+			exclude?: {
+				/** Generally this is in pathname format, but does support wildcards, e.g. `/static`, `/assets/*`, `/images/avatar.jpg` */
+				pattern: string;
+			}[];
+		};
 	};
 	/**
 	 * Proxy configuration for the platform.
@@ -177,227 +186,88 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir }) => {
-				// move cloudflare specific files to the root
-				const cloudflareSpecialFiles = ['_headers', '_redirects', '_routes.json'];
-
 				if (_config.base !== '/') {
-					for (const file of cloudflareSpecialFiles) {
+					for (const file of ['_headers', '_redirects', '_routes.json']) {
 						try {
-							await fs.promises.rename(
-								new URL(file, _config.build.client),
-								new URL(file, _config.outDir)
-							);
+							await rename(new URL(file, _config.build.client), new URL(file, _config.outDir));
 						} catch (e) {
 							// ignore
 						}
 					}
 				}
 
-				const routesExists = await fs.promises
-					.stat(new URL('./_routes.json', _config.outDir))
-					.then((stat) => stat.isFile())
-					.catch(() => false);
-
-				// this creates a _routes.json, in case there is none present to enable
-				// cloudflare to handle static files and support _redirects configuration
-				if (!routesExists) {
-					/**
-					 * These route types are candiates for being part of the `_routes.json` `include` array.
-					 */
-					let notFoundIsSSR = false;
-					const potentialFunctionRouteTypes = ['endpoint', 'page'];
-					const functionEndpoints = routes
-						// Certain route types, when their prerender option is set to false, run on the server as function invocations
-						.filter((route) => potentialFunctionRouteTypes.includes(route.type) && !route.prerender)
-						.map((route) => {
-							if (route.component === 'src/pages/404.astro' && route.prerender === false)
-								notFoundIsSSR = true;
-							const includePattern = `/${route.segments
-								.flat()
-								.map((segment) => (segment.dynamic ? '*' : segment.content))
-								.join('/')}`;
-
-							const regexp = new RegExp(
-								`^\\/${route.segments
-									.flat()
-									.map((segment) => (segment.dynamic ? '(.*)' : segment.content))
-									.join('\\/')}$`
-							);
-
-							return {
-								includePattern,
-								regexp,
-							};
-						});
-
-					const staticPathList: Array<string> = (
-						await glob(`${fileURLToPath(_config.build.client)}/**/*`, {
-							cwd: fileURLToPath(_config.outDir),
-							filesOnly: true,
-							dot: true,
-						})
-					)
-						.filter((file: string) => cloudflareSpecialFiles.indexOf(file) < 0)
-						.map((file: string) => `/${file.replace(/\\/g, '/')}`);
-
-					for (const page of pages) {
-						let pagePath = prependForwardSlash(page.pathname);
-						if (_config.base !== '/') {
-							const base = _config.base.endsWith('/') ? _config.base.slice(0, -1) : _config.base;
-							pagePath = `${base}${pagePath}`;
-						}
-						staticPathList.push(pagePath);
+				let redirectsExists = false;
+				try {
+					const redirectsStat = await stat(new URL('./_redirects', _config.outDir));
+					if (redirectsStat.isFile()) {
+						redirectsExists = true;
 					}
+				} catch (error) {
+					redirectsExists = false;
+				}
 
-					const redirectsExists = await fs.promises
-						.stat(new URL('./_redirects', _config.outDir))
-						.then((stat) => stat.isFile())
-						.catch(() => false);
+				const redirects: RoutePart[][][] = [];
+				if (redirectsExists) {
+					const rl = createInterface({
+						input: createReadStream(new URL('./_redirects', _config.outDir)),
+						crlfDelay: Number.POSITIVE_INFINITY,
+					});
 
-					// convert all redirect source paths into a list of routes
-					// and add them to the static path
-					if (redirectsExists) {
-						const redirects = (
-							await fs.promises.readFile(new URL('./_redirects', _config.outDir), 'utf-8')
-						)
-							.split(os.EOL)
-							.map((line) => {
-								const parts = line.split(' ');
-								if (parts.length < 2) {
-									return null;
-								}
-								// convert /products/:id to /products/*
-								return (
-									parts[0]
+					for await (const line of rl) {
+						const parts = line.split(' ');
+						if (parts.length >= 2) {
+							const p = removeLeadingForwardSlash(parts[0])
+								.split('/')
+								.filter(Boolean)
+								.map((s: string) => {
+									const syntax = s
 										.replace(/\/:.*?(?=\/|$)/g, '/*')
 										// remove query params as they are not supported by cloudflare
-										.replace(/\?.*$/, '')
-								);
-							})
-							.filter(
-								(line, index, arr) => line !== null && arr.indexOf(line) === index
-							) as string[];
-
-						if (redirects.length > 0) {
-							staticPathList.push(...redirects);
+										.replace(/\?.*$/, '');
+									return getParts(syntax);
+								});
+							redirects.push(p);
 						}
 					}
+				}
 
-					const redirectRoutes: [RouteData, string][] = routes
-						.filter((r) => r.type === 'redirect')
-						.map((r) => {
-							return [r, ''];
-						});
-					const trueRedirects = createRedirectsFromAstroRoutes({
-						config: _config,
-						routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
-						dir,
-					});
-					if (!trueRedirects.empty()) {
-						await fs.promises.appendFile(
-							new URL('./_redirects', _config.outDir),
-							trueRedirects.print()
-						);
+				let routesExists = false;
+				try {
+					const routesStat = await stat(new URL('./_routes.json', _config.outDir));
+					if (routesStat.isFile()) {
+						routesExists = true;
 					}
+				} catch (error) {
+					routesExists = false;
+				}
 
-					staticPathList.push(...routes.filter((r) => r.type === 'redirect').map((r) => r.route));
+				if (!routesExists) {
+					await createRoutesFile(
+						_config,
+						routes,
+						pages,
+						redirects,
+						args?.routes?.extend?.include,
+						args?.routes?.extend?.exclude
+					);
+				}
 
-					const strategy = args?.routes?.strategy ?? 'auto';
+				const redirectRoutes: [RouteData, string][] = [];
+				for (const route of routes) {
+					if (route.type === 'redirect') redirectRoutes.push([route, '']);
+				}
 
-					// Strategy `include`: include all function endpoints, and then exclude static paths that would be matched by an include pattern
-					const includeStrategy =
-						strategy === 'exclude'
-							? undefined
-							: {
-									include: deduplicatePatterns(
-										functionEndpoints
-											.map((endpoint) => endpoint.includePattern)
-											.concat(args?.routes?.include ?? [])
-									),
-									exclude: deduplicatePatterns(
-										staticPathList
-											.filter((file: string) =>
-												functionEndpoints.some((endpoint) => endpoint.regexp.test(file))
-											)
-											.concat(args?.routes?.exclude ?? [])
-									),
-							  };
+				const trueRedirects = createRedirectsFromAstroRoutes({
+					config: _config,
+					routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
+					dir,
+				});
 
-					// Cloudflare requires at least one include pattern:
-					// https://developers.cloudflare.com/pages/platform/functions/routing/#limits
-					// So we add a pattern that we immediately exclude again
-					if (includeStrategy?.include.length === 0) {
-						includeStrategy.include = ['/'];
-						includeStrategy.exclude = ['/'];
-					}
-
-					// Strategy `exclude`: include everything, and then exclude all static paths
-					const excludeStrategy =
-						strategy === 'include'
-							? undefined
-							: {
-									include: ['/*'],
-									exclude: deduplicatePatterns(staticPathList.concat(args?.routes?.exclude ?? [])),
-							  };
-
-					switch (args?.routes?.strategy) {
-						case 'include':
-							await fs.promises.writeFile(
-								new URL('./_routes.json', _config.outDir),
-								JSON.stringify(
-									{
-										version: 1,
-										...includeStrategy,
-									},
-									null,
-									2
-								)
-							);
-							break;
-
-						case 'exclude':
-							await fs.promises.writeFile(
-								new URL('./_routes.json', _config.outDir),
-								JSON.stringify(
-									{
-										version: 1,
-										...excludeStrategy,
-									},
-									null,
-									2
-								)
-							);
-							break;
-
-						default:
-							{
-								const includeStrategyLength = includeStrategy
-									? includeStrategy.include.length + includeStrategy.exclude.length
-									: Number.POSITIVE_INFINITY;
-
-								const excludeStrategyLength = excludeStrategy
-									? excludeStrategy.include.length + excludeStrategy.exclude.length
-									: Number.POSITIVE_INFINITY;
-
-								const winningStrategy = notFoundIsSSR
-									? excludeStrategy
-									: includeStrategyLength <= excludeStrategyLength
-									  ? includeStrategy
-									  : excludeStrategy;
-
-								await fs.promises.writeFile(
-									new URL('./_routes.json', _config.outDir),
-									JSON.stringify(
-										{
-											version: 1,
-											...winningStrategy,
-										},
-										null,
-										2
-									)
-								);
-							}
-							break;
+				if (!trueRedirects.empty()) {
+					try {
+						await appendFile(new URL('./_redirects', _config.outDir), trueRedirects.print());
+					} catch (error) {
+						// TODO
 					}
 				}
 			},
