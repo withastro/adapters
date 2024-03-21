@@ -5,5 +5,5 @@ export default defineConfig({
 	adapter: cloudflare({
 		wasmModuleImports: true
 	}),
-	output: 'server'
+	output: 'hybrid'
 });
