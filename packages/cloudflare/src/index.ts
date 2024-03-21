@@ -67,7 +67,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
-			'astro:config:setup': ({ command, config, updateConfig, logger }) => {
+			'astro:config:setup': ({
+				command,
+				config,
+				updateConfig,
+				logger,
+				addDevToolbarApp,
+				injectRoute,
+			}) => {
 				updateConfig({
 					build: {
 						client: new URL(
@@ -88,6 +95,19 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
 				});
+
+				// MARK: Dev Toolbar App
+				if (command === 'dev') {
+					addDevToolbarApp('@astrojs/cloudflare/dev-toolbar-app');
+					injectRoute({
+						pattern: '/_dev-toolbar-app/cloudflare/tabs',
+						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/tabs.astro',
+					});
+					injectRoute({
+						pattern: '/_dev-toolbar-app/cloudflare/home',
+						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/test.astro',
+					});
+				}
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
 				_config = config;

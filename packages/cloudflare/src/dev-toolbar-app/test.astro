@@ -1,0 +1,15 @@
+---
+export const partial = true;
+
+const { env } = Astro.locals.runtime;
+---
+
+<pre onclick="me(this)">
+  {JSON.stringify(env, null, 2)}
+</pre>
+
+<script is:inline>
+	var me = function (element) {
+		console.log('me');
+	};
+</script>

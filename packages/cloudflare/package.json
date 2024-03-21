@@ -20,11 +20,14 @@
     "./entrypoints/server.directory.js": "./dist/entrypoints/server.directory.js",
     "./image-service": "./dist/entrypoints/image-service.js",
     "./image-endpoint": "./dist/entrypoints/image-endpoint.js",
+    "./dev-toolbar-app": "./dist/entrypoints/dev-toolbar-app.js",
+    "./dev-toolbar-app/tabs.astro": "./dist/dev-toolbar-app/tabs.astro",
+    "./dev-toolbar-app/test.astro": "./dist/dev-toolbar-app/test.astro",
     "./package.json": "./package.json"
   },
   "files": ["dist"],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && copyfiles -u 1 src/dev-toolbar-app/*.astro dist/",
     "test": "astro-scripts test \"test/**/*.test.js\""
   },
   "dependencies": {
@@ -46,7 +49,9 @@
     "astro": "^4.5.8",
     "cheerio": "1.0.0-rc.12",
     "@astrojs/test-utils": "workspace:*",
-    "astro-scripts": "workspace:*"
+    "astro-scripts": "workspace:*",
+    "rimraf": "^5.0.5",
+    "copyfiles": "^2.4.1"
   },
   "publishConfig": {
     "provenance": true
