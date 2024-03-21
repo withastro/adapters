@@ -21,10 +21,6 @@ import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
 
 export type Options = {
-	/**
-	 * @deprecated Removed in v10. This setting is obsolete as Cloudflare handles all functions in a single execution context, negating the need for multiple functions per project.
-	 */
-	functionPerRoute?: boolean;
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
 	routes?: {
 		/**
@@ -74,8 +70,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 	const SERVER_BUILD_FOLDER = '/$server_build/';
 
-	const functionPerRoute = args?.functionPerRoute ?? false;
-
 	const runtimeMode = getRuntimeConfig(args?.runtime);
 
 	return {
@@ -102,7 +96,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
-				setAdapter(getAdapter({ functionPerRoute }));
+				setAdapter(getAdapter());
 				_config = config;
 				_buildConfig = config.build;
 
