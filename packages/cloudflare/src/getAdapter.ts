@@ -1,10 +1,8 @@
 import type { AstroAdapter, AstroFeatureMap } from 'astro';
 
 export function getAdapter({
-	isModeDirectory,
 	functionPerRoute,
 }: {
-	isModeDirectory: boolean;
 	functionPerRoute: boolean;
 }): AstroAdapter {
 	const astroFeatures: AstroFeatureMap = {
@@ -17,19 +15,6 @@ export function getAdapter({
 			isSquooshCompatible: false,
 		},
 	};
-
-	if (isModeDirectory) {
-		return {
-			name: '@astrojs/cloudflare',
-			serverEntrypoint: '@astrojs/cloudflare/entrypoints/server.directory.js',
-			exports: ['onRequest', 'manifest'],
-			adapterFeatures: {
-				functionPerRoute,
-				edgeMiddleware: false,
-			},
-			supportedAstroFeatures: astroFeatures,
-		};
-	}
 
 	return {
 		name: '@astrojs/cloudflare',

@@ -5,7 +5,7 @@ import cloudflare from '../dist/index.js';
 
 /** @type {import('./test-utils.js').Fixture} */
 describe('_routes.json generation', () => {
-	for (const mode of ['directory', 'advanced']) {
+	for (const mode of ['advanced']) {
 		for (const functionPerRoute of [false, true]) {
 			describe(`with mode=${mode}, functionPerRoute=${functionPerRoute}`, () => {
 				describe('of both functions and static files', () => {
