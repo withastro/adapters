@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   adapter: cloudflare({
-    mode: 'directory', 
+    mode: 'advanced', 
     functionPerRoute: true
   }),
   output: 'server',
