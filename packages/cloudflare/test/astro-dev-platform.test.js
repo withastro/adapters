@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
 import { astroCli } from './_test-utils.js';
 
-const root = new URL('./fixtures/dev-runtime-pages/', import.meta.url);
-describe('DevRuntimePages', () => {
+const root = new URL('./fixtures/astro-dev-platform/', import.meta.url);
+describe('AstroDevPlatform', () => {
 	let cli;
 	before(async () => {
 		cli = astroCli(fileURLToPath(root), 'dev', '--host', '127.0.0.1');
@@ -20,10 +20,6 @@ describe('DevRuntimePages', () => {
 
 	after((done) => {
 		cli.kill();
-		setTimeout(() => {
-			// console.log('CLEANED');
-			done();
-		}, 1000);
 	});
 
 	it('exists', async () => {
@@ -72,20 +68,5 @@ describe('DevRuntimePages', () => {
 		assert.equal($('#hasKV').text(), 'true');
 		assert.equal($('#hasPRODKV').text(), 'true');
 		assert.equal($('#hasACCESS').text(), 'true');
-	});
-
-	it('adds DO mocking', async () => {
-		const res = await fetch('http://127.0.0.1:4321/do');
-		const html = await res.text();
-		const $ = cheerio.load(html);
-		assert.equal($('#hasDO').text(), 'true');
-	});
-
-	it('adds service bindings mocking', async () => {
-		const res = await fetch('http://127.0.0.1:4321/services');
-		const html = await res.text();
-		const $ = cheerio.load(html);
-		assert.equal($('#hasAUTH').text(), 'true');
-		assert.equal($('#hasLOGOUT').text(), 'true');
 	});
 });

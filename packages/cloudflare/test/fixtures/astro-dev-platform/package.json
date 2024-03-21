@@ -1,5 +1,5 @@
 {
-  "name": "@test/astro-cloudflare-dev-runtime-pages",
+  "name": "@test/astro-cloudflare-astro-dev-platform",
   "version": "0.0.0",
   "private": true,
   "dependencies": {

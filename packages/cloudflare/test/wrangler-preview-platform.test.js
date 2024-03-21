@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
 import { astroCli, wranglerCli } from './_test-utils.js';
 
-const root = new URL('./fixtures/wrangler-runtime/', import.meta.url);
+const root = new URL('./fixtures/wrangler-preview-platform/', import.meta.url);
 
-describe('WragnlerRuntime', () => {
+describe('WranglerPreviewPlatform', () => {
 	let wrangler;
 
 	before(async () => {
@@ -26,10 +26,6 @@ describe('WragnlerRuntime', () => {
 
 	after((done) => {
 		wrangler.kill();
-		setTimeout(() => {
-			// console.log('CLEANED');
-			done();
-		}, 1000);
 	});
 
 	it('exists', async () => {
