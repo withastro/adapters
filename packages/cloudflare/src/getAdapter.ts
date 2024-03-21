@@ -1,10 +1,6 @@
 import type { AstroAdapter, AstroFeatureMap } from 'astro';
 
-export function getAdapter({
-	functionPerRoute,
-}: {
-	functionPerRoute: boolean;
-}): AstroAdapter {
+export function getAdapter(): AstroAdapter {
 	const astroFeatures: AstroFeatureMap = {
 		hybridOutput: 'stable',
 		staticOutput: 'unsupported',
