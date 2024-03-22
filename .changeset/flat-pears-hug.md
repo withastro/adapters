@@ -18,7 +18,7 @@ _(Full documentation to help you migrate your project to the upgraded Cloudflare
 
 - **`routes.exclude`:** Will be replaced by a new `routes.extend.exclude` option to allow you to exclude additional routes.
 
-- **`runtime`:** Local runtime bindings will be configured in `wrangler.toml` at the root of your project as described in the [adapters documentation](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-workers). You will no longer configure these directly in the adapter configuration. A new `platformProxy` setting will be introduced to... (WHAT IS THIS???)
+- **`runtime`:** Local runtime bindings will be configured in `wrangler.toml` at the root of your project as described in the [adapters documentation](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-workers). You will no longer configure these directly in the adapter configuration. A new `platformProxy` setting will be introduced to enable and configure the platformProxy (local runtime) provided by wrangler. 
 
 These changes are part of ongoing efforts to streamline functionality, improve performance, and align with best practices and platform capabilities.
 
