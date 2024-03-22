@@ -8,17 +8,17 @@ _(Full documentation to help you migrate your project to the upgraded Cloudflare
 
 **Deprecates** the following adapter configuration options (to be **removed entirely in v10**):
 
-- **`mode`:** (Removed in v10) The new default is using Cloudflare's [advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/), after consulting with them. [Cloudflare Functions](https://developers.cloudflare.com/pages/functions/get-started/) are not supported anymore, please migrate to [Astro Endpoints](https://docs.astro.build/en/guides/endpoints/).
+- **`mode`:** All projects will deploy to Cloudflare pages using [advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/) (the previous default setting). This is no longer a configurable option. [Cloudflare Functions](https://developers.cloudflare.com/pages/functions/get-started/) will no longer be supported. If you were using `mode: 'directory'`, please migrate to [Astro Endpoints](https://docs.astro.build/en/guides/endpoints/).
 
-- **`functionPerRoute`:** (Removed in v10) Discontinued due to Cloudflare's single execution context approach. This change shouldn't have direct impact on you.
+- **`functionPerRoute`:** Discontinued due to Cloudflare's single execution context approach. You will no longer have the option to compile a separate bundle for each page.
 
-- **`routes.strategy`:** (Removed in v10) You should now utilize auto-generated `_route.json` or provide your own `public/_routes.json` for route management. This change aims to eliminate confusion and promote consistency.
+- **`routes.strategy`:** Projects will use the auto-generated `_route.json` for route management unless you [provide your own `public/_routes.json`](/en/guides/integrations-guide/cloudflare/#custom-_routesjson). This change aims to eliminate confusion and promote consistency.
 
-- **`routes.include`:** (Removed in v10) Use `routes.extend.include` instead.
+- **`routes.include`:** Will be replaced by a new `routes.extend.include` option to allow you to include additional routes.
 
-- **`routes.exclude`:** (Removed in v10) Use `routes.extend.exclude` instead.
+- **`routes.exclude`:** Will be replaced by a new `routes.extend.exclude` option to allow you to exclude additional routes.
 
-- **`runtime`:** (Removed in v10) Requires specifying bindings in `wrangler.toml`. Use `platformProxy` instead. If you currently define your local runtime bindings in your Astro config, please move them to `wrangler.toml` as described in the [adapters documentation](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-workers).
+- **`runtime`:** Local runtime bindings will be configured in `wrangler.toml` at the root of your project as described in the [adapters documentation](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-workers). You will no longer configure these directly in the adapter configuration. A new `platformProxy` setting will be introduced to... (WHAT IS THIS???)
 
 These changes are part of ongoing efforts to streamline functionality, improve performance, and align with best practices and platform capabilities.
 
