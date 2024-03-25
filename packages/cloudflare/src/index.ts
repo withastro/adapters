@@ -6,7 +6,7 @@ import { createInterface } from 'node:readline/promises';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
 import { getPlatformProxy } from 'wrangler';
-import { removeLeadingForwardSlash } from './utils/assets.js';
+import { removeLeadingForwardSlash } from '@astrojs/internal-helpers/path';
 import { default as createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';

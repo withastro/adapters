@@ -29,8 +29,9 @@
   },
   "dependencies": {
     "@astrojs/underscore-redirects": "^0.3.3",
+    "@astrojs/internal-helpers": "0.3.0",
     "@cloudflare/workers-types": "^4.20240320.1",
-    "miniflare": "^3.20240320.0",
+    "miniflare": "^3.20240314.0",
     "esbuild": "^0.19.5",
     "tiny-glob": "^0.2.9",
     "wrangler": "^3.36.0"
