@@ -102,7 +102,7 @@ class PathTrie {
 	}
 }
 
-export default async function (
+export async function createRoutesFile(
 	_config: AstroConfig,
 	routes: RouteData[],
 	pages: {
