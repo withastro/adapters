@@ -80,6 +80,11 @@ class PathTrie {
 		node.isEndOfPath = true;
 	}
 
+	/**
+	 * Depth-first search (dfs), traverses the "graph"  segment by segment until the end or wildcard (*).
+	 * It makes sure that all necessary paths are returned, but not paths with an existing wildcard prefix.
+	 * e.g. if we have a path like /foo/* and /foo/bar, we only want to return /foo/*
+	 */
 	private dfs(node: TrieNode, path: string[], allPaths: string[][]): void {
 		if (node.hasWildcardChild) {
 			allPaths.push([...path, '*']);
