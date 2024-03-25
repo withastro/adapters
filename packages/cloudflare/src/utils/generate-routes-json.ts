@@ -133,13 +133,33 @@ export async function createRoutesFile(
 		const convertedPath = segmentsToCfSyntax(route.segments, _config);
 		if (route.pathname === '/404' && route.prerender === true) hasPrerendered404 = true;
 
-		if (route.type === 'page') if (route.prerender === false) includePaths.push(convertedPath);
+		switch (route.type) {
+			case 'page':
+				if (route.prerender === false) includePaths.push(convertedPath);
 
-		if (route.type === 'endpoint')
-			if (route.prerender === false) includePaths.push(convertedPath);
-			else excludePaths.push(convertedPath);
+				break;
 
-		if (route.type === 'redirect') excludePaths.push(convertedPath);
+			case 'endpoint':
+				if (route.prerender === false) includePaths.push(convertedPath);
+				else excludePaths.push(convertedPath);
+
+				break;
+
+			case 'redirect':
+				excludePaths.push(convertedPath);
+
+				break;
+
+			default:
+				/**
+				 * We don't know the type, so we are conservative
+				 * Invoking the function on these is a safe-bet because
+				 * the function will fallback to static asset fetching
+				 */
+				includePaths.push(convertedPath);
+
+				break;
+		}
 	}
 
 	for (const page of pages) {
