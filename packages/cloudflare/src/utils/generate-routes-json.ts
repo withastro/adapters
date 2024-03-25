@@ -4,12 +4,12 @@ import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+	prependForwardSlash,
+	removeLeadingForwardSlash,
+	removeTrailingForwardSlash,
+} from '@astrojs/internal-helpers/path';
 import glob from 'tiny-glob';
-import { removeLeadingForwardSlash, removeTrailingForwardSlash } from './assets.js';
-
-function prependForwardSlash(path: string) {
-	return path[0] === '/' ? path : `/${path}`;
-}
 
 export const getParts = (part: string) => {
 	const result: RoutePart[] = [];

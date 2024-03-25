@@ -1,6 +1,7 @@
 import type { ExternalImageService, ImageMetadata } from 'astro';
 import { baseService } from 'astro/assets';
 import { AstroError } from 'astro/errors';
+import { removeLeadingForwardSlash } from '@astrojs/internal-helpers/path';
 
 const SUPPORTED_FORMATS = ['avif', 'jpg', 'png', 'webp'];
 const QUALITY_NAMES: Record<string, number> = { low: 25, mid: 50, high: 90, max: 100 };
