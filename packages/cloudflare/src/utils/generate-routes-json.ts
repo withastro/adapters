@@ -226,9 +226,14 @@ export async function createRoutesFile(
 	}
 	const deduplicatedExcludePaths = excludeTrie.getAllPaths();
 
+	/**
+	 * Cloudflare allows no more than 100 include/exclude rules combined
+	 * https://developers.cloudflare.com/pages/functions/routing/#limits
+	 */
+	const CLOUDFLARE_COMBINED_LIMIT = 100;
 	if (
 		!hasPrerendered404 ||
-		deduplicatedIncludePaths.length > 100 ||
+		deduplicatedIncludePaths.length > CLOUDFLARE_COMBINED_LIMIT ||
 		deduplicatedIncludePaths.length > deduplicatedExcludePaths.length
 	) {
 		try {
