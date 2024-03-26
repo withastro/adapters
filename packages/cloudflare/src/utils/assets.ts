@@ -1,5 +1,5 @@
-import type { AstroConfig, ImageMetadata, RemotePattern } from 'astro';
 import { isRemotePath } from '@astrojs/internal-helpers/path';
+import type { AstroConfig, ImageMetadata, RemotePattern } from 'astro';
 
 export function isESMImportedImage(src: ImageMetadata | string): src is ImageMetadata {
 	return typeof src === 'object';
