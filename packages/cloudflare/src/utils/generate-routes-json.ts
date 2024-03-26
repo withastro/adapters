@@ -113,7 +113,7 @@ export async function createRoutesFile(
 	pages: {
 		pathname: string;
 	}[],
-	redirects: RoutePart[][][],
+	redirects: RouteData['segments'][][],
 	includeExtends:
 		| {
 				pattern: string;
