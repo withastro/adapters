@@ -12,7 +12,7 @@ type Env = {
 };
 
 export interface AdvancedRuntime<T extends object = object> {
-	platform: {
+	runtime: {
 		waitUntil: (promise: Promise<any>) => void;
 		env: Env & T;
 		cf: CLOUDFLARE_REQUEST['cf'];
@@ -63,7 +63,7 @@ export function createExports(manifest: SSRManifest) {
 		})();
 
 		const locals: AdvancedRuntime = {
-			platform: {
+			runtime: {
 				waitUntil: (promise: Promise<any>) => {
 					context.waitUntil(promise);
 				},
