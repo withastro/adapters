@@ -192,6 +192,11 @@ export async function createRoutesFile(
 		}
 	}
 
+	/**
+	 * All files in the `_config.build.assets` path, e.g. `_astro`
+	 * are considered static assets and should not be handled by the function
+	 * therefore we exclude a wildcard for that, e.g. `/_astro/*`
+	 */
 	const assetsPath = segmentsToCfSyntax(
 		[
 			[{ content: _config.build.assets, dynamic: false, spread: false }],
