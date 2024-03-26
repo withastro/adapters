@@ -3,7 +3,11 @@ import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import { createReadStream } from 'node:fs';
 import { appendFile, rename, stat } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
-import { removeLeadingForwardSlash } from '@astrojs/internal-helpers/path';
+import {
+	removeLeadingForwardSlash,
+	appendForwardSlash,
+	prependForwardSlash,
+} from '@astrojs/internal-helpers/path';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
 import { getPlatformProxy } from 'wrangler';
@@ -66,7 +70,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 			'astro:config:setup': ({ command, config, updateConfig, logger }) => {
 				updateConfig({
 					build: {
-						client: new URL(`.${config.base}/`, config.outDir),
+						client: new URL(
+							`.${prependForwardSlash(appendForwardSlash(config.base))}`,
+							config.outDir
+						),
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
 						redirects: false,
