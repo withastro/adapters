@@ -166,6 +166,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions.output.banner ||= 'globalThis.process ??= {};';
 
 					vite.build.rollupOptions.external = _config.vite.build?.rollupOptions?.external ?? [];
+
+					// Cloudflare env is only available per request. This isn't feasible for code that access env vars
+					// in a global way, so we shim their access as `process.env.*`. This is not the recommended way for users to access environment variables. But we'll add this for compatibility for chosen variables. Mainly to support `@astrojs/db`
+					vite.define = {
+						'process.env': 'process.env',
+						...vite.define,
+					};
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir }) => {

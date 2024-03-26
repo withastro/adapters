@@ -28,10 +28,6 @@ export function createExports(manifest: SSRManifest) {
 		env: Env,
 		context: ExecutionContext
 	) => {
-		// TODO: remove this any cast in the future
-		// REF: the type cast to any is needed because the Cloudflare Env Type is not assignable to type 'ProcessEnv'
-		process.env = env as any;
-
 		const { pathname } = new URL(request.url);
 
 		// static assets fallback, in case default _routes.json is not used
