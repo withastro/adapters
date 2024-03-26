@@ -2,7 +2,6 @@ import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 
 import * as fs from 'node:fs';
 import * as os from 'node:os';
-import { relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
@@ -152,7 +151,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build ||= {};
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
-					// @ts-ignore
+					// @ts-expect-error
 					vite.build.rollupOptions.output.banner ||= 'globalThis.process ??= {};';
 
 					vite.build.rollupOptions.external = _config.vite?.build?.rollupOptions?.external ?? [];

@@ -31,6 +31,7 @@ export function wasmModuleLoader({
 				assetsInclude: ['**/*.wasm?module'],
 				build: {
 					rollupOptions: {
+						// mark the wasm files as external so that they are not bundled and instead are loaded from the files
 						external: [/^__WASM_ASSET__.+\.wasm$/i, /^__WASM_ASSET__.+\.wasm.mjs$/i],
 					},
 				},
