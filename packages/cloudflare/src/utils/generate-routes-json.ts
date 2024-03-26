@@ -1,4 +1,4 @@
-import type { AstroConfig, RouteData, RoutePart } from 'astro';
+import type { AstroConfig, AstroIntegrationLogger, RouteData, RoutePart } from 'astro';
 
 import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -35,6 +35,31 @@ export function getParts(part: string) {
 	});
 
 	return result;
+}
+
+async function writeRoutesFileToOutDir(
+	_config: AstroConfig,
+	logger: AstroIntegrationLogger,
+	include: string[],
+	exclude: string[]
+) {
+	try {
+		await writeFile(
+			new URL('./_routes.json', _config.outDir),
+			JSON.stringify(
+				{
+					version: 1,
+					include: include,
+					exclude: exclude,
+				},
+				null,
+				2
+			),
+			'utf-8'
+		);
+	} catch (error) {
+		logger.error("There was an error writing the '_routes.json' file to the output directory.");
+	}
 }
 
 const segmentsToCfSyntax = (segments: RouteData['segments'], _config: AstroConfig) => {
@@ -109,11 +134,12 @@ class PathTrie {
 
 export async function createRoutesFile(
 	_config: AstroConfig,
+	logger: AstroIntegrationLogger,
 	routes: RouteData[],
 	pages: {
 		pathname: string;
 	}[],
-	redirects: RouteData['segments'][][],
+	redirects: RouteData['segments'][],
 	includeExtends:
 		| {
 				pattern: string;
@@ -241,66 +267,33 @@ export async function createRoutesFile(
 		deduplicatedIncludePaths.length > CLOUDFLARE_COMBINED_LIMIT ||
 		deduplicatedIncludePaths.length > deduplicatedExcludePaths.length
 	) {
-		try {
-			await writeFile(
-				new URL('./_routes.json', _config.outDir),
-				JSON.stringify(
-					{
-						version: 1,
-						include: ['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
-						exclude: deduplicatedExcludePaths
-							.map((path) => `${prependForwardSlash(path.join('/'))}`)
-							.slice(0, 99)
-							.concat(excludeExtends?.map((entry) => entry.pattern) ?? []),
-					},
-					null,
-					2
-				),
-				'utf-8'
-			);
-		} catch (error) {
-			// TODO
-		}
+		await writeRoutesFileToOutDir(
+			_config,
+			logger,
+			['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
+			deduplicatedExcludePaths
+				.map((path) => `${prependForwardSlash(path.join('/'))}`)
+				.slice(0, 99)
+				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+		);
 	} else if (deduplicatedIncludePaths.length < deduplicatedExcludePaths.length) {
-		try {
-			await writeFile(
-				new URL('./_routes.json', _config.outDir),
-				JSON.stringify(
-					{
-						version: 1,
-						include: deduplicatedIncludePaths
-							.map((path) => `${prependForwardSlash(path.join('/'))}`)
-							.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
-						exclude: ([] as string[]).concat(excludeExtends?.map((entry) => entry.pattern) ?? []),
-					},
-					null,
-					2
-				),
-				'utf-8'
-			);
-		} catch (error) {
-			// TODO
-		}
+		await writeRoutesFileToOutDir(
+			_config,
+			logger,
+			deduplicatedIncludePaths
+				.map((path) => `${prependForwardSlash(path.join('/'))}`)
+				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
+			([] as string[]).concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+		);
 	} else {
-		try {
-			await writeFile(
-				new URL('./_routes.json', _config.outDir),
-				JSON.stringify(
-					{
-						version: 1,
-						include: ['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
-						exclude: deduplicatedExcludePaths
-							.map((path) => `${prependForwardSlash(path.join('/'))}`)
-							.slice(0, 99)
-							.concat(excludeExtends?.map((entry) => entry.pattern) ?? []),
-					},
-					null,
-					2
-				),
-				'utf-8'
-			);
-		} catch (error) {
-			// TODO
-		}
+		await writeRoutesFileToOutDir(
+			_config,
+			logger,
+			['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
+			deduplicatedExcludePaths
+				.map((path) => `${prependForwardSlash(path.join('/'))}`)
+				.slice(0, 99)
+				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+		);
 	}
 }

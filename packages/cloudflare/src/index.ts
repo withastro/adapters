@@ -112,7 +112,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					},
 				});
 			},
-			'astro:server:setup': async ({ server, logger }) => {
+			'astro:server:setup': async ({ server }) => {
 				if (args?.platformProxy?.enabled === true) {
 					const platformProxy = await getPlatformProxy({
 						configPath: args.platformProxy.configPath ?? 'wrangler.toml',
@@ -185,7 +185,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					};
 				}
 			},
-			'astro:build:done': async ({ pages, routes, dir }) => {
+			'astro:build:ssr': ({ entryPoints }) => {
+				_entryPoints = entryPoints;
+			},
+			'astro:build:done': async ({ pages, routes, dir, logger }) => {
 				if (_config.base !== '/') {
 					for (const file of ['_headers', '_redirects', '_routes.json']) {
 						try {
@@ -244,6 +247,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				if (!routesExists) {
 					await createRoutesFile(
 						_config,
+						logger,
 						routes,
 						pages,
 						redirects,
