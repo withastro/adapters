@@ -1,4 +1,4 @@
-import type { AstroConfig, AstroIntegration, RouteData, RoutePart } from 'astro';
+import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 
 import { createReadStream } from 'node:fs';
 import { appendFile, rename, stat } from 'node:fs/promises';
@@ -206,7 +206,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					redirectsExists = false;
 				}
 
-				const redirects: RoutePart[][][] = [];
+				const redirects: RouteData['segments'][] = [];
 				if (redirectsExists) {
 					const rl = createInterface({
 						input: createReadStream(new URL('./_redirects', _config.outDir)),
