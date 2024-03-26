@@ -192,9 +192,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					};
 				}
 			},
-			'astro:build:ssr': ({ entryPoints }) => {
-				_entryPoints = entryPoints;
-			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
 				if (_config.base !== '/') {
 					for (const file of ['_headers', '_redirects', '_routes.json']) {
