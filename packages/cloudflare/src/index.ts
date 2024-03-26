@@ -271,7 +271,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					try {
 						await appendFile(new URL('./_redirects', _config.outDir), trueRedirects.print());
 					} catch (error) {
-						// TODO
+						logger.error('Failed to write _redirects file');
 					}
 				}
 			},
