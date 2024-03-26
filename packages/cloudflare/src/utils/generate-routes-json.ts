@@ -262,11 +262,7 @@ export async function createRoutesFile(
 	 * https://developers.cloudflare.com/pages/functions/routing/#limits
 	 */
 	const CLOUDFLARE_COMBINED_LIMIT = 100;
-	if (
-		!hasPrerendered404 ||
-		deduplicatedIncludePaths.length > CLOUDFLARE_COMBINED_LIMIT ||
-		deduplicatedIncludePaths.length > deduplicatedExcludePaths.length
-	) {
+	if (!hasPrerendered404 || deduplicatedIncludePaths.length > CLOUDFLARE_COMBINED_LIMIT) {
 		await writeRoutesFileToOutDir(
 			_config,
 			logger,
@@ -276,20 +272,13 @@ export async function createRoutesFile(
 				.slice(0, 99)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 		);
-	} else if (deduplicatedIncludePaths.length < deduplicatedExcludePaths.length) {
+	} else {
 		await writeRoutesFileToOutDir(
 			_config,
 			logger,
 			deduplicatedIncludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
 				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
-			([] as string[]).concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
-		);
-	} else {
-		await writeRoutesFileToOutDir(
-			_config,
-			logger,
-			['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			deduplicatedExcludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
 				.slice(0, 99)
