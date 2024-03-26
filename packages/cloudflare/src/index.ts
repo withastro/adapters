@@ -3,7 +3,7 @@ import type { LocalPagesRuntime, LocalWorkersRuntime, RUNTIME } from './utils/lo
 
 import * as fs from 'node:fs';
 import * as os from 'node:os';
-import { dirname, relative, sep } from 'node:path';
+import { relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
@@ -19,16 +19,8 @@ import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
-export type { DirectoryRuntime } from './entrypoints/server.directory.js';
+
 export type Options = {
-	/**
-	 * @deprecated Removed in v10. The 'directory' mode was discontinued because it redundantly bundles code, slowing down your site. Prefer using Astro API Endpoints over `/functions`. The new default mode is 'advanced'.
-	 */
-	mode?: 'directory' | 'advanced';
-	/**
-	 * @deprecated Removed in v10. This setting is obsolete as Cloudflare handles all functions in a single execution context, negating the need for multiple functions per project.
-	 */
-	functionPerRoute?: boolean;
 	imageService?: 'passthrough' | 'cloudflare' | 'compile';
 	routes?: {
 		/**
@@ -75,12 +67,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 	let _buildConfig: BuildConfig;
 	let _localRuntime: LocalPagesRuntime | LocalWorkersRuntime;
-	let _entryPoints = new Map<RouteData, URL>();
 
 	const SERVER_BUILD_FOLDER = '/$server_build/';
-
-	const isModeDirectory = args?.mode === 'directory';
-	const functionPerRoute = args?.functionPerRoute ?? false;
 
 	const runtimeMode = getRuntimeConfig(args?.runtime);
 
@@ -108,7 +96,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
-				setAdapter(getAdapter({ isModeDirectory, functionPerRoute }));
+				setAdapter(getAdapter());
 				_config = config;
 				_buildConfig = config.build;
 
@@ -190,203 +178,69 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					};
 				}
 			},
-			'astro:build:ssr': ({ entryPoints }) => {
-				_entryPoints = entryPoints;
-			},
 			'astro:build:done': async ({ pages, routes, dir }) => {
-				const functionsUrl = new URL('functions/', _config.root);
 				const assetsUrl = new URL(_buildConfig.assets, _buildConfig.client);
 
-				if (isModeDirectory) {
-					await fs.promises.mkdir(functionsUrl, { recursive: true });
+				const entryPath = fileURLToPath(new URL(_buildConfig.serverEntry, _buildConfig.server));
+				const entryUrl = new URL(_buildConfig.serverEntry, _config.outDir);
+				const buildPath = fileURLToPath(entryUrl);
+				// A URL for the final build path after renaming
+				const finalBuildUrl = pathToFileURL(buildPath.replace(/\.mjs$/, '.js'));
+
+				const esbuildPlugins = [];
+				if (args?.imageService === 'compile') {
+					esbuildPlugins.push(patchSharpBundle());
 				}
 
-				if (isModeDirectory && functionPerRoute) {
-					const entryPointsURL = [..._entryPoints.values()];
-					const entryPaths = entryPointsURL.map((entry) => fileURLToPath(entry));
-					const outputUrl = new URL('$astro', _buildConfig.server);
-					const outputDir = fileURLToPath(outputUrl);
-					//
-					// Sadly, when wasmModuleImports is enabled, this needs to build esbuild for each depth of routes/entrypoints
-					// independently so that relative import paths to the assets are the correct depth of '../' traversals
-					// This is inefficient, so wasmModuleImports is opt-in. This could potentially be improved in the future by
-					// taking advantage of the esbuild "onEnd" hook to rewrite import code per entry point relative to where the final
-					// destination of the entrypoint is
-					const entryPathsGroupedByDepth = !args.wasmModuleImports
-						? [entryPaths]
-						: entryPaths
-								.reduce((sum, thisPath) => {
-									const depthFromRoot = thisPath.split(sep).length;
-									sum.set(depthFromRoot, (sum.get(depthFromRoot) || []).concat(thisPath));
-									return sum;
-								}, new Map<number, string[]>())
-								.values();
+				if (args?.wasmModuleImports) {
+					esbuildPlugins.push(
+						rewriteWasmImportPath({
+							relativePathToAssets: relative(
+								fileURLToPath(_buildConfig.client),
+								fileURLToPath(assetsUrl)
+							),
+						})
+					);
+				}
 
-					for (const pathsGroup of entryPathsGroupedByDepth) {
-						// for some reason this exports to "entry.pages" on windows instead of "pages" on unix environments.
-						// This deduces the name of the "pages" build directory
-						const pagesDirname = relative(fileURLToPath(_buildConfig.server), pathsGroup[0]).split(
-							sep
-						)[0];
-						const absolutePagesDirname = fileURLToPath(new URL(pagesDirname, _buildConfig.server));
-						const urlWithinFunctions = new URL(
-							relative(absolutePagesDirname, pathsGroup[0]),
-							functionsUrl
-						);
-
-						const esbuildPlugins = [];
-						if (args?.imageService === 'compile') {
-							esbuildPlugins.push(patchSharpBundle());
-						}
-
-						const relativePathToAssets = relative(
-							dirname(fileURLToPath(urlWithinFunctions)),
-							fileURLToPath(assetsUrl)
-						);
-						if (args?.wasmModuleImports) {
-							esbuildPlugins.push(rewriteWasmImportPath({ relativePathToAssets }));
-						}
-
-						await esbuild.build({
-							target: 'es2022',
-							platform: 'browser',
-							conditions: ['workerd', 'worker', 'browser'],
-							external: [
-								'node:assert',
-								'node:async_hooks',
-								'node:buffer',
-								'node:crypto',
-								'node:diagnostics_channel',
-								'node:events',
-								'node:path',
-								'node:process',
-								'node:stream',
-								'node:string_decoder',
-								'node:util',
-								'cloudflare:*',
-							],
-							entryPoints: pathsGroup,
-							outbase: absolutePagesDirname,
-							outdir: outputDir,
-							allowOverwrite: true,
-							format: 'esm',
-							bundle: true,
-							minify: _config.vite?.build?.minify !== false,
-							banner: {
-								js: `globalThis.process = {
-									argv: [],
-									env: {},
-								};`,
-							},
-							logOverride: {
-								'ignored-bare-import': 'silent',
-							},
-							plugins: esbuildPlugins,
-						});
-					}
-
-					const outputFiles: Array<string> = await glob('**/*', {
-						cwd: outputDir,
-						filesOnly: true,
-					});
-
-					// move the files into the functions folder
-					// & make sure the file names match Cloudflare syntax for routing
-					for (const outputFile of outputFiles) {
-						const path = outputFile.split(sep);
-
-						const finalSegments = path.map((segment) =>
-							segment
-								.replace(/(\_)(\w+)(\_)/g, (_, __, prop) => {
-									return `[${prop}]`;
-								})
-								.replace(/(\_\-\-\-)(\w+)(\_)/g, (_, __, prop) => {
-									return `[[${prop}]]`;
-								})
-						);
-
-						finalSegments[finalSegments.length - 1] = finalSegments[finalSegments.length - 1]
-							.replace('entry.', '')
-							.replace(/(.*)\.(\w+)\.(\w+)$/g, (_, fileName, __, newExt) => {
-								return `${fileName}.${newExt}`;
-							});
-
-						const finalDirPath = finalSegments.slice(0, -1).join(sep);
-						const finalPath = finalSegments.join(sep);
-
-						const newDirUrl = new URL(finalDirPath, functionsUrl);
-						await fs.promises.mkdir(newDirUrl, { recursive: true });
-
-						const oldFileUrl = new URL(`$astro/${outputFile}`, outputUrl);
-						const newFileUrl = new URL(finalPath, functionsUrl);
-						await fs.promises.rename(oldFileUrl, newFileUrl);
-					}
-				} else {
-					const entryPath = fileURLToPath(new URL(_buildConfig.serverEntry, _buildConfig.server));
-					const entryUrl = new URL(_buildConfig.serverEntry, _config.outDir);
-					const buildPath = fileURLToPath(entryUrl);
-					// A URL for the final build path after renaming
-					const finalBuildUrl = pathToFileURL(buildPath.replace(/\.mjs$/, '.js'));
-
-					const esbuildPlugins = [];
-					if (args?.imageService === 'compile') {
-						esbuildPlugins.push(patchSharpBundle());
-					}
-
-					if (args?.wasmModuleImports) {
-						esbuildPlugins.push(
-							rewriteWasmImportPath({
-								relativePathToAssets: isModeDirectory
-									? relative(fileURLToPath(functionsUrl), fileURLToPath(assetsUrl))
-									: relative(fileURLToPath(_buildConfig.client), fileURLToPath(assetsUrl)),
-							})
-						);
-					}
-
-					await esbuild.build({
-						target: 'es2022',
-						platform: 'browser',
-						conditions: ['workerd', 'worker', 'browser'],
-						external: [
-							'node:assert',
-							'node:async_hooks',
-							'node:buffer',
-							'node:crypto',
-							'node:diagnostics_channel',
-							'node:events',
-							'node:path',
-							'node:process',
-							'node:stream',
-							'node:string_decoder',
-							'node:util',
-							'cloudflare:*',
-						],
-						entryPoints: [entryPath],
-						outfile: buildPath,
-						allowOverwrite: true,
-						format: 'esm',
-						bundle: true,
-						minify: _config.vite?.build?.minify !== false,
-						banner: {
-							js: `globalThis.process = {
+				await esbuild.build({
+					target: 'es2022',
+					platform: 'browser',
+					conditions: ['workerd', 'worker', 'browser'],
+					external: [
+						'node:assert',
+						'node:async_hooks',
+						'node:buffer',
+						'node:crypto',
+						'node:diagnostics_channel',
+						'node:events',
+						'node:path',
+						'node:process',
+						'node:stream',
+						'node:string_decoder',
+						'node:util',
+						'cloudflare:*',
+					],
+					entryPoints: [entryPath],
+					outfile: buildPath,
+					allowOverwrite: true,
+					format: 'esm',
+					bundle: true,
+					minify: _config.vite?.build?.minify !== false,
+					banner: {
+						js: `globalThis.process = {
 								argv: [],
 								env: {},
 							};`,
-						},
-						logOverride: {
-							'ignored-bare-import': 'silent',
-						},
-						plugins: esbuildPlugins,
-					});
+					},
+					logOverride: {
+						'ignored-bare-import': 'silent',
+					},
+					plugins: esbuildPlugins,
+				});
 
-					// Rename to worker.js
-					await fs.promises.rename(buildPath, finalBuildUrl);
-
-					if (isModeDirectory) {
-						const directoryUrl = new URL('[[path]].js', functionsUrl);
-						await fs.promises.rename(finalBuildUrl, directoryUrl);
-					}
-				}
+				// Rename to worker.js
+				await fs.promises.rename(buildPath, finalBuildUrl);
 
 				// throw the server folder in the bin
 				const serverUrl = new URL(_buildConfig.server);
@@ -406,11 +260,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							// ignore
 						}
 					}
-				}
-
-				// Add also the worker file so it's excluded from the _routes.json generation
-				if (!isModeDirectory) {
-					cloudflareSpecialFiles.push('_worker.js');
 				}
 
 				const routesExists = await fs.promises
