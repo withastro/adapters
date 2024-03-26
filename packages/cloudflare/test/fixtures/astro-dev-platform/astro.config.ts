@@ -3,9 +3,8 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
 	adapter: cloudflare({
-		runtime: {
-			mode: 'local',
-			type: 'workers',
+		platformProxy: {
+			enabled: true,
 		},
 	}),
 	output: 'server',
