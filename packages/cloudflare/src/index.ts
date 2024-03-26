@@ -2,19 +2,15 @@ import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 
 import * as fs from 'node:fs';
 import * as os from 'node:os';
-import { relative } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
-import esbuild from 'esbuild';
 import glob from 'tiny-glob';
 import { getPlatformProxy } from 'wrangler';
 import { getAdapter } from './getAdapter.js';
 import { deduplicatePatterns } from './utils/deduplicatePatterns.js';
 import { prepareImageConfig } from './utils/image-config.js';
 import { prependForwardSlash } from './utils/prependForwardSlash.js';
-import { rewriteWasmImportPath } from './utils/rewriteWasmImportPath.js';
-import { patchSharpBundle } from './utils/sharpBundlePatch.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
@@ -63,8 +59,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 	let _buildConfig: BuildConfig;
 
-	const SERVER_BUILD_FOLDER = '/$server_build/';
-
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
@@ -72,8 +66,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				updateConfig({
 					build: {
 						client: new URL(`.${config.base}`, config.outDir),
-						server: new URL(`.${SERVER_BUILD_FOLDER}`, config.outDir),
-						serverEntry: '_worker.mjs',
+						server: new URL('./_worker.js/', config.outDir),
+						serverEntry: 'index.js',
 						redirects: false,
 					},
 					vite: {
@@ -81,7 +75,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						plugins: [
 							wasmModuleLoader({
 								disabled: !args?.wasmModuleImports,
-								assetsDirectory: config.build.assets,
 							}),
 						],
 					},
@@ -96,12 +89,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				if (_config.output === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
-					);
-				}
-
-				if (_config.base === SERVER_BUILD_FOLDER) {
-					throw new AstroError(
-						'[@astrojs/cloudflare] `base: "${SERVER_BUILD_FOLDER}"` is not allowed. Please change your `base` config to something else.'
 					);
 				}
 			},
@@ -138,6 +125,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							find: 'react-dom/server',
 							replacement: 'react-dom/server.browser',
 						},
+						{
+							find: 'solid-js/web',
+							replacement: 'solid-js/web/dist/server',
+						},
+						{
+							find: 'solid-js',
+							replacement: 'solid-js/dist/server',
+						},
 					];
 
 					if (Array.isArray(vite.resolve.alias)) {
@@ -147,12 +142,22 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							(vite.resolve.alias as Record<string, string>)[alias.find] = alias.replacement;
 						}
 					}
+
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
+					vite.ssr.noExternal = true;
+					vite.ssr.external = _config.vite?.ssr?.external ?? [];
+
+					vite.build ||= {};
+					vite.build.rollupOptions ||= {};
+					vite.build.rollupOptions.output ||= {};
+					// @ts-expect-error
+					vite.build.rollupOptions.output.banner ||= 'globalThis.process ??= {};';
+
+					vite.build.rollupOptions.external = _config.vite?.build?.rollupOptions?.external ?? [];
 
 					// Cloudflare env is only available per request. This isn't feasible for code that access env vars
-					// in a global way, so we shim their access as `process.env.*`. We will populate `process.env` later
-					// in its fetch handler.
+					// in a global way, so we shim their access as `process.env.*`. This is not the recommended way for users to access environment variables. But we'll add this for compatibility for chosen variables. Mainly to support `@astrojs/db`
 					vite.define = {
 						'process.env': 'process.env',
 						...vite.define,
@@ -160,73 +165,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir }) => {
-				const assetsUrl = new URL(_buildConfig.assets, _buildConfig.client);
-
-				const entryPath = fileURLToPath(new URL(_buildConfig.serverEntry, _buildConfig.server));
-				const entryUrl = new URL(_buildConfig.serverEntry, _config.outDir);
-				const buildPath = fileURLToPath(entryUrl);
-				// A URL for the final build path after renaming
-				const finalBuildUrl = pathToFileURL(buildPath.replace(/\.mjs$/, '.js'));
-
-				const esbuildPlugins = [];
-				if (args?.imageService === 'compile') {
-					esbuildPlugins.push(patchSharpBundle());
-				}
-
-				if (args?.wasmModuleImports) {
-					esbuildPlugins.push(
-						rewriteWasmImportPath({
-							relativePathToAssets: relative(
-								fileURLToPath(_buildConfig.client),
-								fileURLToPath(assetsUrl)
-							),
-						})
-					);
-				}
-
-				await esbuild.build({
-					target: 'es2022',
-					platform: 'browser',
-					conditions: ['workerd', 'worker', 'browser'],
-					external: [
-						'node:assert',
-						'node:async_hooks',
-						'node:buffer',
-						'node:crypto',
-						'node:diagnostics_channel',
-						'node:events',
-						'node:path',
-						'node:process',
-						'node:stream',
-						'node:string_decoder',
-						'node:util',
-						'cloudflare:*',
-					],
-					entryPoints: [entryPath],
-					outfile: buildPath,
-					allowOverwrite: true,
-					format: 'esm',
-					bundle: true,
-					minify: _config.vite?.build?.minify !== false,
-					banner: {
-						js: `globalThis.process = {
-								argv: [],
-								env: {},
-							};`,
-					},
-					logOverride: {
-						'ignored-bare-import': 'silent',
-					},
-					plugins: esbuildPlugins,
-				});
-
-				// Rename to worker.js
-				await fs.promises.rename(buildPath, finalBuildUrl);
-
-				// throw the server folder in the bin
-				const serverUrl = new URL(_buildConfig.server);
-				await fs.promises.rm(serverUrl, { recursive: true, force: true });
-
 				// move cloudflare specific files to the root
 				const cloudflareSpecialFiles = ['_headers', '_redirects', '_routes.json'];
 
