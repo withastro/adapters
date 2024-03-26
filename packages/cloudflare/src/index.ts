@@ -163,7 +163,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
 					// @ts-expect-error
-					vite.build.rollupOptions.output.banner ||= 'globalThis.process ??= {};';
+					vite.build.rollupOptions.output.banner ||=
+						'globalThis.process ??= {}; globalThis.process.env ??= {};';
 
 					vite.build.rollupOptions.external = _config.vite.build?.rollupOptions?.external ?? [];
 
