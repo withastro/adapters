@@ -38,7 +38,7 @@ export default defineConfig({
 });
 ```
 
-If you are using `mode: 'directory'`, **but** you have custom Cloudflare functions in the `/function` folder, you will need to manually migrate them [Astro Server Endpoints (API Routes)](https://docs.astro.build/en/guides/endpoints/#server-endpoints-api-routes). If you need to access Cloudflare Bindings, you can use `ctx.locals`, for further reference, please checke the [Adapters Documentation on Cloudflare Runtime Usage](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#usage).
+If you are using `mode: 'directory'`, **but** you have custom Cloudflare functions in the `/function` folder, you will need to manually migrate them to [Astro Server Endpoints (API Routes)](https://docs.astro.build/en/guides/endpoints/#server-endpoints-api-routes). If you need to access Cloudflare Bindings, you can use `ctx.locals`, for further reference, please check the [Adapters Documentation on Cloudflare Runtime Usage](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#usage).
 
 ### Adapter's `functionPerRoute` option
 
