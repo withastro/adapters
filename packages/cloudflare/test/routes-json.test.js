@@ -12,10 +12,7 @@ describe('_routes.json generation', () => {
 			fixture = await loadFixture({
 				root: new URL('./fixtures/routes-json/', import.meta.url).toString(),
 				srcDir: './src/mixed',
-				adapter: cloudflare({
-					mode,
-					functionPerRoute,
-				}),
+				adapter: cloudflare({}),
 			});
 			await fixture.build();
 		});
@@ -63,10 +60,7 @@ describe('_routes.json generation', () => {
 			fixture = await loadFixture({
 				root: new URL('./fixtures/routes-json/', import.meta.url).toString(),
 				srcDir: './src/staticOnly',
-				adapter: cloudflare({
-					mode,
-					functionPerRoute,
-				}),
+				adapter: cloudflare({}),
 			});
 			await fixture.build();
 		});
