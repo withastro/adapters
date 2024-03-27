@@ -62,7 +62,7 @@ async function writeRoutesFileToOutDir(
 	}
 }
 
-const segmentsToCfSyntax = (segments: RouteData['segments'], _config: AstroConfig) => {
+function segmentsToCfSyntax(segments: RouteData['segments'], _config: AstroConfig) {
 	const pathSegments = [];
 	if (removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)).length > 0) {
 		pathSegments.push(removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)));
@@ -72,7 +72,7 @@ const segmentsToCfSyntax = (segments: RouteData['segments'], _config: AstroConfi
 		else pathSegments.push(segment.content);
 	}
 	return pathSegments;
-};
+}
 
 class TrieNode {
 	children: Map<string, TrieNode> = new Map();
@@ -98,7 +98,7 @@ class PathTrie {
 				node.children.set(segment, new TrieNode());
 			}
 
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: The `if` condition above ensures that the segment exists inside the map
 			node = node.children.get(segment)!;
 		}
 
@@ -178,7 +178,7 @@ export async function createRoutesFile(
 
 			default:
 				/**
-				 * We don't know the type, so we are conservative
+				 * We don't know the type, so we are conservative!
 				 * Invoking the function on these is a safe-bet because
 				 * the function will fallback to static asset fetching
 				 */
@@ -232,15 +232,6 @@ export async function createRoutesFile(
 	);
 	excludePaths.push(assetsPath);
 
-	const pagefindPath = segmentsToCfSyntax(
-		[
-			[{ content: 'pagefind', dynamic: false, spread: false }],
-			[{ content: '', dynamic: true, spread: false }],
-		],
-		_config
-	);
-	excludePaths.push(pagefindPath);
-
 	for (const redirect of redirects) {
 		excludePaths.push(segmentsToCfSyntax(redirect, _config));
 	}
@@ -262,15 +253,19 @@ export async function createRoutesFile(
 	 * https://developers.cloudflare.com/pages/functions/routing/#limits
 	 */
 	const CLOUDFLARE_COMBINED_LIMIT = 100;
-	if (!hasPrerendered404 || deduplicatedIncludePaths.length > CLOUDFLARE_COMBINED_LIMIT) {
+	if (
+		!hasPrerendered404 ||
+		deduplicatedIncludePaths.length + (includeExtends?.length ?? 0) > CLOUDFLARE_COMBINED_LIMIT ||
+		deduplicatedExcludePaths.length + (excludeExtends?.length ?? 0) > CLOUDFLARE_COMBINED_LIMIT
+	) {
 		await writeRoutesFileToOutDir(
 			_config,
 			logger,
 			['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			deduplicatedExcludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
-				.slice(0, 99)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+				.slice(0, 99)
 		);
 	} else {
 		await writeRoutesFileToOutDir(
@@ -281,7 +276,6 @@ export async function createRoutesFile(
 				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			deduplicatedExcludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
-				.slice(0, 99)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 		);
 	}

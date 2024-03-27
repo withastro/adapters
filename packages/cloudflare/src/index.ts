@@ -4,9 +4,9 @@ import { createReadStream } from 'node:fs';
 import { appendFile, rename, stat } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
-	removeLeadingForwardSlash,
 	appendForwardSlash,
 	prependForwardSlash,
+	removeLeadingForwardSlash,
 } from '@astrojs/internal-helpers/path';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
@@ -193,12 +193,15 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
+				const PLATFORM_FILES = ['_headers', '_redirects', '_routes.json'];
 				if (_config.base !== '/') {
-					for (const file of ['_headers', '_redirects', '_routes.json']) {
+					for (const file of PLATFORM_FILES) {
 						try {
 							await rename(new URL(file, _config.build.client), new URL(file, _config.outDir));
 						} catch (e) {
-							// ignore
+							logger.error(
+								`There was an error moving ${file} to the root of the output directory.`
+							);
 						}
 					}
 				}

@@ -56,9 +56,6 @@ describe('_routes.json generation', () => {
 		it('creates a wildcard `include` and `exclude` only for static assets and redirects', async () => {
 			const _routesJson = await fixture.readFile('/_routes.json');
 			const routes = JSON.parse(_routesJson);
-		it('creates a wildcard `include` and `exclude` only for static assets and redirects', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
 
 			assert.deepEqual(routes, {
 				version: 1,
@@ -86,9 +83,6 @@ describe('_routes.json generation', () => {
 		it('create only one `include` and `exclude` that are supposed to match nothing', async () => {
 			const _routesJson = await fixture.readFile('/_routes.json');
 			const routes = JSON.parse(_routesJson);
-		it('create only one `include` and `exclude` that are supposed to match nothing', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
 
 			assert.deepEqual(routes, {
 				version: 1,
@@ -108,8 +102,6 @@ describe('_routes.json generation', () => {
 
 	describe('with additional `include` entries', () => {
 		let fixture;
-	describe('with additional `include` entries', () => {
-		let fixture;
 
 		before(async () => {
 			fixture = await loadFixture({
@@ -126,9 +118,6 @@ describe('_routes.json generation', () => {
 			await fixture.build();
 		});
 
-		it('creates `include` for functions and `exclude` for static files where needed', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
 		it('creates `include` for functions and `exclude` for static files where needed', async () => {
 			const _routesJson = await fixture.readFile('/_routes.json');
 			const routes = JSON.parse(_routesJson);
@@ -152,8 +141,6 @@ describe('_routes.json generation', () => {
 
 	describe('with additional `exclude` entries', () => {
 		let fixture;
-	describe('with additional `exclude` entries', () => {
-		let fixture;
 
 		before(async () => {
 			fixture = await loadFixture({
@@ -170,9 +157,6 @@ describe('_routes.json generation', () => {
 			await fixture.build();
 		});
 
-		it('creates `include` for functions and `exclude` for static files where needed', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
 		it('creates `include` for functions and `exclude` for static files where needed', async () => {
 			const _routesJson = await fixture.readFile('/_routes.json');
 			const routes = JSON.parse(_routesJson);
