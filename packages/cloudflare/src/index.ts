@@ -15,7 +15,7 @@ import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
-export type { AdvancedRuntime } from './entrypoints/server.advanced.js';
+export type { Runtime } from './entrypoints/server.advanced.js';
 
 export type Options = {
 	/** Options for handling images. */

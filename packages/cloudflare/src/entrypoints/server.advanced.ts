@@ -11,7 +11,7 @@ type Env = {
 	ASTRO_STUDIO_APP_TOKEN?: string;
 };
 
-export interface AdvancedRuntime<T extends object = object> {
+export interface Runtime<T extends object = object> {
 	runtime: {
 		waitUntil: (promise: Promise<any>) => void;
 		env: Env & T;
@@ -58,7 +58,7 @@ export function createExports(manifest: SSRManifest) {
 			}
 		})();
 
-		const locals: AdvancedRuntime = {
+		const locals: Runtime = {
 			runtime: {
 				waitUntil: (promise: Promise<any>) => {
 					context.waitUntil(promise);
