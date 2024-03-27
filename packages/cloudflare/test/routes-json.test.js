@@ -5,7 +5,7 @@ import cloudflare from '../dist/index.js';
 
 /** @type {import('./test-utils.js').Fixture} */
 describe('_routes.json generation', () => {
-	describe('of both functions and static files', () => {
+	describe('of on-demand and prerenderd', () => {
 		let fixture;
 
 		before(async () => {
@@ -17,30 +17,26 @@ describe('_routes.json generation', () => {
 			await fixture.build();
 		});
 
-		it('creates `include` for functions and `exclude` for static files where needed', async () => {
+		it('creates `include` for on-demand and `exclude` for prerenderd', async () => {
 			const _routesJson = await fixture.readFile('/_routes.json');
 			const routes = JSON.parse(_routesJson);
 
 			assert.deepEqual(routes, {
 				version: 1,
-				include: ['/a/*', '/_image'],
-				exclude: ['/a/', '/a/redirect', '/a/index.html'],
+				include: ['/_image', '/a/*'],
+				exclude: ['/a', '/a/redirect', '/404', '/b', '/public.txt', '/_astro/*', '/redirectme'],
 			});
 		});
 	});
 
-	describe('of only functions', () => {
+	describe('of only on-demand', () => {
 		let fixture;
 
 		before(async () => {
 			fixture = await loadFixture({
 				root: new URL('./fixtures/routes-json/', import.meta.url).toString(),
 				srcDir: './src/dynamicOnly',
-				adapter: cloudflare({
-					routes: {
-						strategy: 'exclude',
-					},
-				}),
+				adapter: cloudflare({}),
 			});
 			await fixture.build();
 		});
@@ -52,12 +48,12 @@ describe('_routes.json generation', () => {
 			assert.deepEqual(routes, {
 				version: 1,
 				include: ['/*'],
-				exclude: ['/_worker.js', '/public.txt', '/redirectme', '/a/redirect'],
+				exclude: ['/a/redirect', '/public.txt', '/_astro/*', '/redirectme'],
 			});
 		});
 	});
 
-	describe('of only static files', () => {
+	describe('of only prerenderd', () => {
 		let fixture;
 
 		before(async () => {
@@ -76,59 +72,7 @@ describe('_routes.json generation', () => {
 			assert.deepEqual(routes, {
 				version: 1,
 				include: ['/_image'],
-				exclude: [],
-			});
-		});
-	});
-
-	describe('with strategy `"include"`', () => {
-		let fixture;
-
-		before(async () => {
-			fixture = await loadFixture({
-				root: new URL('./fixtures/routes-json/', import.meta.url).toString(),
-				srcDir: './src/dynamicOnly',
-				adapter: cloudflare({
-					routes: { strategy: 'include' },
-				}),
-			});
-			await fixture.build();
-		});
-
-		it('creates `include` entries even though the `"exclude"` strategy would have produced less entries.', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
-
-			assert.deepEqual(routes, {
-				version: 1,
-				include: ['/', '/_image', '/dynamic1', '/dynamic2', '/dynamic3'],
-				exclude: [],
-			});
-		});
-	});
-
-	describe('with strategy `"exclude"`', () => {
-		let fixture;
-
-		before(async () => {
-			fixture = await loadFixture({
-				root: new URL('./fixtures/routes-json/', import.meta.url).toString(),
-				srcDir: './src/staticOnly',
-				adapter: cloudflare({
-					routes: { strategy: 'exclude' },
-				}),
-			});
-			await fixture.build();
-		});
-
-		it('creates `exclude` entries even though the `"include"` strategy would have produced less entries.', async () => {
-			const _routesJson = await fixture.readFile('/_routes.json');
-			const routes = JSON.parse(_routesJson);
-
-			assert.deepEqual(routes, {
-				version: 1,
-				include: ['/*'],
-				exclude: ['/', '/_worker.js', '/index.html', '/public.txt', '/redirectme', '/a/redirect'],
+				exclude: ['/', '/a/redirect', '/404', '/public.txt', '/_astro/*', '/redirectme'],
 			});
 		});
 	});
@@ -142,8 +86,9 @@ describe('_routes.json generation', () => {
 				srcDir: './src/mixed',
 				adapter: cloudflare({
 					routes: {
-						strategy: 'include',
-						include: ['/another', '/a/redundant'],
+						extend: {
+							include: [{ pattern: '/another' }],
+						},
 					},
 				}),
 			});
@@ -156,8 +101,8 @@ describe('_routes.json generation', () => {
 
 			assert.deepEqual(routes, {
 				version: 1,
-				include: ['/a/*', '/_image', '/another'],
-				exclude: ['/a/', '/a/redirect', '/a/index.html'],
+				include: ['/_image', '/a/*', '/another'],
+				exclude: ['/a', '/a/redirect', '/404', '/b', '/public.txt', '/_astro/*', '/redirectme'],
 			});
 		});
 	});
@@ -171,8 +116,9 @@ describe('_routes.json generation', () => {
 				srcDir: './src/mixed',
 				adapter: cloudflare({
 					routes: {
-						strategy: 'include',
-						exclude: ['/another', '/a/*', '/a/index.html'],
+						extend: {
+							exclude: [{ pattern: '/another' }, { pattern: '/a/index.html' }],
+						},
 					},
 				}),
 			});
@@ -185,8 +131,18 @@ describe('_routes.json generation', () => {
 
 			assert.deepEqual(routes, {
 				version: 1,
-				include: ['/a/*', '/_image'],
-				exclude: ['/a/', '/a/*', '/another'],
+				include: ['/_image', '/a/*'],
+				exclude: [
+					'/a',
+					'/a/redirect',
+					'/404',
+					'/b',
+					'/public.txt',
+					'/_astro/*',
+					'/redirectme',
+					'/another',
+					'/a/index.html',
+				],
 			});
 		});
 	});
