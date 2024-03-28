@@ -102,6 +102,30 @@ export default defineConfig({
 });
 ```
 
+If you have typed `locals` in your `./src/env.d.ts` file, you need to run `wrangler types` in your project and update the file.
+
+```diff
+/// <reference types="astro/client" />
+
+- type KVNamespace = import('@cloudflare/workers-types/experimental').KVNamespace;
+- type ENV = {
+-   SERVER_URL: string;
+-   KV_BINDING: KVNamespace;
+- };
+
+- type Runtime = import('@astrojs/cloudflare').AdvancedRuntime<ENV>;
++ type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
+
+declare namespace App {
+  interface Locals extends Runtime {
+    user: {
+      name: string;
+      surname: string;
+    };
+  }
+}
+```
+
 ### Routes
 
 The `routes.strategy` option has been removed as you will no longer have the option to choose a strategy in v10 of this adpater.
@@ -148,3 +172,22 @@ In the old version of the adapter we used to expose all the environment variable
 If you need to access the environment variables in global scope, you should refactor your code to pass the environment variables as arguments to your function or file.
 
 If you rely on any third library that uses `process.env`, please open an issue and we can investigate what the best way to handle this is.
+
+### Node.js APIs compatibility
+
+The adapter still supports the same Node.js APIs as Cloudflare does, but you need to adapt your vite configuration and enable the Cloudflare `nodejs_compat` flag.
+
+```diff
+import {defineConfig} from "astro/config";
+import cloudflare from '@astrojs/cloudflare';
+
+export default defineConfig({
+  adapter: cloudflare({}),
+  output: 'server',
++  vite: {
++    ssr: {
++      external: ['node:buffer'],
++    },
++  },
+})
+```
