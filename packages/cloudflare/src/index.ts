@@ -152,14 +152,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							find: 'react-dom/server',
 							replacement: 'react-dom/server.browser',
 						},
-						{
-							find: 'solid-js/web',
-							replacement: 'solid-js/web/dist/server',
-						},
-						{
-							find: 'solid-js',
-							replacement: 'solid-js/dist/server',
-						},
 					];
 
 					if (Array.isArray(vite.resolve.alias)) {
@@ -169,6 +161,9 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							(vite.resolve.alias as Record<string, string>)[alias.find] = alias.replacement;
 						}
 					}
+
+					vite.resolve.conditions ||= [];
+					vite.resolve.conditions.push('workerd', 'worker');
 
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
@@ -190,6 +185,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						'process.env': 'process.env',
 						...vite.define,
 					};
+				}
+				if (target === 'client') {
+					vite.resolve ||= {};
+					vite.resolve.conditions ||= [];
+					vite.resolve.conditions = vite.resolve.conditions.filter(
+						(c) => c !== 'workerd' && c !== 'worker'
+					);
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
