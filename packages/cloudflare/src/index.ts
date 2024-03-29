@@ -173,7 +173,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
 					vite.ssr.noExternal = true;
-					vite.ssr.external = _config.vite.ssr?.external ?? [];
+
+					if (typeof _config.vite.ssr?.external === 'undefined') vite.ssr.external = [];
+					if (typeof _config.vite.ssr?.external === 'boolean')
+						vite.ssr.external = _config.vite.ssr?.external;
+					if (Array.isArray(_config.vite.ssr?.external))
+						vite.ssr.external = _config.vite.ssr?.external.filter(
+							(entry) => entry !== '@vue/server-renderer'
+						);
 
 					vite.build ||= {};
 					vite.build.rollupOptions ||= {};
