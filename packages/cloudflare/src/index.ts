@@ -188,6 +188,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						...vite.define,
 					};
 				}
+				// we thought that vite config inside `if (target === 'server')` would not apply for client
+				// but it seems like the same `vite` reference is used for both
+				// so we need to reset the previous conflicting setting
+				// in the future we should look into a more robust solution
 				if (target === 'client') {
 					vite.resolve ||= {};
 					vite.resolve.conditions ||= [];
