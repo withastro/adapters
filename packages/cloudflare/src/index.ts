@@ -163,6 +163,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 
 					vite.resolve.conditions ||= [];
+					// We need those conditions, previous these conditions where applied at the esbuild step which we removed
+					// https://github.com/withastro/astro/pull/7092
 					vite.resolve.conditions.push('workerd', 'worker');
 
 					vite.ssr ||= {};
