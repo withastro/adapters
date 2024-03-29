@@ -244,6 +244,12 @@ export async function createRoutesFile(
 
 	const excludeTrie = new PathTrie();
 	for (const excludePath of excludePaths) {
+		/**
+		 * A excludePath with starts with a wildcard (*) is a catch-all
+		 * that would mean all routes are static, that would be equal to a full SSG project
+		 * the adapter is not needed in this case, so we do not consider such paths
+		 */
+		if (excludePath[0] === '*') continue;
 		excludeTrie.insert(excludePath);
 	}
 	const deduplicatedExcludePaths = excludeTrie.getAllPaths();
