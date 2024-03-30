@@ -82,6 +82,7 @@ class TrieNode {
 
 class PathTrie {
 	root: TrieNode;
+	returnHasWildcard = false;
 
 	constructor() {
 		this.root = new TrieNode();
@@ -112,6 +113,7 @@ class PathTrie {
 	 */
 	private dfs(node: TrieNode, path: string[], allPaths: string[][]): void {
 		if (node.hasWildcardChild) {
+			this.returnHasWildcard = true;
 			allPaths.push([...path, '*']);
 			return;
 		}
@@ -125,10 +127,10 @@ class PathTrie {
 		}
 	}
 
-	getAllPaths(): string[][] {
+	getAllPaths(): [string[][], boolean] {
 		const allPaths: string[][] = [];
 		this.dfs(this.root, [], allPaths);
-		return allPaths;
+		return [allPaths, this.returnHasWildcard];
 	}
 }
 
@@ -189,6 +191,7 @@ export async function createRoutesFile(
 	}
 
 	for (const page of pages) {
+		if (page.pathname === '404') hasPrerendered404 = true;
 		const pageSegments = removeLeadingForwardSlash(page.pathname)
 			.split(posix.sep)
 			.filter(Boolean)
@@ -240,7 +243,7 @@ export async function createRoutesFile(
 	for (const includePath of includePaths) {
 		includeTrie.insert(includePath);
 	}
-	const deduplicatedIncludePaths = includeTrie.getAllPaths();
+	const [deduplicatedIncludePaths, includedPathsHaveWildcard] = includeTrie.getAllPaths();
 
 	const excludeTrie = new PathTrie();
 	for (const excludePath of excludePaths) {
@@ -252,7 +255,7 @@ export async function createRoutesFile(
 		if (excludePath[0] === '*') continue;
 		excludeTrie.insert(excludePath);
 	}
-	const deduplicatedExcludePaths = excludeTrie.getAllPaths();
+	const [deduplicatedExcludePaths, _excludedPathsHaveWildcard] = excludeTrie.getAllPaths();
 
 	/**
 	 * Cloudflare allows no more than 100 include/exclude rules combined
@@ -299,9 +302,11 @@ export async function createRoutesFile(
 			deduplicatedIncludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
 				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
-			deduplicatedExcludePaths
-				.map((path) => `${prependForwardSlash(path.join('/'))}`)
-				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+			includedPathsHaveWildcard
+				? deduplicatedExcludePaths
+						.map((path) => `${prependForwardSlash(path.join('/'))}`)
+						.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+				: []
 		);
 	}
 }
