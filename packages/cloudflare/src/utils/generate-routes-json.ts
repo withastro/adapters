@@ -259,10 +259,23 @@ export async function createRoutesFile(
 	 * https://developers.cloudflare.com/pages/functions/routing/#limits
 	 */
 	const CLOUDFLARE_COMBINED_LIMIT = 100;
+	/**
+	 * Caluclate the number of automated and extended include rules
+	 */
+	const AUTOMATIC_INCLUDE_RULES_COUNT = deduplicatedIncludePaths.length;
+	const EXTENDED_INCLUDE_RULES_COUNT = includeExtends?.length ?? 0;
+	const INCLUDE_RULES_COUNT = AUTOMATIC_INCLUDE_RULES_COUNT + EXTENDED_INCLUDE_RULES_COUNT;
+	/**
+	 * Caluclate the number of automated and extended exclude rules
+	 */
+	const AUTOMATIC_EXCLUDE_RULES_COUNT = deduplicatedExcludePaths.length;
+	const EXTENDED_EXCLUDE_RULES_COUNT = excludeExtends?.length ?? 0;
+	const EXCLUDE_RULES_COUNT = AUTOMATIC_EXCLUDE_RULES_COUNT + EXTENDED_EXCLUDE_RULES_COUNT;
+
 	if (
 		!hasPrerendered404 ||
-		deduplicatedIncludePaths.length + (includeExtends?.length ?? 0) > CLOUDFLARE_COMBINED_LIMIT ||
-		deduplicatedExcludePaths.length + (excludeExtends?.length ?? 0) > CLOUDFLARE_COMBINED_LIMIT
+		INCLUDE_RULES_COUNT > CLOUDFLARE_COMBINED_LIMIT ||
+		EXCLUDE_RULES_COUNT > CLOUDFLARE_COMBINED_LIMIT
 	) {
 		await writeRoutesFileToOutDir(
 			_config,
@@ -270,8 +283,14 @@ export async function createRoutesFile(
 			['/*'].concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			deduplicatedExcludePaths
 				.map((path) => `${prependForwardSlash(path.join('/'))}`)
+				.slice(
+					0,
+					CLOUDFLARE_COMBINED_LIMIT -
+						EXTENDED_INCLUDE_RULES_COUNT -
+						EXTENDED_EXCLUDE_RULES_COUNT -
+						1
+				)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
-				.slice(0, 99)
 		);
 	} else {
 		await writeRoutesFileToOutDir(
