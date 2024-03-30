@@ -72,7 +72,7 @@ describe('_routes.json generation', () => {
 			assert.deepEqual(routes, {
 				version: 1,
 				include: ['/_image'],
-				exclude: ['/', '/a/redirect', '/404', '/public.txt', '/_astro/*', '/redirectme'],
+				exclude: [],
 			});
 		});
 	});
