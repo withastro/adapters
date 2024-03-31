@@ -156,6 +156,44 @@ export async function createRoutesFile(
 	const includePaths: string[][] = [];
 	const excludePaths: string[][] = [];
 
+	/**
+	 * All files in the `_config.build.assets` path, e.g. `_astro`
+	 * are considered static assets and should not be handled by the function
+	 * therefore we exclude a wildcard for that, e.g. `/_astro/*`
+	 */
+	const assetsPath = segmentsToCfSyntax(
+		[
+			[{ content: _config.build.assets, dynamic: false, spread: false }],
+			[{ content: '', dynamic: true, spread: false }],
+		],
+		_config
+	);
+	excludePaths.push(assetsPath);
+
+	if (existsSync(fileURLToPath(_config.publicDir))) {
+		const staticFiles = await glob(`${fileURLToPath(_config.publicDir)}/**/*`, {
+			cwd: fileURLToPath(_config.publicDir),
+			filesOnly: true,
+			dot: true,
+		});
+		for (const staticFile of staticFiles) {
+			if (['_headers', '_redirects', '_routes.json'].includes(staticFile)) continue;
+			const staticPath = staticFile;
+
+			const segments = removeLeadingForwardSlash(staticPath)
+				.split(posix.sep)
+				.filter(Boolean)
+				.map((s: string) => {
+					return getParts(s);
+				});
+			excludePaths.push(segmentsToCfSyntax(segments, _config));
+		}
+	}
+
+	for (const redirect of redirects) {
+		excludePaths.push(segmentsToCfSyntax(redirect, _config));
+	}
+
 	let hasPrerendered404 = false;
 	for (const route of routes) {
 		const convertedPath = segmentsToCfSyntax(route.segments, _config);
@@ -199,44 +237,6 @@ export async function createRoutesFile(
 				return getParts(s);
 			});
 		excludePaths.push(segmentsToCfSyntax(pageSegments, _config));
-	}
-
-	if (existsSync(fileURLToPath(_config.publicDir))) {
-		const staticFiles = await glob(`${fileURLToPath(_config.publicDir)}/**/*`, {
-			cwd: fileURLToPath(_config.publicDir),
-			filesOnly: true,
-			dot: true,
-		});
-		for (const staticFile of staticFiles) {
-			if (['_headers', '_redirects', '_routes.json'].includes(staticFile)) continue;
-			const staticPath = staticFile;
-
-			const segments = removeLeadingForwardSlash(staticPath)
-				.split(posix.sep)
-				.filter(Boolean)
-				.map((s: string) => {
-					return getParts(s);
-				});
-			excludePaths.push(segmentsToCfSyntax(segments, _config));
-		}
-	}
-
-	/**
-	 * All files in the `_config.build.assets` path, e.g. `_astro`
-	 * are considered static assets and should not be handled by the function
-	 * therefore we exclude a wildcard for that, e.g. `/_astro/*`
-	 */
-	const assetsPath = segmentsToCfSyntax(
-		[
-			[{ content: _config.build.assets, dynamic: false, spread: false }],
-			[{ content: '', dynamic: true, spread: false }],
-		],
-		_config
-	);
-	excludePaths.push(assetsPath);
-
-	for (const redirect of redirects) {
-		excludePaths.push(segmentsToCfSyntax(redirect, _config));
 	}
 
 	const includeTrie = new PathTrie();
