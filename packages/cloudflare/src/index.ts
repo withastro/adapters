@@ -111,6 +111,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/env.astro',
 					});
 					injectRoute({
+						pattern: '/_cloudflare_dev_toolbar_app/kv',
+						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/kv.astro',
+					});
+					injectRoute({
 						pattern: '/_cloudflare_dev_toolbar_app/r2',
 						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/r2.astro',
 					});
@@ -163,7 +167,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							tabSet.add('ENV');
 							typeMap.set('ENV', [...(typeMap.get('ENV') ?? []), binding]);
 						}
-						if (inspect(value).includes('R2')) {
+						if (inspect(value).includes('KvNamespace')) {
+							tabSet.add('KV');
+							typeMap.set('KV', [...(typeMap.get('KV') ?? []), binding]);
+						}
+						if (inspect(value).includes('R2Bucket')) {
 							tabSet.add('R2');
 							typeMap.set('R2', [...(typeMap.get('R2') ?? []), binding]);
 						}

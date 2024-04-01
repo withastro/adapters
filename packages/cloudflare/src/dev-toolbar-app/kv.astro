@@ -1,0 +1,39 @@
+---
+import type { KVNamespace } from '@cloudflare/workers-types/experimental';
+
+export const partial = true;
+
+const { _cloudflare_dev_toolbar_app, runtime } = Astro.locals as any;
+const bindingNames = _cloudflare_dev_toolbar_app.types.get('KV');
+
+const bindings: Record<string, KVNamespace> = {};
+for (const key in runtime.env) {
+	if (Object.prototype.hasOwnProperty.call(runtime.env, key)) {
+		if (bindingNames.includes(key)) {
+			bindings[key] = runtime.env[key];
+		}
+	}
+}
+---
+
+<div>
+	{
+		Object.entries(bindings).map(async ([binding, namespace]) => {
+			return (
+				<div>
+					<h2>{binding}</h2>
+					{(await namespace.list()).keys.map(async (key) => {
+						return (
+							<div>
+								<h4>KEY: {key.name}</h4>
+								<pre>Expiration: {key.expiration}</pre>
+								<pre>Metadata: {JSON.stringify(key.metadata)}</pre>
+								<pre>Value: {await namespace.get(key.name)}</pre>
+							</div>
+						);
+					})}
+				</div>
+			);
+		})
+	}
+</div>
