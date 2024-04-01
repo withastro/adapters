@@ -1,16 +1,28 @@
 ---
 export const partial = true;
+const { _cloudflare_dev_toolbar_app } = Astro.locals as {
+	_cloudflare_dev_toolbar_app: {
+		tabs: string[];
+	};
+};
 ---
 
-<div>
-	<button onclick="fetchHome(this)">Env</button>
-	<button>D1</button>
+<div style="display: flex; gap: 10px; padding-inline: 5px;">
+	{
+		_cloudflare_dev_toolbar_app.tabs.map((tab: string) => {
+			return (
+				<button onclick="fetchType(this)" data-type={tab}>
+					{tab}
+				</button>
+			);
+		})
+	}
 </div>
 
 <script is:inline>
-	var fetchHome = function (element) {
-		console.log(element.getRootNode());
-		fetch('/_dev-toolbar-app/cloudflare/home')
+	var fetchType = function (element) {
+		const type = element.getAttribute('data-type');
+		fetch(`/_cloudflare_dev_toolbar_app/${type.toLowerCase()}`)
 			.then((res) => res.text())
 			.then((html) => {
 				const el = document.createRange().createContextualFragment(html);

@@ -8,9 +8,7 @@ const plugin: DevToolbarApp = {
 		const page = `
 			<script>
 				var loadTabs = function (element) {
-					console.log(this);
-					console.log(element);
-					fetch('/_dev-toolbar-app/cloudflare/tabs')
+					fetch('/_cloudflare_dev_toolbar_app/tabs')
 						.then((res) => res.text())
 						.then((html) => {
 							const el = document.createRange().createContextualFragment(html);
@@ -19,7 +17,7 @@ const plugin: DevToolbarApp = {
 				};
 			</script>
 			<div id="tabs"></div>
-			<div id="target"></div>
+			<div id="target" style="overflow: auto;"></div>
 		`;
 
 		const pageEl = document.createRange().createContextualFragment(page);

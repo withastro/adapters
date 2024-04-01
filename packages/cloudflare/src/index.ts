@@ -3,6 +3,7 @@ import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import { createReadStream } from 'node:fs';
 import { appendFile, rename, stat } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
+import { inspect } from 'node:util';
 import {
 	appendForwardSlash,
 	prependForwardSlash,
@@ -73,6 +74,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				updateConfig,
 				logger,
 				addDevToolbarApp,
+				addWatchFile,
 				injectRoute,
 			}) => {
 				updateConfig({
@@ -98,14 +100,19 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 				// MARK: Dev Toolbar App
 				if (command === 'dev') {
+					addWatchFile(new URL('./wrangler.toml', config.root));
 					addDevToolbarApp('@astrojs/cloudflare/dev-toolbar-app');
 					injectRoute({
-						pattern: '/_dev-toolbar-app/cloudflare/tabs',
+						pattern: '/_cloudflare_dev_toolbar_app/tabs',
 						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/tabs.astro',
 					});
 					injectRoute({
-						pattern: '/_dev-toolbar-app/cloudflare/home',
-						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/test.astro',
+						pattern: '/_cloudflare_dev_toolbar_app/env',
+						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/env.astro',
+					});
+					injectRoute({
+						pattern: '/_cloudflare_dev_toolbar_app/r2',
+						entrypoint: '@astrojs/cloudflare/dev-toolbar-app/r2.astro',
 					});
 				}
 			},
@@ -149,8 +156,25 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 					const clientLocalsSymbol = Symbol.for('astro.locals');
 
+					const tabSet = new Set();
+					const typeMap = new Map();
+					for (const [binding, value] of Object.entries(platformProxy.env)) {
+						if (typeof value === 'string') {
+							tabSet.add('ENV');
+							typeMap.set('ENV', [...(typeMap.get('ENV') ?? []), binding]);
+						}
+						if (inspect(value).includes('R2')) {
+							tabSet.add('R2');
+							typeMap.set('R2', [...(typeMap.get('R2') ?? []), binding]);
+						}
+					}
+
 					server.middlewares.use(async function middleware(req, res, next) {
 						Reflect.set(req, clientLocalsSymbol, {
+							_cloudflare_dev_toolbar_app: {
+								tabs: [...tabSet],
+								types: typeMap,
+							},
 							runtime: {
 								env: platformProxy.env,
 								cf: platformProxy.cf,

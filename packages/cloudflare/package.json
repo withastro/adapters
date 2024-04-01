@@ -22,7 +22,8 @@
     "./image-endpoint": "./dist/entrypoints/image-endpoint.js",
     "./dev-toolbar-app": "./dist/entrypoints/dev-toolbar-app.js",
     "./dev-toolbar-app/tabs.astro": "./dist/dev-toolbar-app/tabs.astro",
-    "./dev-toolbar-app/test.astro": "./dist/dev-toolbar-app/test.astro",
+    "./dev-toolbar-app/env.astro": "./dist/dev-toolbar-app/env.astro",
+    "./dev-toolbar-app/r2.astro": "./dist/dev-toolbar-app/r2.astro",
     "./package.json": "./package.json"
   },
   "files": ["dist"],
