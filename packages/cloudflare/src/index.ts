@@ -1,7 +1,7 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 
 import { createReadStream } from 'node:fs';
-import { appendFile, rename, stat } from 'node:fs/promises';
+import { appendFile, rename, stat, unlink } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
 	appendForwardSlash,
@@ -13,6 +13,7 @@ import { AstroError } from 'astro/errors';
 import { getPlatformProxy } from 'wrangler';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
+import { UnusedChunkAnalyzer } from './utils/unused-chunk-analyzer.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { Runtime } from './entrypoints/server.advanced.js';
@@ -64,6 +65,8 @@ export type Options = {
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
+	const chunkAnalyzer = new UnusedChunkAnalyzer();
+
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
@@ -84,6 +87,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							wasmModuleLoader({
 								disabled: !args?.wasmModuleImports,
 							}),
+							chunkAnalyzer.getPlugin(),
 						],
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
@@ -299,6 +303,12 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					} catch (error) {
 						logger.error('Failed to write _redirects file');
 					}
+				}
+
+				const chunksToDelete = chunkAnalyzer.getUnusedChunks();
+
+				for (const chunk of chunksToDelete) {
+					await unlink(new URL('./_worker.js/' + chunk, _config.outDir));
 				}
 			},
 		},
