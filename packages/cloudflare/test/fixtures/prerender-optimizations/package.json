@@ -1,5 +1,5 @@
 {
-  "name": "@test/astro-cloudflare-no-output",
+  "name": "@test/astro-cloudflare-prerender-optimizations",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
