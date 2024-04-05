@@ -308,7 +308,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				const chunksToDelete = chunkAnalyzer.getUnusedChunks();
 
 				for (const chunk of chunksToDelete) {
-					await unlink(new URL('./_worker.js/' + chunk, _config.outDir));
+					await unlink(new URL(`./_worker.js/${chunk}`, _config.outDir));
 				}
 			},
 		},
