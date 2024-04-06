@@ -187,6 +187,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
 					// @ts-expect-error
+					vite.build.rollupOptions.output.manualChunks ||= (id: string) => {
+						if (id.includes('node_modules') && !id.includes('node_modules/astro')) return 'vendor';
+					};
+					// @ts-expect-error
 					vite.build.rollupOptions.output.banner ||=
 						'globalThis.process ??= {}; globalThis.process.env ??= {};';
 
@@ -209,6 +213,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.resolve.conditions = vite.resolve.conditions.filter(
 						(c) => c !== 'workerd' && c !== 'worker'
 					);
+					vite.build ||= {};
+					vite.build.rollupOptions ||= {};
+					vite.build.rollupOptions.output ||= {};
+					//@ts-expect-error
+					vite.build.rollupOptions.output.manualChunks = undefined;
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
