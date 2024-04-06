@@ -217,7 +217,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
 					//@ts-expect-error
-					vite.build.rollupOptions.output.manualChunks = undefined;
+					vite.build.rollupOptions.output.manualChunks ||= undefined;
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
