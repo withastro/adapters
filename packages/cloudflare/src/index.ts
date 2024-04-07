@@ -196,6 +196,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						'node_modules/react/',
 						'node_modules/react-dom/',
 						'node_modules/solid-js/',
+						'sharp',
 					];
 					// @ts-expect-error
 					vite.build.rollupOptions.output.manualChunks ||= (id: string) => {
