@@ -59,6 +59,11 @@ export type Options = {
 	};
 	/** Enable WebAssembly support */
 	wasmModuleImports?: boolean;
+	/** Experimental options */
+	experimental?: {
+		/** List of strings of dependencies inside node_modules folder, to pass for manualChunks, e.g. node_modules/react/ */
+		manualChunks?: string[];
+	};
 };
 
 export default function createIntegration(args?: Options): AstroIntegration {
@@ -186,14 +191,18 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build ||= {};
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
+					const nodeModulesSubPaths = [
+						...(args?.experimental?.manualChunks ?? []),
+						'node_modules/react/',
+						'node_modules/react-dom/',
+						'node_modules/solid-js/',
+					];
 					// @ts-expect-error
 					vite.build.rollupOptions.output.manualChunks ||= (id: string) => {
-						if (
-							id.includes('node_modules') &&
-							!id.includes('node_modules/astro') &&
-							!id.includes('node_modules/html-escaper')
-						)
-							return 'vendor';
+						for (const nodeModulesSubPath of nodeModulesSubPaths) {
+							if (id.includes(nodeModulesSubPath))
+								return `nm_${nodeModulesSubPath.replace('node_modules/', '').replace(/\//g, '_')}`;
+						}
 					};
 					// @ts-expect-error
 					vite.build.rollupOptions.output.banner ||=
