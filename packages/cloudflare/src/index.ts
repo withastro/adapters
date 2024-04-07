@@ -67,6 +67,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 	const chunkAnalyzer = new UnusedChunkAnalyzer();
 
+	const prerenderImports: string[] = [];
+
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
@@ -88,6 +90,50 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								disabled: !args?.wasmModuleImports,
 							}),
 							chunkAnalyzer.getPlugin(),
+							{
+								name: 'prerender-scanner',
+								enforce: 'post',
+								generateBundle(_, bundle) {
+									for (const chunk of Object.values(bundle)) {
+										if (chunk.type !== 'chunk') continue;
+										if (chunk.dynamicImports.some((entry) => entry.includes('prerender'))) {
+											prerenderImports.push(chunk.fileName);
+										}
+									}
+								},
+							},
+							{
+								name: 'prerender-worker',
+								enforce: 'post',
+								generateBundle(_, bundle) {
+									for (const chunk of Object.values(bundle)) {
+										if (chunk.type !== 'chunk') continue;
+										if (chunk.name === '_@astrojs-ssr-virtual-entry') {
+											chunk.dynamicImports = chunk.dynamicImports.filter(
+												(entry) => !prerenderImports.includes(entry)
+											);
+											for (const page of prerenderImports) {
+												const importRegex = new RegExp(
+													`^const (_page\\d) = \\(\\) => import\\('.\\/${page}'\\);$\\n`,
+													'gm'
+												);
+												let pageId: string | undefined;
+												const matches = chunk.code.matchAll(importRegex);
+												for (const match of matches) {
+													if (match[1]) {
+														pageId = match[1];
+													}
+												}
+												chunk.code = chunk.code.replace(importRegex, '');
+												if (pageId) {
+													const arrayRegex = new RegExp(`^^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
+													chunk.code = chunk.code.replace(arrayRegex, '');
+												}
+											}
+										}
+									}
+								},
+							},
 						],
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
@@ -173,7 +219,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
-					vite.ssr.noExternal = true;
+					vite.ssr.noExternal ||= true;
 
 					if (typeof _config.vite.ssr?.external === 'undefined') vite.ssr.external = [];
 					if (typeof _config.vite.ssr?.external === 'boolean')
