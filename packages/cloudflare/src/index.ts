@@ -188,7 +188,12 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions.output ||= {};
 					// @ts-expect-error
 					vite.build.rollupOptions.output.manualChunks ||= (id: string) => {
-						if (id.includes('node_modules') && !id.includes('node_modules/astro')) return 'vendor';
+						if (
+							id.includes('node_modules') &&
+							!id.includes('node_modules/astro') &&
+							!id.includes('node_modules/html-escaper')
+						)
+							return 'vendor';
 					};
 					// @ts-expect-error
 					vite.build.rollupOptions.output.banner ||=
