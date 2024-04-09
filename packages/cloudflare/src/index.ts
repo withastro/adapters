@@ -126,7 +126,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 												}
 												chunk.code = chunk.code.replace(importRegex, '');
 												if (pageId) {
-													const arrayRegex = new RegExp(`^^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
+													const arrayRegex = new RegExp(`^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
 													chunk.code = chunk.code.replace(arrayRegex, '');
 												}
 											}
