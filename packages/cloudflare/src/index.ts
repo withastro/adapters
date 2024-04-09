@@ -63,6 +63,7 @@ export type Options = {
 
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
+	let defaultNoExternalConfig: string | true | RegExp | (string | RegExp)[] | undefined;
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -146,6 +147,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:setup': ({ vite, target }) => {
+				defaultNoExternalConfig ??= structuredClone(vite.ssr?.noExternal);
 				if (target === 'server') {
 					vite.resolve ||= {};
 					vite.resolve.alias ||= {};
@@ -207,6 +209,9 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				// so we need to reset the previous conflicting setting
 				// in the future we should look into a more robust solution
 				if (target === 'client') {
+					vite.ssr ||= {};
+					vite.ssr.noExternal = defaultNoExternalConfig;
+
 					vite.resolve ||= {};
 					vite.resolve.conditions ||= [];
 					vite.resolve.conditions = vite.resolve.conditions.filter(
