@@ -94,43 +94,43 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								name: 'prerender-scanner',
 								enforce: 'post',
 								generateBundle(_, bundle) {
+									// Loop through all chunks and find out which pages are prerendered
 									for (const chunk of Object.values(bundle)) {
 										if (chunk.type !== 'chunk') continue;
 										if (chunk.dynamicImports.some((entry) => entry.includes('prerender'))) {
 											prerenderImports.push(chunk.fileName);
 										}
 									}
-								},
-							},
-							{
-								name: 'prerender-worker',
-								enforce: 'post',
-								generateBundle(_, bundle) {
-									for (const chunk of Object.values(bundle)) {
-										if (chunk.type !== 'chunk') continue;
-										if (chunk.name === '_@astrojs-ssr-virtual-entry') {
-											chunk.dynamicImports = chunk.dynamicImports.filter(
-												(entry) => !prerenderImports.includes(entry)
+
+									const entryChunk = bundle['index.js'];
+									if (
+										entryChunk &&
+										entryChunk.type === 'chunk' &&
+										entryChunk.name === '_@astrojs-ssr-virtual-entry'
+									) {
+										entryChunk.dynamicImports = entryChunk.dynamicImports.filter(
+											(entry) => !prerenderImports.includes(entry)
+										);
+										for (const page of prerenderImports) {
+											const importRegex = new RegExp(
+												`^const (_page\\d) = \\(\\) => import\\('.\\/${page}'\\);$\\n`,
+												'gm'
 											);
-											for (const page of prerenderImports) {
-												const importRegex = new RegExp(
-													`^const (_page\\d) = \\(\\) => import\\('.\\/${page}'\\);$\\n`,
-													'gm'
-												);
-												let pageId: string | undefined;
-												const matches = chunk.code.matchAll(importRegex);
-												for (const match of matches) {
-													if (match[1]) {
-														pageId = match[1];
-													}
-												}
-												chunk.code = chunk.code.replace(importRegex, '');
-												if (pageId) {
-													const arrayRegex = new RegExp(`^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
-													chunk.code = chunk.code.replace(arrayRegex, '');
+											let pageId: string | undefined;
+											const matches = entryChunk.code.matchAll(importRegex);
+											for (const match of matches) {
+												if (match[1]) {
+													pageId = match[1];
 												}
 											}
+											entryChunk.code = entryChunk.code.replace(importRegex, '');
+											if (pageId) {
+												const arrayRegex = new RegExp(`^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
+												entryChunk.code = entryChunk.code.replace(arrayRegex, '');
+											}
 										}
+									} else {
+										logger.error("Couldn't find the virtual entry chunk");
 									}
 								},
 							},
