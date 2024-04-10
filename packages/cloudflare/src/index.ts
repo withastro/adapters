@@ -227,7 +227,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
-					vite.ssr.noExternal ||= true;
+					vite.ssr.noExternal = true;
 
 					if (typeof _config.vite.ssr?.external === 'undefined') vite.ssr.external = [];
 					if (typeof _config.vite.ssr?.external === 'boolean')
