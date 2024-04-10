@@ -97,7 +97,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 									// Loop through all chunks and find out which pages are prerendered
 									for (const chunk of Object.values(bundle)) {
 										if (chunk.type !== 'chunk') continue;
-										if (chunk.dynamicImports.some((entry) => entry.includes('prerender'))) {
+										if (
+											chunk.dynamicImports.some(
+												(entry) =>
+													entry.includes('prerender') &&
+													chunk.name !== '_@astrojs-ssr-virtual-entry'
+											)
+										) {
 											prerenderImports.push([chunk.facadeModuleId ?? '', chunk.fileName]);
 										}
 									}
