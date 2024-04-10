@@ -67,7 +67,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 	const chunkAnalyzer = new UnusedChunkAnalyzer();
 
-	const prerenderImports: string[] = [];
+	const prerenderImports: string[][] = [];
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -98,7 +98,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 									for (const chunk of Object.values(bundle)) {
 										if (chunk.type !== 'chunk') continue;
 										if (chunk.dynamicImports.some((entry) => entry.includes('prerender'))) {
-											prerenderImports.push(chunk.fileName);
+											prerenderImports.push([chunk.facadeModuleId ?? '', chunk.fileName]);
 										}
 									}
 
@@ -109,13 +109,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 										entryChunk.name === '_@astrojs-ssr-virtual-entry'
 									) {
 										entryChunk.dynamicImports = entryChunk.dynamicImports.filter(
-											(entry) => !prerenderImports.includes(entry)
+											(entry) => !prerenderImports.map((e) => e[1]).includes(entry)
 										);
 										for (const page of prerenderImports) {
 											const importRegex = new RegExp(
-												`^const (_page\\d) = \\(\\) => import\\('.\\/${page}'\\);$\\n`,
+												`^const (_page\\d) = \\(\\) => import\\('.\\/${page[1]}'\\);$\\n`,
 												'gm'
 											);
+
 											let pageId: string | undefined;
 											const matches = entryChunk.code.matchAll(importRegex);
 											for (const match of matches) {
@@ -123,9 +124,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 													pageId = match[1];
 												}
 											}
+											const pageSource = page[0].split(':')[1].replace('@_@', '.');
 											entryChunk.code = entryChunk.code.replace(importRegex, '');
 											if (pageId) {
-												const arrayRegex = new RegExp(`^ +\\[".+", ${pageId}\\]$\\n`, 'gm');
+												const arrayRegex = new RegExp(`\\["${pageSource}", ${pageId}\\]`, 'gm');
 												entryChunk.code = entryChunk.code.replace(arrayRegex, '');
 											}
 										}
