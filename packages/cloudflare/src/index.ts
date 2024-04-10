@@ -127,7 +127,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 											const pageSource = page[0].split(':')[1].replace('@_@', '.');
 											entryChunk.code = entryChunk.code.replace(importRegex, '');
 											if (pageId) {
-												const arrayRegex = new RegExp(`\\["${pageSource}", ${pageId}\\]`, 'gm');
+												const arrayRegex = new RegExp(`\\["${pageSource}", ?${pageId}\\],?`, 'gm');
 												entryChunk.code = entryChunk.code.replace(arrayRegex, '');
 											}
 										}
