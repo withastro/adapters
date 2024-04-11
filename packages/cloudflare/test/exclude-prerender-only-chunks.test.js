@@ -40,8 +40,6 @@ async function lookForCodeInServerBundle(code) {
 describe('worker.js cleanup after pre-rendering', () => {
 	before(async () => {
 		const res = await astroCli(fileURLToPath(root), 'build');
-		process.stdout.write(res.stdout);
-		process.stderr.write(res.stderr);
 	});
 
 	it('should not include code from pre-rendered pages in the server bundle', async () => {
