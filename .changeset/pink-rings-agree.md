@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': minor
 ---
 
-Exclude prerender and unused chunks from server bundle
+Fixes an issue, where unused code was not removed from the output, which led to issues with large projects with a lot of prerendered pages.
