@@ -67,6 +67,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 	const chunkAnalyzer = new UnusedChunkAnalyzer();
 
+	const prerenderImports: string[][] = [];
+
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
@@ -88,6 +90,58 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								disabled: !args?.wasmModuleImports,
 							}),
 							chunkAnalyzer.getPlugin(),
+							{
+								name: 'prerender-scanner',
+								enforce: 'post',
+								generateBundle(_, bundle) {
+									// Loop through all chunks and find out which pages are prerendered
+									for (const chunk of Object.values(bundle)) {
+										if (chunk.type !== 'chunk') continue;
+										if (
+											chunk.dynamicImports.some(
+												(entry) =>
+													entry.includes('prerender') &&
+													chunk.name !== '_@astrojs-ssr-virtual-entry'
+											)
+										) {
+											prerenderImports.push([chunk.facadeModuleId ?? '', chunk.fileName]);
+										}
+									}
+
+									const entryChunk = bundle['index.js'];
+									if (
+										entryChunk &&
+										entryChunk.type === 'chunk' &&
+										entryChunk.name === '_@astrojs-ssr-virtual-entry'
+									) {
+										entryChunk.dynamicImports = entryChunk.dynamicImports.filter(
+											(entry) => !prerenderImports.map((e) => e[1]).includes(entry)
+										);
+										for (const page of prerenderImports) {
+											const importRegex = new RegExp(
+												`^const (_page\\d) = \\(\\) => import\\('.\\/${page[1]}'\\);$\\n`,
+												'gm'
+											);
+
+											let pageId: string | undefined;
+											const matches = entryChunk.code.matchAll(importRegex);
+											for (const match of matches) {
+												if (match[1]) {
+													pageId = match[1];
+												}
+											}
+											const pageSource = page[0].split(':')[1].replace('@_@', '.');
+											entryChunk.code = entryChunk.code.replace(importRegex, '');
+											if (pageId) {
+												const arrayRegex = new RegExp(`\\["${pageSource}", ?${pageId}\\],?`, 'gm');
+												entryChunk.code = entryChunk.code.replace(arrayRegex, '');
+											}
+										}
+									} else {
+										logger.error("Couldn't find the virtual entry chunk");
+									}
+								},
+							},
 						],
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
