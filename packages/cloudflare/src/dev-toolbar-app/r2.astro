@@ -1,0 +1,30 @@
+---
+import type { R2Bucket } from '@cloudflare/workers-types/experimental';
+
+export const partial = true;
+
+const { _cloudflare_dev_toolbar_app, runtime } = Astro.locals as any;
+const bindingNames = _cloudflare_dev_toolbar_app.types.get('R2');
+
+const bindings: Record<string, R2Bucket> = {};
+for (const key in runtime.env) {
+	if (Object.prototype.hasOwnProperty.call(runtime.env, key)) {
+		if (bindingNames.includes(key)) {
+			bindings[key] = runtime.env[key];
+		}
+	}
+}
+---
+
+<div>
+	{
+		Object.entries(bindings).map(async ([binding, bucket]) => {
+			return (
+				<div>
+					<h2>{binding}</h2>
+					<pre>{JSON.stringify(await bucket.list(), null, 2)}</pre>
+				</div>
+			);
+		})
+	}
+</div>
