@@ -1,5 +1,23 @@
 # @astrojs/cloudflare
 
+## 10.2.0
+
+### Minor Changes
+
+- [#222](https://github.com/withastro/adapters/pull/222) [`8f312da`](https://github.com/withastro/adapters/commit/8f312dabc31bd17a699d172d1366ef63a5e0f8f4) Thanks [@Fryuni](https://github.com/Fryuni)! - Fixes an issue, where unused code was not removed from the output, which led to issues with large projects with a lot of prerendered pages.
+
+## 10.1.0
+
+### Minor Changes
+
+- [#229](https://github.com/withastro/adapters/pull/229) [`1f4e40b`](https://github.com/withastro/adapters/commit/1f4e40b7c1ad586b58159b12b8f5b6a2da7ce1d9) Thanks [@FlorianFlatscher](https://github.com/FlorianFlatscher)! - Adds a new option for the Image service to the Cloudflare adapter. `imageService: 'custom'` does use the user defined settings, without applying any modification to it. **You need to make sure that the configured settings are compatible with Cloudflare's `workerd` runtime yourself.**
+
+## 10.0.3
+
+### Patch Changes
+
+- [#225](https://github.com/withastro/adapters/pull/225) [`9e7d0ea`](https://github.com/withastro/adapters/commit/9e7d0eae05a2ba8d7234e909e724b220b602fc5a) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes `locals.runtime` API to match between `astro dev` and `astro build`
+
 ## 10.0.2
 
 ### Patch Changes
