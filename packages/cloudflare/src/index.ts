@@ -13,7 +13,7 @@ import { AstroError } from 'astro/errors';
 import { getPlatformProxy } from 'wrangler';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
-import { UnusedChunkAnalyzer } from './utils/unused-chunk-analyzer.js';
+import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
 import { wasmModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { Runtime } from './entrypoints/server.advanced.js';
@@ -65,7 +65,10 @@ export type Options = {
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
-	const chunkAnalyzer = new UnusedChunkAnalyzer();
+	// Initialize the unused chunk analyzer as a shared state between hooks.
+	// The analyzer is used on earlier hooks to collect information about used hooks on a Vite plugin
+	// and then later after the full build to clean up unused chunks, so it has to be shared between them.
+	const chunkAnalyzer = new NonServerChunkDetector();
 
 	const prerenderImports: string[][] = [];
 
@@ -363,9 +366,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 				}
 
-				const chunksToDelete = chunkAnalyzer.getUnusedChunks();
-
+				// Get chunks from the bundle that are not needed on the server and delete them
+				// Those modules are build only for prerendering routes.
+				const chunksToDelete = chunkAnalyzer.getNonServerChunks();
 				for (const chunk of chunksToDelete) {
+					// Chunks are located on `./_worker.js` directory inside of the output directory
 					await unlink(new URL(`./_worker.js/${chunk}`, _config.outDir));
 				}
 			},
