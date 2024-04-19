@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': patch
 ---
 
-Fixes an issue, where `astro build` fails if it can't clean up dynamic imports.
+Fixes an issue, where `astro build` throws an error if it can't clean up dynamic imports for prerendered pages.
