@@ -77,6 +77,12 @@ importers:
       esbuild:
         specifier: ^0.19.5
         version: 0.19.6
+      estree-walker:
+        specifier: ^3.0.3
+        version: 3.0.3
+      magic-string:
+        specifier: ^0.30.10
+        version: 0.30.10
       miniflare:
         specifier: ^3.20240320.0
         version: 3.20240320.0
@@ -491,7 +497,7 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@babel/code-frame': 7.24.2
-      '@babel/generator': 7.24.1
+      '@babel/generator': 7.24.4
       '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-module-transforms': 7.23.3(@babel/core@7.24.3)
       '@babel/helpers': 7.24.1
@@ -509,6 +515,15 @@ packages:
 
   /@babel/generator@7.24.1:
     resolution: {integrity: sha512-DfCRfZsBcrPEHUfuBMgbJ1Ut01Y/itOs+hY2nFLgqsqXd52/iSiVq5TITtUasIUgm+IIKdY2/1I7auiQOEeC9A==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/types': 7.24.0
+      '@jridgewell/gen-mapping': 0.3.5
+      '@jridgewell/trace-mapping': 0.3.25
+      jsesc: 2.5.2
+
+  /@babel/generator@7.24.4:
+    resolution: {integrity: sha512-Xd6+v6SnjWVx/nus+y0l1sxMOTOMBkyL4+BIdbALyatQnAe/SRVjANeDPSCYaX+i1iJmuGSKf3Z+E+V/va1Hvw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.24.0
@@ -2742,7 +2757,7 @@ packages:
       '@astrojs/markdown-remark': 4.3.1
       '@astrojs/telemetry': 3.0.4
       '@babel/core': 7.24.3
-      '@babel/generator': 7.24.1
+      '@babel/generator': 7.24.4
       '@babel/parser': 7.24.1
       '@babel/plugin-transform-react-jsx': 7.23.4(@babel/core@7.24.3)
       '@babel/traverse': 7.24.1
@@ -2776,7 +2791,7 @@ packages:
       http-cache-semantics: 4.1.1
       js-yaml: 4.1.0
       kleur: 4.1.5
-      magic-string: 0.30.8
+      magic-string: 0.30.10
       mime: 3.0.0
       ora: 7.0.1
       p-limit: 5.0.0
@@ -4962,11 +4977,17 @@ packages:
     dependencies:
       sourcemap-codec: 1.4.8
 
+  /magic-string@0.30.10:
+    resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+
   /magic-string@0.30.8:
     resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
 
   /map-obj@1.0.1:
     resolution: {integrity: sha512-7N/q3lyZ+LVCp7PzuxrJr4KMbBE2hW7BT7YNia330OFxIf4d3r5zVpicP2650l7CPN6RM9zOJRl3NGpqSiw3Eg==}
