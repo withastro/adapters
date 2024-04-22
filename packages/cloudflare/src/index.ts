@@ -125,7 +125,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 									const constsToRemove: string[] = [];
 									walk(astrojsSSRVirtualEntryAST, {
-										leave(node, parent, prop, index) {
+										leave(node) {
+											// We are only looking for VariableDeclarations, since both (dynamic imports and pageMap) are declared as constants in the code
 											if (node.type !== 'VariableDeclaration') return;
 											if (
 												!node.declarations[0] ||
@@ -133,7 +134,9 @@ export default function createIntegration(args?: Options): AstroIntegration {
 											)
 												return;
 
+											// This function will remove the dynamic imports from the entrypoint
 											mutateDynamicPageImportsInPlace(node, prerenderImports, constsToRemove, s);
+											// This function will remove the pageMap entries which are invalid now
 											mutatePageMapInPlace(node, constsToRemove, s);
 										},
 									});
