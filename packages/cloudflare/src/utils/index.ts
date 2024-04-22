@@ -23,7 +23,7 @@ export function mutatePageMapInPlace(
 				// @ts-expect-error - @types/estree seem to be wrong
 				s.remove(arrayExpression.start, arrayExpression.end);
 
-				// We need to check if there are any lefover commas, which are not part of the `ArrayExpression` node
+				// We need to check if there are any leftover commas, which are not part of the `ArrayExpression` node
 				// @ts-expect-error - @types/estree seem to be wrong
 				const endChar = s.slice(arrayExpression.end, arrayExpression.end + 1);
 				if (endChar.includes(',')) {
