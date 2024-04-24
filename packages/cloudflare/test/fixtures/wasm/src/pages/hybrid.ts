@@ -1,13 +1,13 @@
 import { type APIContext } from 'astro';
-// @ts-ignore
-import mod from '../util/add.wasm?module';
 
-const addModule: any = new WebAssembly.Instance(mod);
+import {add} from '../util/add';
+
+export const prerender = true
 
 export async function GET(
   context: APIContext
 ): Promise<Response> {
-  return new Response(JSON.stringify({ answer: addModule.exports.add(20, 1) }), {
+  return new Response(JSON.stringify({ answer: add(20, 1) }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',

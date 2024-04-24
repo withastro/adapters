@@ -32,4 +32,11 @@ describe('WasmImport', () => {
 		const json = await res.json();
 		assert.deepEqual(json, { answer: 42 });
 	});
+
+	it('can render static', async () => {
+		const res = await fetch('http://127.0.0.1:8788/hybrid');
+		assert.equal(res.status, 200);
+		const json = await res.json();
+		assert.deepEqual(json, { answer: 21 });
+	});
 });
