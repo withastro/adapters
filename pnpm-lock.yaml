@@ -143,6 +143,15 @@ importers:
         specifier: ^4.3.5
         version: 4.5.8(@types/node@18.17.8)(typescript@5.2.2)
 
+  packages/cloudflare/test/fixtures/module-loader:
+    dependencies:
+      '@astrojs/cloudflare':
+        specifier: workspace:*
+        version: link:../../..
+      astro:
+        specifier: ^4.3.5
+        version: 4.5.8(@types/node@18.17.8)(typescript@5.2.2)
+
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
       '@astrojs/cloudflare':
@@ -162,15 +171,6 @@ importers:
         version: 4.5.8(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/routes-json:
-    dependencies:
-      '@astrojs/cloudflare':
-        specifier: workspace:*
-        version: link:../../..
-      astro:
-        specifier: ^4.3.5
-        version: 4.5.8(@types/node@18.17.8)(typescript@5.2.2)
-
-  packages/cloudflare/test/fixtures/wasm:
     dependencies:
       '@astrojs/cloudflare':
         specifier: workspace:*
@@ -521,6 +521,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 2.5.2
+    dev: false
 
   /@babel/generator@7.24.4:
     resolution: {integrity: sha512-Xd6+v6SnjWVx/nus+y0l1sxMOTOMBkyL4+BIdbALyatQnAe/SRVjANeDPSCYaX+i1iJmuGSKf3Z+E+V/va1Hvw==}
@@ -695,7 +696,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.24.2
-      '@babel/generator': 7.24.1
+      '@babel/generator': 7.24.4
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-hoist-variables': 7.22.5
