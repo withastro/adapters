@@ -2,6 +2,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as url from 'node:url';
 import type { AstroConfig } from 'astro';
+import type { OutputBundle } from 'rollup';
 import type { PluginOption } from 'vite';
 
 export interface CloudflareModulePluginExtra {
@@ -114,6 +115,7 @@ export function cloudflareModuleLoader(
 
 						// record this replacement for later, to adjust it to import the unbundled asset
 						replacements.push({
+							chunkName: chunk.name,
 							cloudflareImport: relativePath.replace(/\.mjs$/, ''),
 							nodejsImport: relativePath,
 						});
@@ -128,31 +130,48 @@ export function cloudflareModuleLoader(
 			return { code: replaced };
 		},
 
-		/**
-		 * Once prerendering is complete, restore the imports in the _worker.js to cloudflare compatible ones, removing the .mjs suffix.
-		 * Walks the complete _worker.js/ directory and reads all files.
-		 */
-		async afterBuildCompleted(config: AstroConfig) {
-			async function doReplacement(dir: string) {
-				const files = await fs.readdir(dir, { withFileTypes: true });
-				for (const entry of files) {
-					if (entry.isDirectory()) {
-						await doReplacement(path.join(dir, entry.name));
-					} else if (entry.isFile() && entry.name.endsWith('.mjs')) {
-						const filepath = path.join(dir, entry.name);
-						let contents = await fs.readFile(filepath, 'utf-8');
-						for (const replacement of replacements) {
-							contents = contents.replaceAll(
-								replacement.nodejsImport,
-								replacement.cloudflareImport
-							);
-						}
-						await fs.writeFile(filepath, contents, 'utf-8');
-					}
+		generateBundle(_, bundle: OutputBundle) {
+			// associate the chunk name to the final file name. After the prerendering is done, we can use this to replace the imports in the _worker.js
+			// in a targetted way
+			const replacementsByChunkName = new Map<string, Replacement[]>();
+			for (const replacement of replacements) {
+				const repls = replacementsByChunkName.get(replacement.chunkName) || [];
+				if (!repls.length) {
+					replacementsByChunkName.set(replacement.chunkName, repls);
+				}
+				repls.push(replacement);
+			}
+			for (const chunk of Object.values(bundle)) {
+				const repls = chunk.name && replacementsByChunkName.get(chunk.name);
+				for (const replacement of repls || []) {
+					replacement.fileName = chunk.fileName;
 				}
 			}
+		},
 
-			await doReplacement(url.fileURLToPath(new URL('_worker.js', config.outDir)));
+		/**
+		 * Once prerendering is complete, restore the imports in the _worker.js to cloudflare compatible ones, removing the .mjs suffix.
+		 */
+		async afterBuildCompleted(config: AstroConfig) {
+			const baseDir = url.fileURLToPath(config.outDir);
+			const replacementsByFileName = new Map<string, Replacement[]>();
+			for (const replacement of replacements) {
+				if (!replacement.fileName) continue;
+				const repls = replacementsByFileName.get(replacement.fileName) || [];
+				if (!repls.length) {
+					replacementsByFileName.set(replacement.fileName, repls);
+				}
+				repls.push(replacement);
+			}
+			for (const [fileName, repls] of replacementsByFileName.entries()) {
+				const filepath = path.join(baseDir, '_worker.js', fileName);
+				const contents = await fs.readFile(filepath, 'utf-8');
+				let updated = contents;
+				for (const replacement of repls) {
+					updated = contents.replaceAll(replacement.nodejsImport, replacement.cloudflareImport);
+				}
+				await fs.writeFile(filepath, updated, 'utf-8');
+			}
 		},
 	};
 }
@@ -160,6 +179,8 @@ export function cloudflareModuleLoader(
 export type ImportType = 'wasm';
 
 interface Replacement {
+	fileName?: string;
+	chunkName: string;
 	// desired import for cloudflare
 	cloudflareImport: string;
 	// nodejs import that simulates a wasm module
