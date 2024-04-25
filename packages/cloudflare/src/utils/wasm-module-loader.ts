@@ -8,25 +8,18 @@ export interface CloudflareModulePluginExtra {
 	afterBuildCompleted(config: AstroConfig): Promise<void>;
 }
 /**
- * Enables support for various non-standard extensions in module imports within cloudflare workers.
+ * Enables support for wasm modules within cloudflare pages functions
  *
- * See https://developers.cloudflare.com/workers/wrangler/bundling/ for reference
- *
- * This adds supports for imports in the following formats:
- * - .wasm?module
- * - .bin
- *
- * Loads '*.wasm?module' imports as WebAssembly modules, which is the only way to load WASM in cloudflare workers.
+ * Loads '*.wasm?module' and `*.wasm` imports as WebAssembly modules, which is the only way to load WASM in cloudflare workers.
  * Current proposal for WASM modules: https://github.com/WebAssembly/esm-integration/tree/main/proposals/esm-integration
  * Cloudflare worker WASM from javascript support: https://developers.cloudflare.com/workers/runtime-apis/webassembly/javascript/
- * @param bin - if true, will load '.bin' imports as Uint8Arrays, otherwise will throw errors when encountered to clarify that it must be enabled
- * @param wasm - if true, will load '.wasm?module' imports as Uint8Arrays, otherwise will throw errors when encountered to clarify that it must be enabled
+ * @param enabled - if true, load '.wasm' imports as Uint8Arrays, otherwise will throw errors when encountered to clarify that it must be enabled
  * @returns Vite plugin to load WASM tagged with '?module' as a WASM modules
  */
 export function cloudflareModuleLoader(
-	enabled: Record<ImportType, boolean>
+	enabled: boolean
 ): PluginOption & CloudflareModulePluginExtra {
-	const enabledAdapters = cloudflareImportAdapters.filter((x) => enabled[x.extension]);
+	const enabledAdapters = cloudflareImportAdapters.filter((x) => enabled);
 	let isDev = false;
 	const MAGIC_STRING = '__CLOUDFLARE_ASSET__';
 	const replacements: Replacement[] = [];
@@ -58,9 +51,7 @@ export function cloudflareModuleLoader(
 			if (!importAdapter) {
 				return;
 			}
-			const suffixType: ImportType = importAdapter.extension;
-			const adapterEnabled = enabled[suffixType];
-			if (!adapterEnabled) {
+			if (!enabled) {
 				throw new Error(
 					`Cloudflare module loading is experimental. The ${suffix} module cannot be loaded unless you add \`wasmModuleImports: true\` to your astro config.`
 				);
@@ -166,12 +157,12 @@ export function cloudflareModuleLoader(
 	};
 }
 
-export type ImportType = 'wasm' | 'bin';
+export type ImportType = 'wasm';
 
 interface Replacement {
 	// desired import for cloudflare
 	cloudflareImport: string;
-	// nodejs import that simulates a wasm/bin module
+	// nodejs import that simulates a wasm module
 	nodejsImport: string;
 }
 
@@ -190,16 +181,7 @@ const wasmImportAdapter: ModuleImportAdapter = {
 	},
 };
 
-const binImportAdapter: ModuleImportAdapter = {
-	extension: 'bin',
-	qualifiedExtension: 'bin',
-	asNodeModule(fileContents: Buffer) {
-		const base64 = fileContents.toString('base64');
-		return `const binModule = Uint8Array.from(atob("${base64}"), c => c.charCodeAt(0)).buffer;export default binModule;`;
-	},
-};
-
-const cloudflareImportAdapters = [binImportAdapter, wasmImportAdapter];
+const cloudflareImportAdapters = [wasmImportAdapter];
 
 /**
  * Returns a deterministic 32 bit hash code from a string

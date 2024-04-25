@@ -75,10 +75,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
 	const cloudflareModulePlugin: PluginOption & CloudflareModulePluginExtra = cloudflareModuleLoader(
-		{
-			wasm: args?.wasmModuleImports ?? false,
-			bin: false,
-		}
+		args?.wasmModuleImports ?? false
 	);
 
 	// Initialize the unused chunk analyzer as a shared state between hooks.
