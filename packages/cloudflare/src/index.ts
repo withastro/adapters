@@ -1,5 +1,7 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import type { OutputChunk, ProgramNode } from 'rollup';
+import type { PluginOption } from 'vite';
+import type { CloudflareModulePluginExtra } from './utils/wasm-module-loader.js';
 
 import { createReadStream } from 'node:fs';
 import { appendFile, rename, stat, unlink } from 'node:fs/promises';
@@ -13,16 +15,12 @@ import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import { AstroError } from 'astro/errors';
 import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
-import type { PluginOption } from 'vite';
 import { getPlatformProxy } from 'wrangler';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 import { mutateDynamicPageImportsInPlace, mutatePageMapInPlace } from './utils/index.js';
 import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
-import {
-	type CloudflareModulePluginExtra,
-	cloudflareModuleLoader,
-} from './utils/wasm-module-loader.js';
+import { cloudflareModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { Runtime } from './entrypoints/server.js';
 
