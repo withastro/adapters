@@ -47,14 +47,13 @@ export function cloudflareModuleLoader(
 		},
 
 		async load(id, _) {
-			const suffix = id.split('.').at(-1);
-			const importAdapter = cloudflareImportAdapters.find((x) => x.qualifiedExtension === suffix);
+			const importAdapter = cloudflareImportAdapters.find((x) => id.endsWith(x.qualifiedExtension));
 			if (!importAdapter) {
 				return;
 			}
 			if (!enabled) {
 				throw new Error(
-					`Cloudflare module loading is experimental. The ${suffix} module cannot be loaded unless you add \`wasmModuleImports: true\` to your astro config.`
+					`Cloudflare module loading is experimental. The ${importAdapter.qualifiedExtension} module cannot be loaded unless you add \`wasmModuleImports: true\` to your astro config.`
 				);
 			}
 
@@ -106,7 +105,8 @@ export function cloudflareModuleLoader(
 			let replaced = code;
 			for (const loader of enabledAdapters) {
 				replaced = replaced.replaceAll(
-					new RegExp(`${MAGIC_STRING}([A-Za-z\\d]+)\\.${loader.extension}\\.mjs`, 'g'),
+					// chunk id can be many things, (alpha numeric, dollars, or underscores, maybe more)
+					new RegExp(`${MAGIC_STRING}([^\\s]+?)\\.${loader.extension}\\.mjs`, 'g'),
 					(s, assetId) => {
 						const fileName = this.getFileName(assetId);
 						const relativePath = path
