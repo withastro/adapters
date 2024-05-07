@@ -268,8 +268,8 @@ export default function netlifyIntegration(
 			minify: false,
 			banner: {
 				// Import Deno polyfill for `process.env` at the top of the file
-                js: 'import process from "node:process";',
-            },
+				js: 'import process from "node:process";',
+			},
 		});
 	}
 
