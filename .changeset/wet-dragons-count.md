@@ -2,4 +2,4 @@
 '@astrojs/netlify': patch
 ---
 
-Define `process.env` in edge middleware
+Fixes an issue with edge middleware where `process.env` was not defined, by using a polyfill to shim it
