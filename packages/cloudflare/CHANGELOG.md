@@ -1,5 +1,35 @@
 # @astrojs/cloudflare
 
+## 10.2.5
+
+### Patch Changes
+
+- [#249](https://github.com/withastro/adapters/pull/249) [`72fc8ac`](https://github.com/withastro/adapters/commit/72fc8ac6faee9eae2463bab23407c2b619abb39f) Thanks [@adrianlyjak](https://github.com/adrianlyjak)! - Fixes build errors when wasm modules are imported from a file that is shared in both prerendered static pages and server side rendered pages
+
+## 10.2.4
+
+### Patch Changes
+
+- [#247](https://github.com/withastro/adapters/pull/247) [`e08cd4c`](https://github.com/withastro/adapters/commit/e08cd4ca6cf9a517941576f54a4b60ed17b6f077) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue where redirect rules where not excluded from routing due to ordering issues
+
+## 10.2.3
+
+### Patch Changes
+
+- [#243](https://github.com/withastro/adapters/pull/243) [`71ba51d`](https://github.com/withastro/adapters/commit/71ba51d2983eef89b5692f351724081507c2f82f) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue where the bundle was not cleaned up correctly
+
+## 10.2.2
+
+### Patch Changes
+
+- [#241](https://github.com/withastro/adapters/pull/241) [`82d81d9`](https://github.com/withastro/adapters/commit/82d81d9a55da93792d7f9244fb5aa3ec86939620) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Removes a debug log
+
+## 10.2.1
+
+### Patch Changes
+
+- [#238](https://github.com/withastro/adapters/pull/238) [`1927f94`](https://github.com/withastro/adapters/commit/1927f941b41ac7156054c337edb031be8132e3e2) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes `astro build` which throws an error if it can't clean up dynamic imports for prerendered pages.
+
 ## 10.2.0
 
 ### Minor Changes
