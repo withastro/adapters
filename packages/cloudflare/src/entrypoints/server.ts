@@ -7,6 +7,7 @@ import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 
 type Env = {
+	[key: string]: unknown;
 	ASSETS: { fetch: (req: Request | string) => Promise<Response> };
 	ASTRO_STUDIO_APP_TOKEN?: string;
 };
@@ -69,8 +70,19 @@ export function createExports(manifest: SSRManifest) {
 				},
 			},
 		};
-
-		const response = await app.render(request, { routeData, locals });
+		console.log('DEBUG');
+		const response = await app.render(request, {
+			routeData,
+			locals,
+			getEnv(key) {
+				console.log('getEnv', key, env[key]);
+				const variable = env[key];
+				if (typeof variable === 'string' || typeof variable === 'undefined') {
+					return variable;
+				}
+				return undefined;
+			},
+		});
 
 		if (app.setCookieHeaders) {
 			for (const setCookieHeader of app.setCookieHeaders(response)) {

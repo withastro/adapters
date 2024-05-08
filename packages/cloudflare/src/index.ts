@@ -100,8 +100,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite: {
 						// load .wasm files as WebAssembly modules
 						plugins: [
-							cloudflareModulePlugin,
-							chunkAnalyzer.getPlugin(),
+							// cloudflareModulePlugin,
+							// chunkAnalyzer.getPlugin(),
 							{
 								name: 'dynamic-imports-analyzer',
 								enforce: 'post',
