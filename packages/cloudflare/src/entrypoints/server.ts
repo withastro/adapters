@@ -75,12 +75,12 @@ export function createExports(manifest: SSRManifest) {
 			locals,
 			getEnv(key) {
 				const v = env[key];
-				if (typeof v === "undefined" || typeof v === "string") {
-					return v
+				if (typeof v === 'undefined' || typeof v === 'string') {
+					return v;
 				}
 				// let astro:env handle the validation and transformation
-				if (typeof v === "boolean" || typeof v === "number") {
-					return v.toString()
+				if (typeof v === 'boolean' || typeof v === 'number') {
+					return v.toString();
 				}
 				return undefined;
 			},
