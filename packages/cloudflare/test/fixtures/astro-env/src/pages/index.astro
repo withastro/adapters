@@ -1,7 +1,6 @@
 ---
 import { PUBLIC_API_URL } from "astro:env/client"
-import { PUBLIC_PORT } from "astro:env/server"
-import { getSecret } from "astro:env/server"
+import { PUBLIC_PORT, getSecret } from "astro:env/server"
 
 const runtime = Astro.locals.runtime;
 ---
@@ -11,7 +10,7 @@ const runtime = Astro.locals.runtime;
 	</head>
 	<body>
 		<h1>Astro Env</h1>
-		<span id="runtime">{JSON.stringify(runtime)}</span>
+		<pre id="runtime">{JSON.stringify(runtime.env, null, 2)}</pre>
 		<div>
 			<span>PUBLIC_API_URL</span>
 			<span id="client">{PUBLIC_API_URL}</span>

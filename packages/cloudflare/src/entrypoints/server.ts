@@ -70,15 +70,17 @@ export function createExports(manifest: SSRManifest) {
 				},
 			},
 		};
-		console.log('DEBUG');
 		const response = await app.render(request, {
 			routeData,
 			locals,
 			getEnv(key) {
-				console.log('getEnv', key, env[key]);
-				const variable = env[key];
-				if (typeof variable === 'string' || typeof variable === 'undefined') {
-					return variable;
+				const v = env[key];
+				if (typeof v === "undefined" || typeof v === "string") {
+					return v
+				}
+				// let astro:env handle the validation and transformation
+				if (typeof v === "boolean" || typeof v === "number") {
+					return v.toString()
 				}
 				return undefined;
 			},
