@@ -5,6 +5,7 @@ import type {
 } from '@cloudflare/workers-types';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
+import { createGetEnv } from '../utils/env.js';
 
 type Env = {
 	[key: string]: unknown;
@@ -70,21 +71,8 @@ export function createExports(manifest: SSRManifest) {
 				},
 			},
 		};
-		const response = await app.render(request, {
-			routeData,
-			locals,
-			getEnv(key) {
-				const v = env[key];
-				if (typeof v === 'undefined' || typeof v === 'string') {
-					return v;
-				}
-				// let astro:env handle the validation and transformation
-				if (typeof v === 'boolean' || typeof v === 'number') {
-					return v.toString();
-				}
-				return undefined;
-			},
-		});
+		app.setGetEnv(createGetEnv(env));
+		const response = await app.render(request, { routeData, locals });
 
 		if (app.setCookieHeaders) {
 			for (const setCookieHeader of app.setCookieHeaders(response)) {

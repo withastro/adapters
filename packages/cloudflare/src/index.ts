@@ -21,6 +21,7 @@ import { setImageConfig } from './utils/image-config.js';
 import { mutateDynamicPageImportsInPlace, mutatePageMapInPlace } from './utils/index.js';
 import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
 import { cloudflareModuleLoader } from './utils/wasm-module-loader.js';
+import { createGetEnv } from './utils/env.js';
 
 export type { Runtime } from './entrypoints/server.js';
 
@@ -182,6 +183,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							isSharpCompatible: false,
 							isSquooshCompatible: false,
 						},
+						envGetSecret: 'experimental',
 					},
 				});
 			},
@@ -192,6 +194,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						experimentalJsonConfig: args.platformProxy.experimentalJsonConfig ?? false,
 						persist: args.platformProxy.persist ?? true,
 					});
+
+					const getEnv = createGetEnv(platformProxy.env);
+
+					if (_config.experimental.env?.schema) {
+						for (const key of Object.keys(_config.experimental.env.schema)) {
+							process.env[key] = getEnv(key);
+						}
+					}
 
 					const clientLocalsSymbol = Symbol.for('astro.locals');
 
