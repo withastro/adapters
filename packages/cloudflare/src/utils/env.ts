@@ -1,6 +1,8 @@
+import type { GetEnv } from "astro/runtime/server/astro-env.js"
+
 export const createGetEnv =
-	(env: Record<string, unknown>) =>
-	(key: string): string | undefined => {
+	(env: Record<string, unknown>): GetEnv =>
+	(key) => {
 		const v = env[key];
 		if (typeof v === 'undefined' || typeof v === 'string') {
 			return v;

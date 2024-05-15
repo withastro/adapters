@@ -199,7 +199,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 					if (_config.experimental.env?.schema) {
 						for (const key of Object.keys(_config.experimental.env.schema)) {
-							process.env[key] = getEnv(key);
+							const value = getEnv(key);
+							if (value) {
+								process.env[key] = value
+							}
 						}
 					}
 

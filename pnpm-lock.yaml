@@ -97,7 +97,7 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: 0.0.0-astro-env-20240514163657
+        specifier: experimental--astro-env
         version: 0.0.0-astro-env-20240514163657(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
