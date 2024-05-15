@@ -8,6 +8,7 @@ import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData }
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
+import { envField } from 'astro/config';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -164,6 +165,8 @@ export interface NetlifyIntegrationConfig {
 	 * @default {true}
 	 */
 	imageCDN?: boolean;
+
+	inlineBuildVariables?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -349,7 +352,7 @@ export default function netlifyIntegration(
 
 				const enableImageCDN = isRunningInNetlify && (integrationConfig?.imageCDN ?? true);
 
-				updateConfig({
+				const updatedConfig: Parameters<typeof updateConfig>[0] = {
 					outDir,
 					build: {
 						redirects: false,
@@ -368,7 +371,28 @@ export default function netlifyIntegration(
 							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
-				});
+				};
+
+				if (integrationConfig?.inlineBuildVariables) {
+					updatedConfig.experimental = {
+						env: {
+							schema: {
+								PUBLIC_NETLIFY: envField.boolean({
+									context: 'server',
+									access: 'public',
+									default: false,
+								}),
+								PUBLIC_DEPLOY_URL: envField.string({
+									context: 'server',
+									access: 'public',
+									optional: true,
+								}),
+							},
+						},
+					};
+				}
+
+				updateConfig(updatedConfig);
 			},
 			'astro:config:done': async ({ config, setAdapter, logger }) => {
 				rootDir = config.root;
@@ -400,8 +424,19 @@ export default function netlifyIntegration(
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
 						},
+						envGetSecret: 'experimental'
 					},
 				});
+
+				if (integrationConfig?.inlineBuildVariables) {
+					const keys = ["NETLIFY", "DEPLOY_URL"]
+					for (const key of keys) {
+						const value = process.env[key]
+						if (value) {
+							process.env[`PUBLIC_${key}`] = value
+						}
+					}
+				}
 			},
 			'astro:build:ssr': async ({ middlewareEntryPoint }) => {
 				astroMiddlewareEntryPoint = middlewareEntryPoint;

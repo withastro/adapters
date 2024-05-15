@@ -13,6 +13,7 @@ const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
 export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
+	app.setGetEnv((key) => process.env[key]);
 
 	function createHandler(integrationConfig: {
 		cacheOnDemandPages: boolean;
