@@ -9,6 +9,8 @@ import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
 import { envField } from 'astro/config';
+import { getEnv } from './utils.js';
+import { overrideProcessEnv } from 'astro/runtime/server/astro-env.js';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -424,18 +426,30 @@ export default function netlifyIntegration(
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
 						},
-						envGetSecret: 'experimental'
+						envGetSecret: 'experimental',
 					},
 				});
 
 				if (integrationConfig?.inlineBuildVariables) {
-					const keys = ["NETLIFY", "DEPLOY_URL"]
-					for (const key of keys) {
-						const value = process.env[key]
-						if (value) {
-							process.env[`PUBLIC_${key}`] = value
-						}
-					}
+					const url = config.site
+						? config.site.endsWith('/')
+							? config.site.slice(0, -1)
+							: config.site
+						: 'https://example.com';
+					overrideProcessEnv({
+						getEnv,
+						variables: [
+							{
+								destKey: 'PUBLIC_NETLIFY',
+								srcKey: 'NETLIFY',
+							},
+							{
+								destKey: 'PUBLIC_DEPLOY_URL',
+								srcKey: 'DEPLOY_URL',
+								default: url,
+							},
+						],
+					});
 				}
 			},
 			'astro:build:ssr': async ({ middlewareEntryPoint }) => {

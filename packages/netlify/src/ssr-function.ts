@@ -2,6 +2,7 @@ import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
+import { getEnv } from "./utils.js"
 
 applyPolyfills();
 
@@ -13,7 +14,7 @@ const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
 export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
-	app.setGetEnv((key) => process.env[key]);
+	app.setGetEnv(getEnv);
 
 	function createHandler(integrationConfig: {
 		cacheOnDemandPages: boolean;
