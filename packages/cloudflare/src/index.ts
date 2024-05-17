@@ -235,6 +235,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					// We need those conditions, previous these conditions where applied at the esbuild step which we removed
 					// https://github.com/withastro/astro/pull/7092
 					vite.resolve.conditions.push('workerd', 'worker');
+					// https://github.com/solidjs/vite-plugin-solid/issues/153
+					vite.resolve.mainFields = ['module'];
 
 					vite.ssr ||= {};
 					vite.ssr.target = 'webworker';
