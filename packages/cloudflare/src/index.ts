@@ -152,6 +152,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								},
 							},
 						],
+						build: {
+							rollupOptions: {
+								external: ['astro:env/setup'],
+							},
+						},
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
 				});
