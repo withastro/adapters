@@ -118,8 +118,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       vite:
-        specifier: ^5.2.6
-        version: 5.2.6(@types/node@18.17.8)
+        specifier: ^5.2.11
+        version: 5.2.11(@types/node@18.17.8)
 
   packages/cloudflare/test/fixtures/astro-dev-platform:
     dependencies:
@@ -7844,42 +7844,6 @@ packages:
       rollup: 4.14.0
     optionalDependencies:
       fsevents: 2.3.3
-
-  /vite@5.2.6(@types/node@18.17.8):
-    resolution: {integrity: sha512-FPtnxFlSIKYjZ2eosBQamz4CbyrTizbZ3hnGJlh/wMtCrlp1Hah6AzBLjGI5I2urTfNnpovpHdrL6YRuBOPnCA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.17.8
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.14.0
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
 
   /vitefu@0.2.5(vite@5.2.11):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
