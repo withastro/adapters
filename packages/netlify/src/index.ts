@@ -5,10 +5,10 @@ import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
+import { envField } from 'astro/config';
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
-import { envField } from 'astro/config';
 import { getEnv } from './utils.js';
 
 const { version: packageVersion } = JSON.parse(

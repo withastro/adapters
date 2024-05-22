@@ -16,12 +16,12 @@ import { AstroError } from 'astro/errors';
 import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
 import { getPlatformProxy } from 'wrangler';
+import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 import { mutateDynamicPageImportsInPlace, mutatePageMapInPlace } from './utils/index.js';
 import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
 import { cloudflareModuleLoader } from './utils/wasm-module-loader.js';
-import { createGetEnv } from './utils/env.js';
 
 export type { Runtime } from './entrypoints/server.js';
 
