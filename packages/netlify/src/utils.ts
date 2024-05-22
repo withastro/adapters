@@ -1,3 +1,3 @@
-import type { GetEnv } from 'astro/runtime/server/astro-env.js';
+import type { GetEnv } from 'astro:env/setup';
 
 export const getEnv: GetEnv = (key) => process.env[key];

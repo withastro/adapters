@@ -2,9 +2,13 @@ import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
 import { applyPolyfills } from 'astro/app/node';
-import { getEnv } from "./utils.js"
+import { getEnv } from './utils.js';
 
 applyPolyfills();
+
+// Won't throw if the virtual module is not available because it'snot supported in
+// the users's astro version or if astro:env is not enabled in the project
+await import('astro:env/setup').then((mod) => mod.setGetEnv(getEnv)).catch(() => {});
 
 export interface Args {
 	middlewareSecret: string;
@@ -14,7 +18,6 @@ const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
 export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
-	app.setGetEnv(getEnv);
 
 	function createHandler(integrationConfig: {
 		cacheOnDemandPages: boolean;

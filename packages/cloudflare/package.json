@@ -38,11 +38,11 @@
     "wrangler": "^3.39.0"
   },
   "peerDependencies": {
-    "astro": "0.0.0-astro-env-20240516112520"
+    "astro": "0.0.0-astro-env-20240522153443"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "astro": "0.0.0-astro-env-20240516112520",
+    "astro": "0.0.0-astro-env-20240522153443",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0-rc.12",
     "execa": "^8.0.1",

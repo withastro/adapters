@@ -22,7 +22,6 @@ import { mutateDynamicPageImportsInPlace, mutatePageMapInPlace } from './utils/i
 import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
 import { cloudflareModuleLoader } from './utils/wasm-module-loader.js';
 import { createGetEnv } from './utils/env.js';
-import { overrideProcessEnv } from 'astro/runtime/server/astro-env.js';
 
 export type { Runtime } from './entrypoints/server.js';
 
@@ -199,12 +198,12 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					const getEnv = createGetEnv(platformProxy.env);
 
 					if (_config.experimental.env?.schema) {
-						overrideProcessEnv({
-							getEnv,
-							variables: Object.keys(_config.experimental.env.schema).map((destKey) => ({
-								destKey,
-							})),
-						});
+						for (const key of Object.keys(_config.experimental.env.schema)) {
+							const value = getEnv(key);
+							if (value !== undefined) {
+								process.env[key] = value;
+							}
+						}
 					}
 
 					const clientLocalsSymbol = Symbol.for('astro.locals');

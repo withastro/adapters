@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: 0.0.0-astro-env-20240516112520
-        version: 0.0.0-astro-env-20240516112520(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: 0.0.0-astro-env-20240522153443
+        version: 0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: 0.0.0-astro-env-20240516112520
-        version: 0.0.0-astro-env-20240516112520(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: 0.0.0-astro-env-20240522153443
+        version: 0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -241,8 +241,8 @@ importers:
         specifier: ^18.17.8
         version: 18.17.8
       astro:
-        specifier: 0.0.0-astro-env-20240516112520
-        version: 0.0.0-astro-env-20240516112520(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: 0.0.0-astro-env-20240522153443
+        version: 0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -3107,8 +3107,8 @@ packages:
     dependencies:
       printable-characters: 1.0.42
 
-  /astro@0.0.0-astro-env-20240516112520(@types/node@18.17.8)(typescript@5.2.2):
-    resolution: {integrity: sha512-AwSI4vf18lM46HRWfIDX6SacnxhnIsTCc7uCYhpP5cZSZddrNbd2YvwC/OdGe+3Pix33MMSS+SnBWevJ8gpLGQ==}
+  /astro@0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2):
+    resolution: {integrity: sha512-VCnm3G9YxCNHfeIzOHlIq4IDdXiFnRlhQUfKS38PtWOLL4zRAThQPO8WzKTLcZY9Yjm+kSQKit3Ab7EzXRl5GA==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     dependencies:

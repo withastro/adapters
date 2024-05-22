@@ -10,7 +10,6 @@ import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
 import { envField } from 'astro/config';
 import { getEnv } from './utils.js';
-import { overrideProcessEnv } from 'astro/runtime/server/astro-env.js';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -436,20 +435,23 @@ export default function netlifyIntegration(
 							? config.site.slice(0, -1)
 							: config.site
 						: 'https://example.com';
-					overrideProcessEnv({
-						getEnv,
-						variables: [
-							{
-								destKey: 'PUBLIC_NETLIFY',
-								srcKey: 'NETLIFY',
-							},
-							{
-								destKey: 'PUBLIC_DEPLOY_URL',
-								srcKey: 'DEPLOY_URL',
-								default: url,
-							},
-						],
-					});
+					const variables: Array<{ destKey: string; srcKey?: string; default?: string }> = [
+						{
+							destKey: 'PUBLIC_NETLIFY',
+							srcKey: 'NETLIFY',
+						},
+						{
+							destKey: 'PUBLIC_DEPLOY_URL',
+							srcKey: 'DEPLOY_URL',
+							default: url,
+						},
+					];
+					for (const { destKey, srcKey, default: defaultValue } of variables) {
+						const value = getEnv(srcKey ?? destKey);
+						if (value !== undefined) {
+							process.env[destKey] = value ?? defaultValue;
+						}
+					}
 				}
 			},
 			'astro:build:ssr': async ({ middlewareEntryPoint }) => {

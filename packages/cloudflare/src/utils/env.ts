@@ -1,4 +1,4 @@
-import type { GetEnv } from "astro/runtime/server/astro-env.js"
+import type { GetEnv } from "astro:env/setup"
 
 export const createGetEnv =
 	(env: Record<string, unknown>): GetEnv =>
