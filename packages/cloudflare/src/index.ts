@@ -1,10 +1,10 @@
-import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
+import { build, type AstroConfig, type AstroIntegration, type RouteData } from 'astro';
 import type { OutputChunk, ProgramNode } from 'rollup';
 import type { PluginOption } from 'vite';
 import type { CloudflareModulePluginExtra } from './utils/wasm-module-loader.js';
 
-import { createReadStream } from 'node:fs';
-import { appendFile, rename, stat, unlink } from 'node:fs/promises';
+import { createReadStream, existsSync } from 'node:fs';
+import { appendFile, rename, rm, rmdir, stat, unlink } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
 	appendForwardSlash,
@@ -23,7 +23,6 @@ import { NonServerChunkDetector } from './utils/non-server-chunk-detector.js';
 import { cloudflareModuleLoader } from './utils/wasm-module-loader.js';
 
 export type { Runtime } from './entrypoints/server.js';
-
 export type Options = {
 	/** Options for handling images. */
 	imageService?: 'passthrough' | 'cloudflare' | 'compile' | 'custom';
@@ -71,6 +70,48 @@ export type Options = {
 	wasmModuleImports?: boolean;
 };
 
+import type { BuildOptions, Rollup, Plugin as VitePlugin } from 'vite';
+import { setTimeout } from 'node:timers/promises';
+import { relative } from 'node:path';
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+type OutputOptionsHook = Extract<VitePlugin['outputOptions'], Function>;
+type OutputOptions = Parameters<OutputOptionsHook>[0];
+
+type ExtendManualChunksHooks = {
+	before?: Rollup.GetManualChunk;
+	after?: Rollup.GetManualChunk;
+};
+
+function extendManualChunks(outputOptions: OutputOptions, hooks: ExtendManualChunksHooks) {
+	const manualChunks = outputOptions.manualChunks;
+	outputOptions.manualChunks = function (id, meta) {
+		if (hooks.before) {
+			const value = hooks.before(id, meta);
+			if (value) {
+				return value;
+			}
+		}
+
+		// Defer to user-provided `manualChunks`, if it was provided.
+		if (typeof manualChunks === 'object') {
+			if (id in manualChunks) {
+				const value = manualChunks[id];
+				return value[0];
+			}
+		} else if (typeof manualChunks === 'function') {
+			const outid = manualChunks.call(this, id, meta);
+			if (outid) {
+				return outid;
+			}
+		}
+
+		if (hooks.after) {
+			return hooks.after(id, meta) || null;
+		}
+		return null;
+	};
+}
+
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
@@ -101,55 +142,55 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						// load .wasm files as WebAssembly modules
 						plugins: [
 							cloudflareModulePlugin,
-							chunkAnalyzer.getPlugin(),
-							{
-								name: 'dynamic-imports-analyzer',
-								enforce: 'post',
-								generateBundle(_, bundle) {
-									let astrojsSSRVirtualEntryAST: ProgramNode | undefined;
-									const prerenderImports: string[] = [];
-									let entryChunk: OutputChunk | undefined;
-									// Find all pages (ignore the ssr entrypoint) which are prerendered based on the dynamic imports of the prerender chunk
-									for (const chunk of Object.values(bundle)) {
-										if (chunk.type !== 'chunk') continue;
-										if (chunk.name === '_@astrojs-ssr-virtual-entry') {
-											astrojsSSRVirtualEntryAST = this.parse(chunk.code);
-											entryChunk = chunk;
-											continue;
-										}
+							// chunkAnalyzer.getPlugin(),
+							// {
+							// 	name: 'dynamic-imports-analyzer',
+							// 	enforce: 'post',
+							// 	generateBundle(_, bundle) {
+							// 		let astrojsSSRVirtualEntryAST: ProgramNode | undefined;
+							// 		const prerenderImports: string[] = [];
+							// 		let entryChunk: OutputChunk | undefined;
+							// 		// Find all pages (ignore the ssr entrypoint) which are prerendered based on the dynamic imports of the prerender chunk
+							// 		for (const chunk of Object.values(bundle)) {
+							// 			if (chunk.type !== 'chunk') continue;
+							// 			if (chunk.name === '_@astrojs-ssr-virtual-entry') {
+							// 				astrojsSSRVirtualEntryAST = this.parse(chunk.code);
+							// 				entryChunk = chunk;
+							// 				continue;
+							// 			}
 
-										const isPrerendered = chunk.dynamicImports.some((entry) =>
-											entry.includes('prerender')
-										);
-										if (isPrerendered) {
-											prerenderImports.push(chunk.fileName);
-										}
-									}
+							// 			const isPrerendered = chunk.dynamicImports.some((entry) =>
+							// 				entry.includes('prerender')
+							// 			);
+							// 			if (isPrerendered) {
+							// 				prerenderImports.push(chunk.fileName);
+							// 			}
+							// 		}
 
-									if (!astrojsSSRVirtualEntryAST) return;
-									if (!entryChunk) return;
-									const s = new MagicString(entryChunk.code);
+							// 		if (!astrojsSSRVirtualEntryAST) return;
+							// 		if (!entryChunk) return;
+							// 		const s = new MagicString(entryChunk.code);
 
-									const constsToRemove: string[] = [];
-									walk(astrojsSSRVirtualEntryAST, {
-										leave(node) {
-											// We are only looking for VariableDeclarations, since both (dynamic imports and pageMap) are declared as constants in the code
-											if (node.type !== 'VariableDeclaration') return;
-											if (
-												!node.declarations[0] ||
-												node.declarations[0].type !== 'VariableDeclarator'
-											)
-												return;
+							// 		const constsToRemove: string[] = [];
+							// 		walk(astrojsSSRVirtualEntryAST, {
+							// 			leave(node) {
+							// 				// We are only looking for VariableDeclarations, since both (dynamic imports and pageMap) are declared as constants in the code
+							// 				if (node.type !== 'VariableDeclaration') return;
+							// 				if (
+							// 					!node.declarations[0] ||
+							// 					node.declarations[0].type !== 'VariableDeclarator'
+							// 				)
+							// 					return;
 
-											// This function will remove the dynamic imports from the entrypoint
-											mutateDynamicPageImportsInPlace(node, prerenderImports, constsToRemove, s);
-											// This function will remove the pageMap entries which are invalid now
-											mutatePageMapInPlace(node, constsToRemove, s);
-										},
-									});
-									entryChunk.code = s.toString();
-								},
-							},
+							// 				// This function will remove the dynamic imports from the entrypoint
+							// 				mutateDynamicPageImportsInPlace(node, prerenderImports, constsToRemove, s);
+							// 				// This function will remove the pageMap entries which are invalid now
+							// 				mutatePageMapInPlace(node, constsToRemove, s);
+							// 			},
+							// 		});
+							// 		entryChunk.code = s.toString();
+							// 	},
+							// },
 						],
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
@@ -259,21 +300,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build.rollupOptions.output.banner ||=
 						'globalThis.process ??= {}; globalThis.process.env ??= {};';
 
-					// @ts-expect-error
-					vite.build.rollupOptions.output.manualChunks = (id: string) => {
-						if (id.includes('node_modules')) {
-							if (id.indexOf('node_modules') !== -1) {
-								const basic = id.toString().split('node_modules/')[1];
-								const sub1 = basic.split('/')[0];
-								if (sub1 !== '.pnpm') {
-									return sub1.toString();
-								}
-								const name2 = basic.split('/')[1];
-								return name2.split('@')[name2[0] === '@' ? 1 : 0].toString();
-							}
-						}
-					};
-
 					vite.build.rollupOptions.external = _config.vite.build?.rollupOptions?.external ?? [];
 
 					// Cloudflare env is only available per request. This isn't feasible for code that access env vars
@@ -297,8 +323,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					vite.build ||= {};
 					vite.build.rollupOptions ||= {};
 					vite.build.rollupOptions.output ||= {};
-					// @ts-expect-error
-					vite.build.rollupOptions.output.manualChunks = undefined;
 				}
 			},
 			'astro:build:done': async ({ pages, routes, dir, logger }) => {
@@ -392,21 +416,41 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 				}
 
-				// Get chunks from the bundle that are not needed on the server and delete them
-				// Those modules are build only for prerendering routes.
-				const chunksToDelete = chunkAnalyzer.getNonServerChunks();
-				for (const chunk of chunksToDelete) {
-					try {
-						// Chunks are located on `./_worker.js` directory inside of the output directory
-						await unlink(new URL(`./_worker.js/${chunk}`, _config.outDir));
-					} catch (error) {
-						logger.warn(
-							`Issue while trying to delete unused file from server bundle: ${new URL(
-								`./_worker.js/${chunk}`,
-								_config.outDir
-							).toString()}`
-						);
-					}
+				// // Get chunks from the bundle that are not needed on the server and delete them
+				// // Those modules are build only for prerendering routes.
+				// const chunksToDelete = chunkAnalyzer.getNonServerChunks();
+				// for (const chunk of chunksToDelete) {
+				// 	try {
+				// 		// Chunks are located on `./_worker.js` directory inside of the output directory
+				// 		await unlink(new URL(`./_worker.js/${chunk}`, _config.outDir));
+				// 	} catch (error) {
+				// 		logger.warn(
+				// 			`Issue while trying to delete unused file from server bundle: ${new URL(
+				// 				`./_worker.js/${chunk}`,
+				// 				_config.outDir
+				// 			).toString()}`
+				// 		);
+				// 	}
+				// }
+				if (!_config.outDir.toString().includes('cf-ssr-build')) {
+					await setTimeout(2000);
+					console.log('Preparing next step');
+					await rm(new URL('_worker.js/', _config.outDir), { recursive: true });
+					await setTimeout(500);
+					console.log('Doing a ssr only build');
+					await build({ configFile: undefined, outDir: '.astro/cf-ssr-build' }, { ssronly: true });
+				}
+
+				if (_config.outDir.toString().includes('cf-ssr-build')) {
+					await setTimeout(2000);
+					console.log('Combining builds');
+					await rename(
+						new URL('.astro/cf-ssr-build/_worker.js/', _config.root),
+						new URL('dist/_worker.js/', _config.root)
+					);
+					await setTimeout(500);
+					console.log('Cleaning up');
+					await rm(new URL('.astro/cf-ssr-build', _config.root), { recursive: true });
 				}
 			},
 		},
