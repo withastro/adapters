@@ -5,11 +5,9 @@ import { fileURLToPath } from 'node:url';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
-import { envField } from 'astro/config';
 import { AstroError } from 'astro/errors';
 import { build } from 'esbuild';
 import type { Args } from './ssr-function.js';
-import { getEnv } from './utils.js';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -166,8 +164,6 @@ export interface NetlifyIntegrationConfig {
 	 * @default {true}
 	 */
 	imageCDN?: boolean;
-
-	inlineBuildVariables?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -379,25 +375,6 @@ export default function netlifyIntegration(
 					},
 				};
 
-				if (integrationConfig?.inlineBuildVariables) {
-					updatedConfig.experimental = {
-						env: {
-							schema: {
-								PUBLIC_NETLIFY: envField.boolean({
-									context: 'server',
-									access: 'public',
-									default: false,
-								}),
-								PUBLIC_DEPLOY_URL: envField.string({
-									context: 'server',
-									access: 'public',
-									optional: true,
-								}),
-							},
-						},
-					};
-				}
-
 				updateConfig(updatedConfig);
 			},
 			'astro:config:done': async ({ config, setAdapter, logger }) => {
@@ -430,34 +407,8 @@ export default function netlifyIntegration(
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
 						},
-						envGetSecret: 'experimental',
 					},
 				});
-
-				if (integrationConfig?.inlineBuildVariables) {
-					const url = config.site
-						? config.site.endsWith('/')
-							? config.site.slice(0, -1)
-							: config.site
-						: 'https://example.com';
-					const variables: Array<{ destKey: string; srcKey?: string; default?: string }> = [
-						{
-							destKey: 'PUBLIC_NETLIFY',
-							srcKey: 'NETLIFY',
-						},
-						{
-							destKey: 'PUBLIC_DEPLOY_URL',
-							srcKey: 'DEPLOY_URL',
-							default: url,
-						},
-					];
-					for (const { destKey, srcKey, default: defaultValue } of variables) {
-						const value = getEnv(srcKey ?? destKey);
-						if (value !== undefined) {
-							process.env[destKey] = value ?? defaultValue;
-						}
-					}
-				}
 			},
 			'astro:build:ssr': async ({ middlewareEntryPoint }) => {
 				astroMiddlewareEntryPoint = middlewareEntryPoint;
