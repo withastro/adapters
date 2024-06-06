@@ -362,6 +362,11 @@ export default function netlifyIntegration(
 								ignored: [fileURLToPath(new URL('./.netlify/**', rootDir))],
 							},
 						},
+						build: {
+							rollupOptions: {
+								external: ['astro:env/setup'],
+							},
+						},
 					},
 					image: {
 						service: {
@@ -400,6 +405,7 @@ export default function netlifyIntegration(
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
 						},
+						envGetSecret: 'experimental',
 					},
 				});
 			},
