@@ -349,7 +349,7 @@ export default function netlifyIntegration(
 
 				const enableImageCDN = isRunningInNetlify && (integrationConfig?.imageCDN ?? true);
 
-				const updatedConfig: Parameters<typeof updateConfig>[0] = {
+				updateConfig({
 					outDir,
 					build: {
 						redirects: false,
@@ -362,20 +362,13 @@ export default function netlifyIntegration(
 								ignored: [fileURLToPath(new URL('./.netlify/**', rootDir))],
 							},
 						},
-						build: {
-							rollupOptions: {
-								external: ['astro:env/setup'],
-							},
-						},
 					},
 					image: {
 						service: {
 							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
-				};
-
-				updateConfig(updatedConfig);
+				});
 			},
 			'astro:config:done': async ({ config, setAdapter, logger }) => {
 				rootDir = config.root;
