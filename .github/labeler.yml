@@ -8,7 +8,3 @@
 
 'pkg: netlify':
 - packages/netlify/**
-
-'docs pr':
-- README.md
-- .changeset/*.md
