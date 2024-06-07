@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: 0.0.0-astro-env-20240522153443
-        version: 0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: ^4.10.0
+        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -3075,88 +3075,6 @@ packages:
     resolution: {integrity: sha512-xvsWESUJn0JN421Xb9MQw6AsMHRCUknCe0Wjlxvjud80mU4E6hQf1A6NzQKcYNmYw62MfzEtXc+badstZP3JpQ==}
     dependencies:
       printable-characters: 1.0.42
-
-  /astro@0.0.0-astro-env-20240522153443(@types/node@18.17.8)(typescript@5.2.2):
-    resolution: {integrity: sha512-VCnm3G9YxCNHfeIzOHlIq4IDdXiFnRlhQUfKS38PtWOLL4zRAThQPO8WzKTLcZY9Yjm+kSQKit3Ab7EzXRl5GA==}
-    engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
-    hasBin: true
-    dependencies:
-      '@astrojs/compiler': 2.8.0
-      '@astrojs/internal-helpers': 0.4.0
-      '@astrojs/markdown-remark': 5.1.0
-      '@astrojs/telemetry': 3.1.0
-      '@babel/core': 7.24.7
-      '@babel/generator': 7.24.7
-      '@babel/parser': 7.24.7
-      '@babel/plugin-transform-react-jsx': 7.24.7(@babel/core@7.24.7)
-      '@babel/traverse': 7.24.7
-      '@babel/types': 7.24.7
-      '@types/babel__core': 7.20.5
-      '@types/cookie': 0.6.0
-      acorn: 8.11.3
-      aria-query: 5.3.0
-      axobject-query: 4.0.0
-      boxen: 7.1.1
-      chokidar: 3.6.0
-      ci-info: 4.0.0
-      clsx: 2.1.1
-      common-ancestor-path: 1.0.1
-      cookie: 0.6.0
-      cssesc: 3.0.0
-      debug: 4.3.4
-      deterministic-object-hash: 2.0.2
-      devalue: 5.0.0
-      diff: 5.2.0
-      dlv: 1.1.3
-      dset: 3.1.3
-      es-module-lexer: 1.5.3
-      esbuild: 0.21.4
-      estree-walker: 3.0.3
-      execa: 8.0.1
-      fast-glob: 3.3.2
-      flattie: 1.1.1
-      github-slugger: 2.0.0
-      gray-matter: 4.0.3
-      html-escaper: 3.0.3
-      http-cache-semantics: 4.1.1
-      js-yaml: 4.1.0
-      kleur: 4.1.5
-      magic-string: 0.30.10
-      mrmime: 2.0.0
-      ora: 8.0.1
-      p-limit: 5.0.0
-      p-queue: 8.0.1
-      path-to-regexp: 6.2.2
-      preferred-pm: 3.1.3
-      prompts: 2.4.2
-      rehype: 13.0.1
-      resolve: 1.22.8
-      semver: 7.6.2
-      shiki: 1.6.2
-      string-width: 7.1.0
-      strip-ansi: 7.1.0
-      tsconfck: 3.1.0(typescript@5.2.2)
-      unist-util-visit: 5.0.0
-      vfile: 6.0.1
-      vite: 5.2.12(@types/node@18.17.8)
-      vitefu: 0.2.5(vite@5.2.12)
-      which-pm: 2.2.0
-      yargs-parser: 21.1.1
-      zod: 3.23.8
-      zod-to-json-schema: 3.23.0(zod@3.23.8)
-    optionalDependencies:
-      sharp: 0.33.3
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - typescript
-    dev: false
 
   /astro@4.10.0(@types/node@18.17.8)(typescript@5.2.2):
     resolution: {integrity: sha512-UNVGGZIwdEPIUumcwgIQnd90b4/PslReY9q3xy/Q6bIq/kvK0duIWCbhFPwf06xu+1tExziP9Jl+klvLXM0LfA==}

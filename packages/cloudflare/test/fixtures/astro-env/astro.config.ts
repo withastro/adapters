@@ -14,8 +14,8 @@ export default defineConfig({
 	},
 	adapter: cloudflare({
 		platformProxy: {
-			enabled: true
-		}
+			enabled: true,
+		},
 	}),
 	output: 'server',
 });
