@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^4.10.0
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: ^4.10.1
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -128,7 +128,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -141,7 +141,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.10.0
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -154,7 +154,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -163,7 +163,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/prerender-optimizations:
     dependencies:
@@ -172,7 +172,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -181,7 +181,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/wasm:
     dependencies:
@@ -190,7 +190,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -202,7 +202,7 @@ importers:
         version: 3.0.2(solid-js@1.7.11)
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
       solid-js:
         specifier: ^1.7.11
         version: 1.7.11
@@ -214,7 +214,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/netlify:
     dependencies:
@@ -242,7 +242,7 @@ importers:
         version: 18.17.8
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -293,7 +293,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -305,7 +305,7 @@ importers:
     dependencies:
       astro:
         specifier: ^4.3.5
-        version: 4.10.0(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
       execa:
         specifier: ^8
         version: 8.0.1
@@ -3076,8 +3076,8 @@ packages:
     dependencies:
       printable-characters: 1.0.42
 
-  /astro@4.10.0(@types/node@18.17.8)(typescript@5.2.2):
-    resolution: {integrity: sha512-UNVGGZIwdEPIUumcwgIQnd90b4/PslReY9q3xy/Q6bIq/kvK0duIWCbhFPwf06xu+1tExziP9Jl+klvLXM0LfA==}
+  /astro@4.10.1(@types/node@18.17.8)(typescript@5.2.2):
+    resolution: {integrity: sha512-7bbnUX1CW+12suz0Do8ef1CihqVjDyUW/H/0piNHZyBE3W/VFt5GP5ZxlPzzJLoGtaXif0aXJ4iPurEem2LpdA==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     dependencies:

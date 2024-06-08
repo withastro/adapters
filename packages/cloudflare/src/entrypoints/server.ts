@@ -73,7 +73,7 @@ export function createExports(manifest: SSRManifest) {
 		};
 		// Won't throw if the virtual module is not available because it's not supported in
 		// the users's astro version or if astro:env is not enabled in the project
-		await import('astro:env/setup').then((mod) => mod.setGetEnv(createGetEnv(env))).catch(() => {});
+		await import('astro/env/setup').then((mod) => mod.setGetEnv(createGetEnv(env))).catch(() => {});
 
 		const response = await app.render(request, { routeData, locals });
 
