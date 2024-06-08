@@ -156,6 +156,15 @@ importers:
         specifier: ^4.3.5
         version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
+  packages/cloudflare/test/fixtures/module-loader:
+    dependencies:
+      '@astrojs/cloudflare':
+        specifier: workspace:*
+        version: link:../../..
+      astro:
+        specifier: ^4.3.5
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
+
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
       '@astrojs/cloudflare':
@@ -175,15 +184,6 @@ importers:
         version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/routes-json:
-    dependencies:
-      '@astrojs/cloudflare':
-        specifier: workspace:*
-        version: link:../../..
-      astro:
-        specifier: ^4.3.5
-        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
-
-  packages/cloudflare/test/fixtures/wasm:
     dependencies:
       '@astrojs/cloudflare':
         specifier: workspace:*
