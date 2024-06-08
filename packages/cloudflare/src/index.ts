@@ -15,11 +15,11 @@ import { AstroError } from 'astro/errors';
 import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
 import { getPlatformProxy } from 'wrangler';
-import { createGetEnv } from './utils/env.js';
 import {
 	type CloudflareModulePluginExtra,
 	cloudflareModuleLoader,
-} from './utils/cloudflare-module-loader.js';
+	} from './utils/cloudflare-module-loader.js';
+import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 import { mutateDynamicPageImportsInPlace, mutatePageMapInPlace } from './utils/index.js';
