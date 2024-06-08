@@ -18,7 +18,7 @@ import { getPlatformProxy } from 'wrangler';
 import {
 	type CloudflareModulePluginExtra,
 	cloudflareModuleLoader,
-	} from './utils/cloudflare-module-loader.js';
+} from './utils/cloudflare-module-loader.js';
 import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
