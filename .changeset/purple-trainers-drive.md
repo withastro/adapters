@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': minor
 ---
 
-Adds support for `astro:env` released under an experimental flag in Astro 4.10 
+Adds support for experimental `astro:env` released in Astro 4.10
