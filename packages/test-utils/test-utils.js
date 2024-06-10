@@ -8,7 +8,7 @@ import stripAnsi from 'strip-ansi';
 import { check } from './node_modules/astro/dist/cli/check/index.js';
 import build from './node_modules/astro/dist/core/build/index.js';
 import { RESOLVED_SPLIT_MODULE_ID } from './node_modules/astro/dist/core/build/plugins/plugin-ssr.js';
-import { getVirtualModulePageNameFromPath } from './node_modules/astro/dist/core/build/plugins/util.js';
+import { getVirtualModulePageName } from './node_modules/astro/dist/core/build/plugins/util.js';
 import { makeSplitEntryPointFileName } from './node_modules/astro/dist/core/build/static-build.js';
 import { mergeConfig, resolveConfig } from './node_modules/astro/dist/core/config/index.js';
 import { dev, preview } from './node_modules/astro/dist/core/index.js';
@@ -214,7 +214,7 @@ export async function loadFixture(inlineConfig) {
 			return app;
 		},
 		loadEntryPoint: async (pagePath, routes, streaming) => {
-			const virtualModule = getVirtualModulePageNameFromPath(RESOLVED_SPLIT_MODULE_ID, pagePath);
+			const virtualModule = getVirtualModulePageName(RESOLVED_SPLIT_MODULE_ID, pagePath);
 			const filePath = makeSplitEntryPointFileName(virtualModule, routes);
 			const url = new URL(`./server/${filePath}?id=${fixtureId}`, config.outDir);
 			const { createApp, manifest } = await import(url);
