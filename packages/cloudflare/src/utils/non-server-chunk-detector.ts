@@ -1,5 +1,5 @@
 import type { OutputBundle } from 'rollup';
-import type { Plugin, PluginOption } from 'vite';
+import type { PluginOption } from 'vite';
 
 /**
  * A Vite bundle analyzer that identifies chunks that are not used for server rendering.
