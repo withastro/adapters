@@ -10,8 +10,8 @@ describe('AstroEnv', () => {
 	let wrangler;
 
 	before(async () => {
-		process.env.API_URL = 'https://google.de';
-		process.env.PORT = '4322';
+		process.env.PUBLIC_API_URL = 'https://google.de';
+		process.env.PUBLIC_PORT = '4322';
 		await astroCli(fileURLToPath(root), 'build');
 
 		wrangler = wranglerCli(fileURLToPath(root));
