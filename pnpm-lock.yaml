@@ -97,7 +97,7 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^4.5.8
+        specifier: ^4.10.1
         version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
@@ -128,6 +128,19 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
+        version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
+    devDependencies:
+      wrangler:
+        specifier: ^3.15.0
+        version: 3.39.0(@cloudflare/workers-types@4.20240320.1)
+
+  packages/cloudflare/test/fixtures/astro-env:
+    dependencies:
+      '@astrojs/cloudflare':
+        specifier: workspace:*
+        version: link:../../..
+      astro:
+        specifier: ^4.10.1
         version: 4.10.1(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
@@ -2076,6 +2089,7 @@ packages:
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
     dependencies:
       '@humanwhocodes/object-schema': 2.0.2
       debug: 4.3.4
@@ -2091,6 +2105,7 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.2:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
+    deprecated: Use @eslint/object-schema instead
     dev: true
 
   /@img/sharp-darwin-arm64@0.33.4:
@@ -3555,6 +3570,7 @@ packages:
 
   /color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+    requiresBuild: true
 
   /color-string@1.9.1:
     resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
