@@ -108,6 +108,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						redirects: false,
 					},
 					vite: {
+						build: {
+							rollupOptions: {
+								external: ['astro/env/setup'],
+							},
+						},
 						// load .wasm files as WebAssembly modules
 						plugins: [
 							cloudflareModulePlugin,
