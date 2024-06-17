@@ -98,7 +98,7 @@ importers:
         version: link:../test-utils
       astro:
         specifier: ^4.10.1
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -128,7 +128,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.10.2
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: ^4.10.3
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -154,7 +154,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/module-loader:
     dependencies:
@@ -163,7 +163,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -172,7 +172,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/prerender-optimizations:
     dependencies:
@@ -181,7 +181,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -190,7 +190,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -202,7 +202,7 @@ importers:
         version: 3.0.2(solid-js@1.7.11)
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
       solid-js:
         specifier: ^1.7.11
         version: 1.7.11
@@ -214,7 +214,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/netlify:
     dependencies:
@@ -242,7 +242,7 @@ importers:
         version: 18.17.8
       astro:
         specifier: ^4.10.1
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -293,7 +293,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -305,7 +305,7 @@ importers:
     dependencies:
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.17.8)(typescript@5.2.2)
       execa:
         specifier: ^8
         version: 8.0.1
@@ -450,7 +450,7 @@ packages:
       remark-parse: 11.0.0
       remark-rehype: 11.1.0
       remark-smartypants: 2.1.0
-      shiki: 1.6.4
+      shiki: 1.7.0
       unified: 11.0.4
       unist-util-remove-position: 5.0.0
       unist-util-visit: 5.0.0
@@ -2420,8 +2420,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@shikijs/core@1.6.4:
-    resolution: {integrity: sha512-WTU9rzZae1p2v6LOxMf6LhtmZOkIHYYW160IuahUyJy7YXPPjyWZLR1ag+SgD22ZMxZtz1gfU6Tccc8t0Il/XA==}
+  /@shikijs/core@1.7.0:
+    resolution: {integrity: sha512-O6j27b7dGmJbR3mjwh/aHH8Ld+GQvA0OQsNO43wKWnqbAae3AYXrhFyScHGX8hXZD6vX2ngjzDFkZY5srtIJbQ==}
 
   /@sindresorhus/merge-streams@1.0.0:
     resolution: {integrity: sha512-rUV5WyJrJLoloD4NDN1V1+LDMDWOa4OTsT4yYJwQNpTU6FWxkxHpL7eu4w+DmiH8x/EAM1otkPE1+LaspIbplw==}
@@ -2751,20 +2751,20 @@ packages:
     resolution: {integrity: sha512-KYSIHVmslkaCDyw013pphY+d7x1qV8IZupYfeIfzNA+nsaWHbn5uPuQRvdRFsa9zFzGeudPuoGoZ1Op4jrJXIQ==}
     dev: true
 
-  /acorn-jsx@5.3.2(acorn@8.11.3):
+  /acorn-jsx@5.3.2(acorn@8.12.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.0
     dev: true
 
   /acorn-walk@8.3.2:
     resolution: {integrity: sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==}
     engines: {node: '>=0.4.0'}
 
-  /acorn@8.11.3:
-    resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
+  /acorn@8.12.0:
+    resolution: {integrity: sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -2894,8 +2894,8 @@ packages:
     dependencies:
       printable-characters: 1.0.42
 
-  /astro@4.10.2(@types/node@18.17.8)(typescript@5.2.2):
-    resolution: {integrity: sha512-SBdkoOanPsxKlKVU4uu/XG0G7NYAFoqmfBtq9SPMJ34B7Hr1MxVdEugERs8IwYN6UaxdDVcqA++9PvH6Onq2cg==}
+  /astro@4.10.3(@types/node@18.17.8)(typescript@5.2.2):
+    resolution: {integrity: sha512-TWCJM+Vg+y0UoEz/H75rfp/u2N8yxeQQ2UrU9+fMcbjlzQJtGGDq3ApdundqPZgAuCryRuJnrKytStMZCFnlvQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     dependencies:
@@ -2911,7 +2911,7 @@ packages:
       '@babel/types': 7.24.7
       '@types/babel__core': 7.20.5
       '@types/cookie': 0.6.0
-      acorn: 8.11.3
+      acorn: 8.12.0
       aria-query: 5.3.0
       axobject-query: 4.0.0
       boxen: 7.1.1
@@ -2950,7 +2950,7 @@ packages:
       rehype: 13.0.1
       resolve: 1.22.8
       semver: 7.6.2
-      shiki: 1.6.4
+      shiki: 1.7.0
       string-width: 7.1.0
       strip-ansi: 7.1.0
       tsconfck: 3.1.0(typescript@5.2.2)
@@ -3365,7 +3365,7 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
       '@types/estree': 1.0.5
-      acorn: 8.11.3
+      acorn: 8.12.0
       estree-walker: 3.0.3
       periscopic: 3.1.0
     dev: false
@@ -4085,8 +4085,8 @@ packages:
     resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.11.3
-      acorn-jsx: 5.3.2(acorn@8.11.3)
+      acorn: 8.12.0
+      acorn-jsx: 5.3.2(acorn@8.12.0)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -5573,7 +5573,7 @@ packages:
     hasBin: true
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      acorn: 8.11.3
+      acorn: 8.12.0
       acorn-walk: 8.3.2
       capnp-ts: 0.7.0
       exit-hook: 2.2.1
@@ -6546,10 +6546,10 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  /shiki@1.6.4:
-    resolution: {integrity: sha512-X88chM7w8jnadoZtjPTi5ahCJx9pc9f8GfEkZAEYUTlcUZIEw2D/RY86HI/LkkE7Nj8TQWkiBfaFTJ3VJT6ESg==}
+  /shiki@1.7.0:
+    resolution: {integrity: sha512-H5pMn4JA7ayx8H0qOz1k2qANq6mZVCMl1gKLK6kWIrv1s2Ial4EmD4s4jE8QB5Dw03d/oCQUxc24sotuyR5byA==}
     dependencies:
-      '@shikijs/core': 1.6.4
+      '@shikijs/core': 1.7.0
 
   /side-channel@1.0.6:
     resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
@@ -6852,7 +6852,7 @@ packages:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.4.15
       '@jridgewell/trace-mapping': 0.3.25
-      acorn: 8.11.3
+      acorn: 8.12.0
       aria-query: 5.3.0
       axobject-query: 3.2.1
       code-red: 1.0.4
