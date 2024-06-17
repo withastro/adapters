@@ -1,6 +1,6 @@
 ---
 import { PUBLIC_API_URL } from "astro:env/client"
-import { PUBLIC_PORT, getSecret } from "astro:env/server"
+import { PUBLIC_PORT, API_SECRET } from "astro:env/server"
 
 const runtime = Astro.locals.runtime;
 ---
@@ -20,8 +20,8 @@ const runtime = Astro.locals.runtime;
 			<span id="server">{PUBLIC_PORT}</span>
 		</div>
 		<div>
-			<span>getSecret</span>
-			<span id="secret">{getSecret("API_SECRET")}</span>
+			<span>API_SECRET</span>
+			<span id="secret">{API_SECRET}</span>
 		</div>
 	</body>
 </html>
