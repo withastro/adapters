@@ -53,7 +53,7 @@ export type Options = {
 	 * Proxy configuration for the platform.
 	 */
 	platformProxy?: {
-		/** Toggle the proxy. Default `undefined`, which equals to `false`. */
+		/** Toggle the proxy. Default `undefined`, which equals to `true`. */
 		enabled?: boolean;
 		/** Path to the configuration file. Default `wrangler.toml`. */
 		configPath?: string;
@@ -133,7 +133,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 			},
 			'astro:server:setup': async ({ server }) => {
-				if (args?.platformProxy?.enabled === true) {
+				const usesPlatformProxy = args?.platformProxy?.enabled ?? true;
+				if (args?.platformProxy && usesPlatformProxy === true) {
 					const platformProxy = await getPlatformProxy({
 						configPath: args.platformProxy.configPath ?? 'wrangler.toml',
 						experimentalJsonConfig: args.platformProxy.experimentalJsonConfig ?? false,
@@ -161,7 +162,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								caches: platformProxy.caches,
 								ctx: {
 									waitUntil: (promise: Promise<any>) => platformProxy.ctx.waitUntil(promise),
-									passThroughOnException: () => platformProxy.ctx.passThroughOnException(),
+									// Currently not available: https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions
+									// passThroughOnException: () => platformProxy.ctx.passThroughOnException(),
 								},
 							},
 						});
