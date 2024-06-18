@@ -76,16 +76,13 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
-
-	/** @deprecated - use `cloudflareModules`, which defaults to true. You can set `cloudflareModuleLoading: false` to disable */
-	wasmModuleImports?: boolean;
 };
 
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
 	const cloudflareModulePlugin: PluginOption & CloudflareModulePluginExtra = cloudflareModuleLoader(
-		args?.cloudflareModules ?? args?.wasmModuleImports ?? true
+		args?.cloudflareModules ?? true
 	);
 
 	// Initialize the unused chunk analyzer as a shared state between hooks.

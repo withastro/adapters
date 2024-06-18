@@ -71,7 +71,7 @@ export function cloudflareModuleLoader(
 			}
 			if (!enabled) {
 				throw new Error(
-					`Cloudflare module loading is experimental. The ${maybeExtension} module cannot be loaded unless you add \`wasmModuleImports: true\` to your astro config.`
+					`Cloudflare module loading is experimental. The ${maybeExtension} module cannot be loaded unless you add \`cloudflareModules: true\` to your astro config.`
 				);
 			}
 
