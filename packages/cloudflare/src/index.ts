@@ -2,7 +2,7 @@ import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
 import type { PluginOption } from 'vite';
 
 import { createReadStream } from 'node:fs';
-import { appendFile, rename, stat, unlink } from 'node:fs/promises';
+import { appendFile, rename, stat } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
 	appendForwardSlash,
@@ -73,6 +73,10 @@ export type Options = {
 	cloudflareModules?: boolean;
 };
 
+function wrapWithSlashes(path: string): string {
+	return prependForwardSlash(appendForwardSlash(path));
+}
+
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
@@ -83,32 +87,34 @@ export default function createIntegration(args?: Options): AstroIntegration {
 	return {
 		name: '@astrojs/cloudflare',
 		hooks: {
-			'astro:config:setup': ({ command, config, updateConfig, logger }) => {
+			'astro:config:setup': ({ command, config, updateConfig, logger, addWatchFile }) => {
 				updateConfig({
 					build: {
-						client: new URL(
-							`.${prependForwardSlash(appendForwardSlash(config.base))}`,
-							config.outDir
-						),
+						client: new URL(`.${wrapWithSlashes(config.base)}`, config.outDir),
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
 						redirects: false,
 					},
 					vite: {
-						// load .wasm files as WebAssembly modules
-						plugins: [cloudflareModulePlugin],
+						plugins: [
+							// https://developers.cloudflare.com/pages/functions/module-support/
+							// Allows imports of '.wasm', '.bin', and '.txt' file types
+							cloudflareModulePlugin,
+						],
 					},
 					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
 				});
+				addWatchFile(new URL('./wrangler.toml', config.root));
+				addWatchFile(new URL('./wrangler.json', config.root));
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
-				_config = config;
-
 				if (config.output === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
 					);
 				}
+
+				_config = config;
 
 				setAdapter({
 					name: '@astrojs/cloudflare',
