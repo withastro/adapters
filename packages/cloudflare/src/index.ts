@@ -77,6 +77,27 @@ function wrapWithSlashes(path: string): string {
 	return prependForwardSlash(appendForwardSlash(path));
 }
 
+function setProcessEnv(config: AstroConfig, env: Record<string, unknown>) {
+	const getEnv = createGetEnv(env);
+
+	if (config.experimental.env?.schema) {
+		for (const key of Object.keys(config.experimental.env.schema)) {
+			const value = getEnv(key);
+			if (value !== undefined) {
+				process.env[key] = value;
+			}
+		}
+	}
+}
+
+function createPlatformProxy(platformProxy: NonNullable<Options['platformProxy']>) {
+	return getPlatformProxy({
+		configPath: platformProxy.configPath ?? 'wrangler.toml',
+		experimentalJsonConfig: platformProxy.experimentalJsonConfig ?? false,
+		persist: platformProxy.persist ?? true,
+	});
+}
+
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
@@ -139,24 +160,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 			},
 			'astro:server:setup': async ({ server }) => {
-				const usesPlatformProxy = args?.platformProxy?.enabled ?? true;
-				if (args?.platformProxy && usesPlatformProxy === true) {
-					const platformProxy = await getPlatformProxy({
-						configPath: args.platformProxy.configPath ?? 'wrangler.toml',
-						experimentalJsonConfig: args.platformProxy.experimentalJsonConfig ?? false,
-						persist: args.platformProxy.persist ?? true,
-					});
+				if (args?.platformProxy?.enabled === true) {
+					const platformProxy = await createPlatformProxy(args.platformProxy);
 
-					const getEnv = createGetEnv(platformProxy.env);
-
-					if (_config.experimental.env?.schema) {
-						for (const key of Object.keys(_config.experimental.env.schema)) {
-							const value = getEnv(key);
-							if (value !== undefined) {
-								process.env[key] = value;
-							}
-						}
-					}
+					setProcessEnv(_config, platformProxy.env);
 
 					const clientLocalsSymbol = Symbol.for('astro.locals');
 
@@ -177,7 +184,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					});
 				}
 			},
-			'astro:build:setup': ({ vite, target }) => {
+			'astro:build:setup': async ({ vite, target }) => {
+				if (args?.platformProxy?.enabled === true) {
+					const platformProxy = await createPlatformProxy(args.platformProxy);
+
+					setProcessEnv(_config, platformProxy.env);
+				}
+
 				if (target === 'server') {
 					vite.resolve ||= {};
 					vite.resolve.alias ||= {};
