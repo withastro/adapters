@@ -6,9 +6,9 @@ export default defineConfig({
 		rewriting: false,
 		env: {
 			schema: {
-				PUBLIC_API_URL: envField.string({ context: 'client', access: 'public', optional: true }),
-				PUBLIC_PORT: envField.number({ context: 'server', access: 'public', default: 4321 }),
-				// API_SECRET: envField.string({ context: 'server', access: 'secret' }),
+				API_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+				PORT: envField.number({ context: 'server', access: 'public', default: 4321 }),
+				API_SECRET: envField.string({ context: 'server', access: 'secret' }),
 			},
 		},
 	},
