@@ -189,12 +189,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:setup': async ({ vite, target }) => {
-				if ((args?.platformProxy?.enabled ?? true) === true) {
-					const platformProxy = await createPlatformProxy(args?.platformProxy);
-
-					setProcessEnv(_config, platformProxy.env);
-				}
-
 				if (target === 'server') {
 					vite.resolve ||= {};
 					vite.resolve.alias ||= {};
