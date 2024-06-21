@@ -265,7 +265,6 @@ export default function netlifyIntegration(
 				version: 1,
 			})
 		);
-
 	}
 
 	async function writeMiddleware(entrypoint: URL) {

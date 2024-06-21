@@ -44,7 +44,8 @@ export async function copyDependenciesToFunction(
 
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
-			const [, module, file] = /Cannot find module '(.+?)' loaded from (.+)/.exec(error.message) || [];
+			const [, module, file] =
+				/Cannot find module '(.+?)' loaded from (.+)/.exec(error.message) || [];
 
 			// The import(astroRemark) sometimes fails to resolve, but it's not a problem
 			if (module === '@astrojs/') continue;
