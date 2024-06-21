@@ -187,7 +187,6 @@ export function cloudflareModuleLoader(
 					repls.push(replacement);
 				}
 			}
-			console.log(replacementsByFileName);
 			for (const [fileName, repls] of replacementsByFileName.entries()) {
 				const filepath = path.join(baseDir, '_worker.js', fileName);
 				const contents = await fs.readFile(filepath, 'utf-8');
