@@ -68,7 +68,12 @@ export function createExports(manifest: SSRManifest) {
 				caches: caches as unknown as CLOUDFLARE_CACHESTORAGE,
 				ctx: {
 					waitUntil: (promise: Promise<any>) => context.waitUntil(promise),
-					passThroughOnException: () => context.passThroughOnException(),
+					// Currently not available: https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions
+					passThroughOnException: () => {
+						throw new Error(
+							'`passThroughOnException` is currently not available in Cloudflare Pages. See https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions.'
+						);
+					},
 				},
 			},
 		};

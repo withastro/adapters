@@ -90,11 +90,11 @@ function setProcessEnv(config: AstroConfig, env: Record<string, unknown>) {
 	}
 }
 
-function createPlatformProxy(platformProxy: NonNullable<Options['platformProxy']>) {
+function createPlatformProxy(platformProxy: Options['platformProxy']) {
 	return getPlatformProxy({
-		configPath: platformProxy.configPath ?? 'wrangler.toml',
-		experimentalJsonConfig: platformProxy.experimentalJsonConfig ?? false,
-		persist: platformProxy.persist ?? true,
+		configPath: platformProxy?.configPath ?? 'wrangler.toml',
+		experimentalJsonConfig: platformProxy?.experimentalJsonConfig ?? false,
+		persist: platformProxy?.persist ?? true,
 	});
 }
 
@@ -160,8 +160,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 			},
 			'astro:server:setup': async ({ server }) => {
-				if (args?.platformProxy?.enabled === true) {
-					const platformProxy = await createPlatformProxy(args.platformProxy);
+				if ((args?.platformProxy?.enabled ?? true) === true) {
+					const platformProxy = await createPlatformProxy(args?.platformProxy);
 
 					setProcessEnv(_config, platformProxy.env);
 
@@ -176,7 +176,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								ctx: {
 									waitUntil: (promise: Promise<any>) => platformProxy.ctx.waitUntil(promise),
 									// Currently not available: https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions
-									// passThroughOnException: () => platformProxy.ctx.passThroughOnException(),
+									passThroughOnException: () => {
+										throw new AstroError(
+											'`passThroughOnException` is currently not available in Cloudflare Pages. See https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions.'
+										);
+									},
 								},
 							},
 						});
@@ -185,8 +189,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 			},
 			'astro:build:setup': async ({ vite, target }) => {
-				if (args?.platformProxy?.enabled === true) {
-					const platformProxy = await createPlatformProxy(args.platformProxy);
+				if ((args?.platformProxy?.enabled ?? true) === true) {
+					const platformProxy = await createPlatformProxy(args?.platformProxy);
 
 					setProcessEnv(_config, platformProxy.env);
 				}
