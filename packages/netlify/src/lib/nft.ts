@@ -44,7 +44,7 @@ export async function copyDependenciesToFunction(
 
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
-			const [, module, file] = /Cannot find module '(.+?)' loaded from (.+)/.exec(error.message)!;
+			const [, module, file] = /Cannot find module '(.+?)' loaded from (.+)/.exec(error.message) || [];
 
 			// The import(astroRemark) sometimes fails to resolve, but it's not a problem
 			if (module === '@astrojs/') continue;
@@ -65,9 +65,7 @@ export async function copyDependenciesToFunction(
 		// parse errors are likely not js and can safely be ignored,
 		// such as this html file in "main" meant for nw instead of node:
 		// https://github.com/vercel/nft/issues/311
-		else if (error.message.startsWith('Failed to parse')) {
-			continue;
-		} else {
+		else if (!error.message.startsWith('Failed to parse')) {
 			throw error;
 		}
 	}

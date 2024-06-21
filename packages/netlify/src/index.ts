@@ -266,7 +266,6 @@ export default function netlifyIntegration(
 			})
 		);
 
-		clearDirectory(ssrBuildDir());
 	}
 
 	async function writeMiddleware(entrypoint: URL) {
@@ -470,7 +469,6 @@ export default function netlifyIntegration(
 					await writeSSRFunction({ notFoundContent, logger });
 					logger.info('Generated SSR Function');
 				}
-
 				if (astroMiddlewareEntryPoint) {
 					await writeMiddleware(astroMiddlewareEntryPoint);
 					logger.info('Generated Middleware Edge Function');
