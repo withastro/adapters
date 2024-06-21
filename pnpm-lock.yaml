@@ -98,7 +98,7 @@ importers:
         version: link:../test-utils
       astro:
         specifier: ^4.10.3
-        version: 4.11.0(@types/node@18.19.26)(typescript@5.2.2)
+        version: 4.10.3(@types/node@18.19.26)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -1851,8 +1851,8 @@ packages:
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astro@4.11.0:
-    resolution: {integrity: sha512-3VWxz/08sChQIX68tuE7Y769DUdjsT3Zq2/y4SkrDRlwN9IZ/aebwcRWr5a2yMSdO2vpFxtEdobq0mKnMlLErg==}
+  astro@4.10.3:
+    resolution: {integrity: sha512-TWCJM+Vg+y0UoEz/H75rfp/u2N8yxeQQ2UrU9+fMcbjlzQJtGGDq3ApdundqPZgAuCryRuJnrKytStMZCFnlvQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -6139,7 +6139,7 @@ snapshots:
       - terser
       - typescript
 
-  astro@4.11.0(@types/node@18.19.26)(typescript@5.2.2):
+  astro@4.10.3(@types/node@18.19.26)(typescript@5.2.2):
     dependencies:
       '@astrojs/compiler': 2.8.0
       '@astrojs/internal-helpers': 0.4.0
