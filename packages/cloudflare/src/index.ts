@@ -123,7 +123,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							cloudflareModulePlugin,
 						],
 					},
-					image: setImageConfig(args?.imageService ?? 'DEFAULT', config.image, command, logger),
+					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
 				});
 				addWatchFile(new URL('./wrangler.toml', config.root));
 				addWatchFile(new URL('./wrangler.json', config.root));
