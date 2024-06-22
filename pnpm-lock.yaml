@@ -25,7 +25,7 @@ importers:
         version: 18.17.8
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.4.1
-        version: 6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(typescript@5.2.2)
+        version: 6.4.1(@typescript-eslint/parser@6.4.1(eslint@8.47.0)(typescript@5.2.2))(eslint@8.47.0)(typescript@5.2.2)
       '@typescript-eslint/parser':
         specifier: ^6.4.1
         version: 6.4.1(eslint@8.47.0)(typescript@5.2.2)
@@ -43,7 +43,7 @@ importers:
         version: 3.1.0
       eslint-plugin-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.47.0)(prettier@3.0.3)
+        version: 5.0.0(eslint-config-prettier@9.0.0(eslint@8.47.0))(eslint@8.47.0)(prettier@3.0.3)
       only-allow:
         specifier: ^1.1.1
         version: 1.1.1
@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^4.10.1
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: ^4.10.3
+        version: 4.10.3(@types/node@18.19.26)(typescript@5.2.2)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -119,7 +119,7 @@ importers:
         version: 7.1.0
       vite:
         specifier: ^5.2.13
-        version: 5.3.1(@types/node@18.17.8)
+        version: 5.3.1(@types/node@18.19.26)
 
   packages/cloudflare/test/fixtures/astro-dev-platform:
     dependencies:
@@ -128,7 +128,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^4.10.2
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        specifier: ^4.10.3
+        version: 4.10.3(@types/node@18.19.26)(typescript@5.2.2)
     devDependencies:
       wrangler:
         specifier: ^3.15.0
@@ -154,7 +154,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/module-loader:
     dependencies:
@@ -163,7 +163,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -172,16 +172,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
-
-  packages/cloudflare/test/fixtures/prerender-optimizations:
-    dependencies:
-      '@astrojs/cloudflare':
-        specifier: workspace:*
-        version: link:../../..
-      astro:
-        specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -190,7 +181,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -199,10 +190,10 @@ importers:
         version: link:../../..
       '@astrojs/solid-js':
         specifier: ^3.0.2
-        version: 3.0.2(solid-js@1.7.11)
+        version: 3.0.2(solid-js@1.7.11)(vite@5.3.1(@types/node@18.19.26))
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
       solid-js:
         specifier: ^1.7.11
         version: 1.7.11
@@ -214,7 +205,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/netlify:
     dependencies:
@@ -293,7 +284,7 @@ importers:
         version: link:../../..
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -305,7 +296,7 @@ importers:
     dependencies:
       astro:
         specifier: ^4.3.5
-        version: 4.10.2(@types/node@18.17.8)(typescript@5.2.2)
+        version: 4.10.2(@types/node@18.19.26)(typescript@5.2.2)
       execa:
         specifier: ^8
         version: 8.0.1
@@ -465,9 +456,6 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
 
   '@babel/helper-plugin-utils@7.24.7':
     resolution: {integrity: sha512-Rq76wjt7yz9AAc1KnlRKNAi/dMSVWgDRx43FHoJEbcYU6xOWaE2dVPwcdTukJrjxS65GITyfbvEYHvkirZ6uEg==}
@@ -511,18 +499,12 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
 
   '@babel/plugin-transform-react-jsx@7.24.7':
     resolution: {integrity: sha512-+Dj06GDZEFRYvclU6k4bme55GKBEWUmByM/eoKuqg4zTNQHiApWRhQph5fxQB2wAEFvRzL1tOEj1RJ19wJrhoA==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
 
   '@babel/runtime@7.24.1':
     resolution: {integrity: sha512-+BIznRzyqBf+2wCTxcKE3wDjfGeCoVE61KSHGpkzqrLi8qxqFwBeUFyId2cxkTmm55fzDGnm0+yCxaxygrLUnQ==}
@@ -1597,6 +1579,9 @@ packages:
   '@shikijs/core@1.6.4':
     resolution: {integrity: sha512-WTU9rzZae1p2v6LOxMf6LhtmZOkIHYYW160IuahUyJy7YXPPjyWZLR1ag+SgD22ZMxZtz1gfU6Tccc8t0Il/XA==}
 
+  '@shikijs/core@1.7.0':
+    resolution: {integrity: sha512-O6j27b7dGmJbR3mjwh/aHH8Ld+GQvA0OQsNO43wKWnqbAae3AYXrhFyScHGX8hXZD6vX2ngjzDFkZY5srtIJbQ==}
+
   '@sindresorhus/merge-streams@1.0.0':
     resolution: {integrity: sha512-rUV5WyJrJLoloD4NDN1V1+LDMDWOa4OTsT4yYJwQNpTU6FWxkxHpL7eu4w+DmiH8x/EAM1otkPE1+LaspIbplw==}
     engines: {node: '>=18'}
@@ -1780,6 +1765,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.12.0:
+    resolution: {integrity: sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   aggregate-error@4.0.1:
     resolution: {integrity: sha512-0poP0T7el6Vq3rstR8Mn4V/IQrpBLO6POkUSrN7RhyY+GF/InCFShQzsQ39T25gkHhLgSLByyAz+Kjb+c2L98w==}
     engines: {node: '>=12'}
@@ -1861,6 +1851,11 @@ packages:
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
+  astro@4.10.3:
+    resolution: {integrity: sha512-TWCJM+Vg+y0UoEz/H75rfp/u2N8yxeQQ2UrU9+fMcbjlzQJtGGDq3ApdundqPZgAuCryRuJnrKytStMZCFnlvQ==}
+    engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
+    hasBin: true
+
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
@@ -1878,17 +1873,11 @@ packages:
     resolution: {integrity: sha512-nef2eLpWBgFggwrYwN6O3dNKn3RnlX6n4DIamNEAeHwp03kVQUaKUiLaEPnHPJHwxie1KwPelyIY9QikU03vUA==}
     peerDependencies:
       '@babel/core': ^7.20.12
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
 
   babel-preset-solid@1.8.16:
     resolution: {integrity: sha512-b4HFg/xaKM+H3Tu5iUlZ/43TJOZnhi85xrm3JrXDQ0s4cmtmU37bXXYzb2m55G4QKiFjxLAjvb7sUorPrAMs5w==}
     peerDependencies:
       '@babel/core': ^7.0.0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -3808,6 +3797,9 @@ packages:
   shiki@1.6.4:
     resolution: {integrity: sha512-X88chM7w8jnadoZtjPTi5ahCJx9pc9f8GfEkZAEYUTlcUZIEw2D/RY86HI/LkkE7Nj8TQWkiBfaFTJ3VJT6ESg==}
 
+  shiki@1.7.0:
+    resolution: {integrity: sha512-H5pMn4JA7ayx8H0qOz1k2qANq6mZVCMl1gKLK6kWIrv1s2Ial4EmD4s4jE8QB5Dw03d/oCQUxc24sotuyR5byA==}
+
   side-channel@1.0.6:
     resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
     engines: {node: '>= 0.4'}
@@ -4279,8 +4271,6 @@ packages:
     peerDependenciesMeta:
       '@testing-library/jest-dom':
         optional: true
-      vite:
-        optional: true
 
   vite@4.5.0:
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
@@ -4622,8 +4612,6 @@ snapshots:
       '@volar/language-service': 2.1.6
       '@volar/typescript': 2.1.6
       fast-glob: 3.3.2
-      prettier: 3.0.3
-      prettier-plugin-astro: 0.12.1
       volar-service-css: 0.0.34(@volar/language-service@2.1.6)
       volar-service-emmet: 0.0.34(@volar/language-service@2.1.6)
       volar-service-html: 0.0.34(@volar/language-service@2.1.6)
@@ -4632,6 +4620,9 @@ snapshots:
       volar-service-typescript-twoslash-queries: 0.0.34(@volar/language-service@2.1.6)
       vscode-html-languageservice: 5.2.0
       vscode-uri: 3.0.8
+    optionalDependencies:
+      prettier: 3.0.3
+      prettier-plugin-astro: 0.12.1
     transitivePeerDependencies:
       - typescript
 
@@ -4662,10 +4653,10 @@ snapshots:
     dependencies:
       prismjs: 1.29.0
 
-  '@astrojs/solid-js@3.0.2(solid-js@1.7.11)':
+  '@astrojs/solid-js@3.0.2(solid-js@1.7.11)(vite@5.3.1(@types/node@18.19.26))':
     dependencies:
       solid-js: 1.7.11
-      vite-plugin-solid: 2.10.2(solid-js@1.7.11)
+      vite-plugin-solid: 2.10.2(solid-js@1.7.11)(vite@5.3.1(@types/node@18.19.26))
     transitivePeerDependencies:
       - '@testing-library/jest-dom'
       - supports-color
@@ -5674,6 +5665,8 @@ snapshots:
 
   '@shikijs/core@1.6.4': {}
 
+  '@shikijs/core@1.7.0': {}
+
   '@sindresorhus/merge-streams@1.0.0': {}
 
   '@types/babel__core@7.20.5':
@@ -5751,7 +5744,7 @@ snapshots:
 
   '@types/unist@3.0.2': {}
 
-  '@typescript-eslint/eslint-plugin@6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.47.0)(typescript@5.2.2)':
+  '@typescript-eslint/eslint-plugin@6.4.1(@typescript-eslint/parser@6.4.1(eslint@8.47.0)(typescript@5.2.2))(eslint@8.47.0)(typescript@5.2.2)':
     dependencies:
       '@eslint-community/regexpp': 4.10.0
       '@typescript-eslint/parser': 6.4.1(eslint@8.47.0)(typescript@5.2.2)
@@ -5766,6 +5759,7 @@ snapshots:
       natural-compare: 1.4.0
       semver: 7.6.2
       ts-api-utils: 1.3.0(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -5778,6 +5772,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 6.4.1
       debug: 4.3.5
       eslint: 8.47.0
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -5794,6 +5789,7 @@ snapshots:
       debug: 4.3.5
       eslint: 8.47.0
       ts-api-utils: 1.3.0(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -5809,6 +5805,7 @@ snapshots:
       is-glob: 4.0.3
       semver: 7.6.2
       ts-api-utils: 1.3.0(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -5901,6 +5898,8 @@ snapshots:
   acorn-walk@8.3.2: {}
 
   acorn@8.11.3: {}
+
+  acorn@8.12.0: {}
 
   aggregate-error@4.0.1:
     dependencies:
@@ -6044,7 +6043,163 @@ snapshots:
       unist-util-visit: 5.0.0
       vfile: 6.0.1
       vite: 5.3.1(@types/node@18.17.8)
-      vitefu: 0.2.5(vite@5.3.1)
+      vitefu: 0.2.5(vite@5.3.1(@types/node@18.17.8))
+      which-pm: 2.2.0
+      yargs-parser: 21.1.1
+      zod: 3.23.8
+      zod-to-json-schema: 3.23.0(zod@3.23.8)
+    optionalDependencies:
+      sharp: 0.33.4
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - typescript
+
+  astro@4.10.2(@types/node@18.19.26)(typescript@5.2.2):
+    dependencies:
+      '@astrojs/compiler': 2.8.0
+      '@astrojs/internal-helpers': 0.4.0
+      '@astrojs/markdown-remark': 5.1.0
+      '@astrojs/telemetry': 3.1.0
+      '@babel/core': 7.24.7
+      '@babel/generator': 7.24.7
+      '@babel/parser': 7.24.7
+      '@babel/plugin-transform-react-jsx': 7.24.7(@babel/core@7.24.7)
+      '@babel/traverse': 7.24.7
+      '@babel/types': 7.24.7
+      '@types/babel__core': 7.20.5
+      '@types/cookie': 0.6.0
+      acorn: 8.11.3
+      aria-query: 5.3.0
+      axobject-query: 4.0.0
+      boxen: 7.1.1
+      chokidar: 3.6.0
+      ci-info: 4.0.0
+      clsx: 2.1.1
+      common-ancestor-path: 1.0.1
+      cookie: 0.6.0
+      cssesc: 3.0.0
+      debug: 4.3.5
+      deterministic-object-hash: 2.0.2
+      devalue: 5.0.0
+      diff: 5.2.0
+      dlv: 1.1.3
+      dset: 3.1.3
+      es-module-lexer: 1.5.3
+      esbuild: 0.21.5
+      estree-walker: 3.0.3
+      execa: 8.0.1
+      fast-glob: 3.3.2
+      flattie: 1.1.1
+      github-slugger: 2.0.0
+      gray-matter: 4.0.3
+      html-escaper: 3.0.3
+      http-cache-semantics: 4.1.1
+      js-yaml: 4.1.0
+      kleur: 4.1.5
+      magic-string: 0.30.10
+      mrmime: 2.0.0
+      ora: 8.0.1
+      p-limit: 5.0.0
+      p-queue: 8.0.1
+      path-to-regexp: 6.2.2
+      preferred-pm: 3.1.3
+      prompts: 2.4.2
+      rehype: 13.0.1
+      resolve: 1.22.8
+      semver: 7.6.2
+      shiki: 1.6.4
+      string-width: 7.1.0
+      strip-ansi: 7.1.0
+      tsconfck: 3.1.0(typescript@5.2.2)
+      unist-util-visit: 5.0.0
+      vfile: 6.0.1
+      vite: 5.3.1(@types/node@18.19.26)
+      vitefu: 0.2.5(vite@5.3.1(@types/node@18.19.26))
+      which-pm: 2.2.0
+      yargs-parser: 21.1.1
+      zod: 3.23.8
+      zod-to-json-schema: 3.23.0(zod@3.23.8)
+    optionalDependencies:
+      sharp: 0.33.4
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - typescript
+
+  astro@4.10.3(@types/node@18.19.26)(typescript@5.2.2):
+    dependencies:
+      '@astrojs/compiler': 2.8.0
+      '@astrojs/internal-helpers': 0.4.0
+      '@astrojs/markdown-remark': 5.1.0
+      '@astrojs/telemetry': 3.1.0
+      '@babel/core': 7.24.7
+      '@babel/generator': 7.24.7
+      '@babel/parser': 7.24.7
+      '@babel/plugin-transform-react-jsx': 7.24.7(@babel/core@7.24.7)
+      '@babel/traverse': 7.24.7
+      '@babel/types': 7.24.7
+      '@types/babel__core': 7.20.5
+      '@types/cookie': 0.6.0
+      acorn: 8.12.0
+      aria-query: 5.3.0
+      axobject-query: 4.0.0
+      boxen: 7.1.1
+      chokidar: 3.6.0
+      ci-info: 4.0.0
+      clsx: 2.1.1
+      common-ancestor-path: 1.0.1
+      cookie: 0.6.0
+      cssesc: 3.0.0
+      debug: 4.3.5
+      deterministic-object-hash: 2.0.2
+      devalue: 5.0.0
+      diff: 5.2.0
+      dlv: 1.1.3
+      dset: 3.1.3
+      es-module-lexer: 1.5.3
+      esbuild: 0.21.5
+      estree-walker: 3.0.3
+      execa: 8.0.1
+      fast-glob: 3.3.2
+      flattie: 1.1.1
+      github-slugger: 2.0.0
+      gray-matter: 4.0.3
+      html-escaper: 3.0.3
+      http-cache-semantics: 4.1.1
+      js-yaml: 4.1.0
+      kleur: 4.1.5
+      magic-string: 0.30.10
+      mrmime: 2.0.0
+      ora: 8.0.1
+      p-limit: 5.0.0
+      p-queue: 8.0.1
+      path-to-regexp: 6.2.2
+      preferred-pm: 3.1.3
+      prompts: 2.4.2
+      rehype: 13.0.1
+      resolve: 1.22.8
+      semver: 7.6.2
+      shiki: 1.7.0
+      string-width: 7.1.0
+      strip-ansi: 7.1.0
+      tsconfck: 3.1.0(typescript@5.2.2)
+      unist-util-visit: 5.0.0
+      vfile: 6.0.1
+      vite: 5.3.1(@types/node@18.19.26)
+      vitefu: 0.2.5(vite@5.3.1(@types/node@18.19.26))
       which-pm: 2.2.0
       yargs-parser: 21.1.1
       zod: 3.23.8
@@ -6748,13 +6903,14 @@ snapshots:
 
   eslint-plugin-no-only-tests@3.1.0: {}
 
-  eslint-plugin-prettier@5.0.0(eslint-config-prettier@9.0.0)(eslint@8.47.0)(prettier@3.0.3):
+  eslint-plugin-prettier@5.0.0(eslint-config-prettier@9.0.0(eslint@8.47.0))(eslint@8.47.0)(prettier@3.0.3):
     dependencies:
       eslint: 8.47.0
-      eslint-config-prettier: 9.0.0(eslint@8.47.0)
       prettier: 3.0.3
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.8
+    optionalDependencies:
+      eslint-config-prettier: 9.0.0(eslint@8.47.0)
 
   eslint-scope@7.2.2:
     dependencies:
@@ -8472,6 +8628,10 @@ snapshots:
     dependencies:
       '@shikijs/core': 1.6.4
 
+  shiki@1.7.0:
+    dependencies:
+      '@shikijs/core': 1.7.0
+
   side-channel@1.0.6:
     dependencies:
       call-bind: 1.0.7
@@ -8750,7 +8910,7 @@ snapshots:
       typescript: 5.2.2
 
   tsconfck@3.1.0(typescript@5.2.2):
-    dependencies:
+    optionalDependencies:
       typescript: 5.2.2
 
   tsconfig-resolver@3.0.1:
@@ -9012,7 +9172,7 @@ snapshots:
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
 
-  vite-plugin-solid@2.10.2(solid-js@1.7.11):
+  vite-plugin-solid@2.10.2(solid-js@1.7.11)(vite@5.3.1(@types/node@18.19.26)):
     dependencies:
       '@babel/core': 7.24.7
       '@types/babel__core': 7.20.5
@@ -9020,70 +9180,89 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.7.11
       solid-refresh: 0.6.3(solid-js@1.7.11)
-      vitefu: 0.2.5(vite@5.3.1)
+      vite: 5.3.1(@types/node@18.19.26)
+      vitefu: 0.2.5(vite@5.3.1(@types/node@18.19.26))
     transitivePeerDependencies:
       - supports-color
 
   vite@4.5.0(@types/node@18.17.8):
     dependencies:
-      '@types/node': 18.17.8
       esbuild: 0.18.20
       postcss: 8.4.38
       rollup: 3.29.4
     optionalDependencies:
+      '@types/node': 18.17.8
       fsevents: 2.3.3
 
   vite@5.3.1(@types/node@18.17.8):
     dependencies:
-      '@types/node': 18.17.8
       esbuild: 0.21.5
       postcss: 8.4.38
       rollup: 4.14.0
     optionalDependencies:
+      '@types/node': 18.17.8
       fsevents: 2.3.3
 
-  vitefu@0.2.5(vite@5.3.1):
+  vite@5.3.1(@types/node@18.19.26):
     dependencies:
+      esbuild: 0.21.5
+      postcss: 8.4.38
+      rollup: 4.14.0
+    optionalDependencies:
+      '@types/node': 18.19.26
+      fsevents: 2.3.3
+
+  vitefu@0.2.5(vite@5.3.1(@types/node@18.17.8)):
+    optionalDependencies:
       vite: 5.3.1(@types/node@18.17.8)
+
+  vitefu@0.2.5(vite@5.3.1(@types/node@18.19.26)):
+    optionalDependencies:
+      vite: 5.3.1(@types/node@18.19.26)
 
   volar-service-css@0.0.34(@volar/language-service@2.1.6):
     dependencies:
-      '@volar/language-service': 2.1.6
       vscode-css-languageservice: 6.2.13
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
+    optionalDependencies:
+      '@volar/language-service': 2.1.6
 
   volar-service-emmet@0.0.34(@volar/language-service@2.1.6):
     dependencies:
-      '@volar/language-service': 2.1.6
       '@vscode/emmet-helper': 2.9.2
       vscode-html-languageservice: 5.2.0
+    optionalDependencies:
+      '@volar/language-service': 2.1.6
 
   volar-service-html@0.0.34(@volar/language-service@2.1.6):
     dependencies:
-      '@volar/language-service': 2.1.6
       vscode-html-languageservice: 5.2.0
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
+    optionalDependencies:
+      '@volar/language-service': 2.1.6
 
   volar-service-prettier@0.0.34(@volar/language-service@2.1.6)(prettier@3.0.3):
     dependencies:
+      vscode-uri: 3.0.8
+    optionalDependencies:
       '@volar/language-service': 2.1.6
       prettier: 3.0.3
-      vscode-uri: 3.0.8
 
   volar-service-typescript-twoslash-queries@0.0.34(@volar/language-service@2.1.6):
-    dependencies:
+    optionalDependencies:
       '@volar/language-service': 2.1.6
 
   volar-service-typescript@0.0.34(@volar/language-service@2.1.6):
     dependencies:
-      '@volar/language-service': 2.1.6
       path-browserify: 1.0.1
       semver: 7.6.2
       typescript-auto-import-cache: 0.3.2
       vscode-languageserver-textdocument: 1.0.11
       vscode-nls: 5.2.0
+    optionalDependencies:
+      '@volar/language-service': 2.1.6
 
   vscode-css-languageservice@6.2.13:
     dependencies:
@@ -9192,7 +9371,6 @@ snapshots:
   wrangler@3.39.0(@cloudflare/workers-types@4.20240320.1):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.1
-      '@cloudflare/workers-types': 4.20240320.1
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
       '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
       blake3-wasm: 2.1.5
@@ -9207,6 +9385,7 @@ snapshots:
       source-map: 0.6.1
       xxhash-wasm: 1.0.2
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20240320.1
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
