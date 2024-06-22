@@ -4,7 +4,9 @@
 
 ### Major Changes
 
-- [#290](https://github.com/withastro/adapters/pull/290) [`1c4145e`](https://github.com/withastro/adapters/commit/1c4145e1f9a27b2eee1f17f0689bf29345ba2ca6) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - ## Upgrades
+- [#290](https://github.com/withastro/adapters/pull/290) [`1c4145e`](https://github.com/withastro/adapters/commit/1c4145e1f9a27b2eee1f17f0689bf29345ba2ca6) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Cloudflare v11
+
+  ## Upgrades
 
   ### Supported Astro versions
 
