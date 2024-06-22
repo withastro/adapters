@@ -188,7 +188,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					});
 				}
 			},
-			'astro:build:setup': async ({ vite, target }) => {
+			'astro:build:setup': ({ vite, target }) => {
 				if (target === 'server') {
 					vite.resolve ||= {};
 					vite.resolve.alias ||= {};
