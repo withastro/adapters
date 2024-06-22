@@ -98,6 +98,14 @@ export const bar = () => {
 }
 ```
 
+### watch config files
+
+This release starts to watch for changes in your `wrangler.toml` & `.dev.vars` files, and will restart the dev server if you update them. This should help with developer experience.
+
+#### What should I do?
+
+If you observe any issues, please check current open issues or create a new one in the repository.
+
 ### BREAKING: `imageService`
 
 This release changes the default behavior of `imageService`. In the past the default behavior was falling back to a `noop` service, which disabled image optimization for your project, because Cloudflare doesn's support it. The new default is `compile`, which enables image optimization for prerendered pages during build, but disallows the usage of any `astro:assets` feature inside on-demand pages.
@@ -142,7 +150,7 @@ This release throws an error if you use Cloudflare's `passThroughOnException` fu
 
 #### What should I do?
 
-I you observe any issues, please check current open issues or create a new one in the repository.
+If you observe any issues, please check current open issues or create a new one in the repository.
 
 ## Deprecations
 
