@@ -136,6 +136,14 @@ adapter: cloudflare({
 // ...
 ```
 
+### BREAKING: `passThroughOnException`
+
+This release throws an error if you use Cloudflare's `passThroughOnException` function, because as stated in [Cloudflare docs](https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions), the function doesn't work with Cloudflare Pages.
+
+#### What should I do?
+
+I you observe any issues, please check current open issues or create a new one in the repository.
+
 ## Deprecations
 
 ### `wasmModuleImports`
