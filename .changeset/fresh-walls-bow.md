@@ -32,7 +32,7 @@ This release adds experimental support for `astro:env`, which helps to streamlin
 
 If you observe any issues, please check current open issues or create a new one in the repository.
 
-To add enviroment variables to your project, you still need to make sure they are available in three places. You're setup might require different steps to achieve this, so we can't give you a full step-by-step guide, how to achieve the prequirements, but here are some guidances to get you started:
+To add enviroment variables to your project, you still need to make sure they are available in three places. You're setup might require different steps to achieve this, so we can't give you a full step-by-step guide, how to achieve the requirements, but here are some guidances to get you started:
 
 - `process.env` during build in your node process (`astro build`)
 - `wrangler.toml` for local development (`astro dev`)
@@ -51,16 +51,16 @@ name = "test"
 # ...
 ```
 
-If you also need "secret" environment variables _(e.g. API Keys, etc.)_, you add them to your `.dev.vars` file _(These won't be synced automaticcly, and you need to add them encrypted manually to the Cloudflare Pages Dashboard or use `wrangler` CLI to push them)_:
+If you also need "secret" environment variables _(e.g. API Keys, etc.)_, you add them to your `.dev.vars` file _(These won't be synced automaticcly, and you need to add them manually as encrypted variables to the Cloudflare Pages Dashboard or use `wrangler` CLI to push them)_:
 
 ```diff
 # .dev.vars
 + API_SECRET=123456789
 ```
 
-With your enviroment variables added to those two files and synced to the Cloudflare Pages Dashboard, you should be able to use them with `astro:env` with `astro dev` & `astro build`, if you use Cloudflare's Build Pipeline and GitHub App.
+With your enviroment variables added to those two files and synced to the Cloudflare Pages Dashboard, you should be able to use them with `astro:env` when running `astro dev` & `astro build`, if you use Cloudflare's Build Pipeline and Cloudflare's GitHub App connection.
 
-However if you build your project locally or inside a custom GitHub Action workflow and deploy with direct upload, you need to make sure that the environment variables are available in your build process. The simplest but not safest is to use your terminal, e.g. `API_URL=https://google.de PORT=4322 API_SECRET=123456789 astro build`. For more complex setups, you might need find out the way your specific setup allows you to provide environment variables to the build process.
+However if you build your project locally or inside a custom GitHub Action workflow and deploy with direct upload, you need to make sure that the environment variables are available in your build process. The simplest but not safest is to use your shell, e.g. `API_URL=https://google.de PORT=4322 API_SECRET=123456789 astro build`. For more complex setups, you might need find out the way for your specific setup to provide environment variables to the build process.
 
 Additionally you need to define your schema inside your `astro.config.mjs` file:
 
@@ -80,19 +80,19 @@ export default defineConfig({
 })
 ```
 
-Finally you should be able to access your environment variables in your Astro project, according to the [Astro Docs](https://docs.astro.build/en/reference/configuration-reference/#experimentalenv), e.g. `import { API_URL } from "astro:env/client"` or `import { PORT, API_SECRET } from "astro:env/server"`
+Finally you should be able to access your environment variables in your Astro project, according to the [Astro Docs](https://docs.astro.build/en/reference/configuration-reference/#experimentalenv), e.g. `import { API_URL } from "astro:env/client"` or `import { PORT, API_SECRET } from "astro:env/server"`.
 
-**NOTE:** If you want to use environment variables in other files, which are not an `.astro` file or a middleware, you still need to make sure you don't access the variable in a global scope. We recommend to wrap your logic with a function, which you then call from your `.astro` file or middleware inside the request scope.
+**NOTE:** If you want to use environment variables in other files, which are not an `.astro` file or a `middleware`, you still need to make sure you don't access the variable in a global scope. We recommend to wrap your logic with a function, which you then call from your `.astro` file or `middleware` inside the request scope.
 
 ```ts
-// db-helper.ts
+// foo.ts
 import { MY_SECRET } from 'astro:env/server'
 
 // DOESN'T WORK
 const client = myLib(MY_SECRET)
 
 // WORKS
-export const foo = () => {
+export const bar = () => {
   const client = myLib(MY_SECRET)
   return client
 }
@@ -100,7 +100,7 @@ export const foo = () => {
 
 ### BREAKING: `imageService`
 
-This release changes the default behavior of `imageService`. In the past the default behavior was a `noop` service, which disabled image optimization for your project, because Cloudflare doesn's support `sharp`. The new default is `compile`, which enables image optimization for prerendered pages during build, but disallows the usage of any `astro:assets` feature inside on-deman pages.
+This release changes the default behavior of `imageService`. In the past the default behavior was falling back to a `noop` service, which disabled image optimization for your project, because Cloudflare doesn's support it. The new default is `compile`, which enables image optimization for prerendered pages during build, but disallows the usage of any `astro:assets` feature inside on-demand pages.
 
 #### What should I do?
 
@@ -143,6 +143,8 @@ adapter: cloudflare({
 This release removes the previous deprecated `wasmModuleImports` adapter option. It was replaced with the `cloudflareModules` option, which offers flexiblility and support for more filetypes.
 
 #### What should I do?
+
+If you observe any issues, please check current open issues or create a new one in the repository.
 
 ```diff
 // astro.config.mjs
