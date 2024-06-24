@@ -1,10 +1,16 @@
 # See https://github.com/actions/labeler
 
 '🚨 action':
-- .github/workflows/**
+- any:
+  - changed-files:
+    - any-glob-to-any-file: '.github/workflows/**'
 
 'pkg: cloudflare':
-- packages/cloudflare/**
+- any:
+  - changed-files:
+    - any-glob-to-any-file: 'packages/cloudflare/**'
 
 'pkg: netlify':
-- packages/netlify/**
+- any:
+  - changed-files:
+    - any-glob-to-any-file: 'packages/netlify/**'
