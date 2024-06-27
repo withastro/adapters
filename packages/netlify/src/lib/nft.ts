@@ -78,6 +78,8 @@ export async function copyDependenciesToFunction(
 		excludeFiles
 	);
 
+	console.log({commonAncestor, entryPath});
+
 	return {
 		// serverEntry location inside the outDir
 		handler: relativePath(commonAncestor, entryPath),
