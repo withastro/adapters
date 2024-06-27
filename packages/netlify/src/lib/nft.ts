@@ -1,4 +1,4 @@
-import { relative as relativePath, sep, posix } from 'node:path';
+import { posix, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { copyFilesToFolder } from '@astrojs/internal-helpers/fs';
 import type { AstroIntegrationLogger } from 'astro';
@@ -22,7 +22,7 @@ export async function copyDependenciesToFunction(
 	cache: object
 ): Promise<{ handler: string }> {
 	const entryPath = fileURLToPath(entry);
-	logger.info(`Bundling function ${relativePath(fileURLToPath(outDir), entryPath)}`);
+	logger.info(`Bundling function ${relative(fileURLToPath(outDir), entryPath)}`);
 
 	// Get root of folder of the system (like C:\ on Windows or / on Linux)
 	let base = entry;
@@ -78,10 +78,8 @@ export async function copyDependenciesToFunction(
 		excludeFiles
 	);
 
-	console.log({ commonAncestor, entryPath });
-
 	return {
 		// serverEntry location inside the outDir, converted to posix
-		handler: relativePath(commonAncestor, entryPath).split(sep).join(posix.sep),
+		handler: relative(commonAncestor, entryPath).split(sep).join(posix.sep),
 	};
 }
