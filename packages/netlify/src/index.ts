@@ -2,13 +2,13 @@ import { randomUUID } from 'node:crypto';
 import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
 import { fileURLToPath } from 'node:url';
+import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
 import { build } from 'esbuild';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import type { Args } from './ssr-function.js';
-import { emptyDir } from '@astrojs/internal-helpers/fs';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -22,7 +22,6 @@ export interface NetlifyLocals {
 
 const isStaticRedirect = (route: RouteData) =>
 	route.type === 'redirect' && (route.redirect || route.redirectRoute);
-
 
 type RemotePattern = AstroConfig['image']['remotePatterns'][number];
 

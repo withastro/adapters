@@ -1,7 +1,7 @@
 import { relative as relativePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { AstroIntegrationLogger } from 'astro';
 import { copyFilesToFolder } from '@astrojs/internal-helpers/fs';
+import type { AstroIntegrationLogger } from 'astro';
 
 // Based on the equivalent function in `@astrojs/vercel`
 export async function copyDependenciesToFunction(
