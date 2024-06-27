@@ -11,7 +11,10 @@
     "url": "https://github.com/withastro/adapters.git",
     "directory": "packages/netlify"
   },
-  "keywords": ["withastro", "astro-adapter"],
+  "keywords": [
+    "withastro",
+    "astro-adapter"
+  ],
   "bugs": "https://github.com/withastro/adapters/issues",
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/netlify/",
   "exports": {
@@ -22,7 +25,9 @@
     "./image-service.js": "./dist/image-service.js",
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test-fn": "astro-scripts test \"test/functions/*.test.js\"",
@@ -31,6 +36,7 @@
     "test:hosted": "astro-scripts test \"test/hosted/*.test.js\""
   },
   "dependencies": {
+    "@astrojs/internal-helpers": "0.4.1",
     "@astrojs/underscore-redirects": "^0.3.3",
     "@netlify/functions": "^2.8.0",
     "@vercel/nft": "^0.27.2",

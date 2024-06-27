@@ -8,6 +8,7 @@ import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData }
 import { build } from 'esbuild';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import type { Args } from './ssr-function.js';
+import { emptyDir } from '@astrojs/internal-helpers/fs';
 
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
@@ -22,7 +23,6 @@ export interface NetlifyLocals {
 const isStaticRedirect = (route: RouteData) =>
 	route.type === 'redirect' && (route.redirect || route.redirectRoute);
 
-const clearDirectory = (dir: URL) => rm(dir, { recursive: true }).catch(() => {});
 
 type RemotePattern = AstroConfig['image']['remotePatterns'][number];
 
@@ -190,7 +190,7 @@ export default function netlifyIntegration(
 	// Secret used to verify that the caller is the astro-generated edge middleware and not a third-party
 	const middlewareSecret = randomUUID();
 
-	const NTF_CACHE = {};
+	const TRACE_CACHE = {};
 
 	const ssrBuildDir = () => new URL('./.netlify/build/', rootDir);
 	const ssrOutputDir = () => new URL('./.netlify/functions-internal/ssr/', rootDir);
@@ -198,9 +198,9 @@ export default function netlifyIntegration(
 
 	const cleanFunctions = async () =>
 		await Promise.all([
-			clearDirectory(middlewareOutputDir()),
-			clearDirectory(ssrOutputDir()),
-			clearDirectory(ssrBuildDir()),
+			emptyDir(middlewareOutputDir()),
+			emptyDir(ssrOutputDir()),
+			emptyDir(ssrBuildDir()),
 		]);
 
 	async function writeRedirects(routes: RouteData[], dir: URL) {
@@ -240,7 +240,7 @@ export default function netlifyIntegration(
 				excludeFiles: [],
 				logger,
 			},
-			NTF_CACHE
+			TRACE_CACHE
 		);
 
 		await writeFile(
