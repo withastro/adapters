@@ -1,4 +1,4 @@
-import { relative as relativePath } from 'node:path';
+import { relative as relativePath, sep, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { copyFilesToFolder } from '@astrojs/internal-helpers/fs';
 import type { AstroIntegrationLogger } from 'astro';
@@ -81,7 +81,7 @@ export async function copyDependenciesToFunction(
 	console.log({ commonAncestor, entryPath });
 
 	return {
-		// serverEntry location inside the outDir
-		handler: relativePath(commonAncestor, entryPath),
+		// serverEntry location inside the outDir, converted to posix
+		handler: relativePath(commonAncestor, entryPath).split(sep).join(posix.sep),
 	};
 }
