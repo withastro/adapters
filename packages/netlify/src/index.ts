@@ -242,7 +242,7 @@ export default function netlifyIntegration(
 			TRACE_CACHE
 		);
 
-		console.log({handler})
+		console.log({ handler });
 
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
