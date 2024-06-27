@@ -56,11 +56,11 @@ export async function copyDependenciesToFunction(
 
 			if (entryPath === file) {
 				logger.debug(
-					`[@astrojs/netlify] The module "${module}" couldn't be resolved. This may not be a problem, but it's worth checking.`
+					`The module "${module}" couldn't be resolved. This may not be a problem, but it's worth checking.`
 				);
 			} else {
 				logger.debug(
-					`[@astrojs/netlify] The module "${module}" inside the file "${file}" couldn't be resolved. This may not be a problem, but it's worth checking.`
+					`The module "${module}" inside the file "${file}" couldn't be resolved. This may not be a problem, but it's worth checking.`
 				);
 			}
 		}
