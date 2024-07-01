@@ -5,6 +5,7 @@ import type {
 } from '@cloudflare/workers-types';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
+import { setGetEnv } from 'astro/env/setup';
 import { createGetEnv } from '../utils/env.js';
 
 type Env = {
@@ -12,7 +13,6 @@ type Env = {
 	ASSETS: { fetch: (req: Request | string) => Promise<Response> };
 	ASTRO_STUDIO_APP_TOKEN?: string;
 };
-type EnvSetupModule = typeof import('astro/env/setup');
 
 export interface Runtime<T extends object = object> {
 	runtime: {
@@ -68,16 +68,17 @@ export function createExports(manifest: SSRManifest) {
 				caches: caches as unknown as CLOUDFLARE_CACHESTORAGE,
 				ctx: {
 					waitUntil: (promise: Promise<any>) => context.waitUntil(promise),
-					passThroughOnException: () => context.passThroughOnException(),
+					// Currently not available: https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions
+					passThroughOnException: () => {
+						throw new Error(
+							'`passThroughOnException` is currently not available in Cloudflare Pages. See https://developers.cloudflare.com/pages/platform/known-issues/#pages-functions.'
+						);
+					},
 				},
 			},
 		};
-		// Won't throw if the virtual module is not available because it's not supported in
-		// the users's astro version or if astro:env is not enabled in the project
-		const setupModule = 'astro/env/setup';
-		await import(/* @vite-ignore */ setupModule)
-			.then((mod: EnvSetupModule) => mod.setGetEnv(createGetEnv(env)))
-			.catch(() => {});
+
+		setGetEnv(createGetEnv(env));
 
 		const response = await app.render(request, { routeData, locals });
 

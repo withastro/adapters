@@ -1,7 +1,7 @@
 {
   "name": "@astrojs/netlify",
   "description": "Deploy your site to Netlify",
-  "version": "5.3.0",
+  "version": "5.3.4",
   "type": "module",
   "types": "./dist/index.d.ts",
   "author": "withastro",
@@ -31,26 +31,28 @@
     "test:hosted": "astro-scripts test \"test/hosted/*.test.js\""
   },
   "dependencies": {
-    "@astrojs/underscore-redirects": "^0.3.3",
-    "@netlify/functions": "^2.0.1",
-    "esbuild": "^0.19.5"
+    "@astrojs/internal-helpers": "0.4.1",
+    "@astrojs/underscore-redirects": "^0.3.4",
+    "@netlify/functions": "^2.8.0",
+    "@vercel/nft": "^0.27.2",
+    "esbuild": "^0.22.0"
   },
   "peerDependencies": {
     "astro": "^4.2.0"
   },
   "devDependencies": {
-    "@netlify/edge-functions": "^2.0.0",
+    "@astrojs/test-utils": "workspace:*",
+    "@netlify/edge-functions": "^2.8.1",
     "@netlify/edge-handler-types": "^0.34.1",
-    "@types/node": "^18.17.8",
-    "astro": "^4.10.1",
+    "@types/node": "^18.19.39",
+    "astro": "^4.11.3",
+    "astro-scripts": "workspace:*",
     "cheerio": "1.0.0-rc.12",
     "execa": "^8.0.1",
-    "fast-glob": "^3.3.1",
+    "fast-glob": "^3.3.2",
     "strip-ansi": "^7.1.0",
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0",
-    "@astrojs/test-utils": "workspace:*",
-    "astro-scripts": "workspace:*"
+    "typescript": "^5.5.2",
+    "vite": "^4.5.3"
   },
   "astro": {
     "external": true

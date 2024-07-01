@@ -1,5 +1,29 @@
 # @astrojs/netlify
 
+## 5.3.4
+
+### Patch Changes
+
+- [#313](https://github.com/withastro/adapters/pull/313) [`55a3e1a`](https://github.com/withastro/adapters/commit/55a3e1a4356c87f86ae60990a87c6a055f217efb) Thanks [@ascorbic](https://github.com/ascorbic)! - Fixes an issue where files were not included in the SSR function when built in a monorepo
+
+## 5.3.3
+
+### Patch Changes
+
+- [#296](https://github.com/withastro/adapters/pull/296) [`8a00cad`](https://github.com/withastro/adapters/commit/8a00cad52a94ba75feab3b42e702896f0bc8872e) Thanks [@ascorbic](https://github.com/ascorbic)! - Improves performance for serverless function builds by not bundling dependencies
+
+## 5.3.2
+
+### Patch Changes
+
+- [#293](https://github.com/withastro/adapters/pull/293) [`ee840fa`](https://github.com/withastro/adapters/commit/ee840fa52ce86c2409e5199fb10d600285fb95ae) Thanks [@florian-lefebvre](https://github.com/florian-lefebvre)! - Fixes `astro:env` getSecret compatibility
+
+## 5.3.1
+
+### Patch Changes
+
+- [#282](https://github.com/withastro/adapters/pull/282) [`65337f3`](https://github.com/withastro/adapters/commit/65337f3aa67a1f2a40ea8c20a6fcc462e8cbfe94) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes backwards compatibility with Astro <= 4.9
+
 ## 5.3.0
 
 ### Minor Changes
