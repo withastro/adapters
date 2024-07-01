@@ -247,7 +247,7 @@ export default function netlifyIntegration(
 			name: 'Astro SSR',
 			nodeBundler: 'none',
 			generator: `@astrojs/netlify@${packageVersion}`,
-			path: "/*",
+			path: '/*',
 			preferStatic: true,
 		};
 
