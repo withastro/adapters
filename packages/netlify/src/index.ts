@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
 import { fileURLToPath } from 'node:url';
+import { inspect } from 'node:util';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
@@ -99,7 +100,7 @@ export function remotePatternToRegex(
 	return regexStr;
 }
 
-async function writeNetlifyDeployConfig(config: AstroConfig, logger: AstroIntegrationLogger) {
+async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroIntegrationLogger) {
 	const remoteImages: Array<string> = [];
 	// Domains get a simple regex match
 	remoteImages.push(
@@ -113,7 +114,7 @@ async function writeNetlifyDeployConfig(config: AstroConfig, logger: AstroIntegr
 	);
 
 	// See https://docs.netlify.com/image-cdn/create-integration/
-	const deployConfigDir = new URL('.netlify/deploy/v1/', config.root);
+	const deployConfigDir = new URL('.netlify/v1/', config.root);
 	await mkdir(deployConfigDir, { recursive: true });
 	await writeFile(
 		new URL('./config.json', deployConfigDir),
@@ -192,8 +193,8 @@ export default function netlifyIntegration(
 	const TRACE_CACHE = {};
 
 	const ssrBuildDir = () => new URL('./.netlify/build/', rootDir);
-	const ssrOutputDir = () => new URL('./.netlify/functions-internal/ssr/', rootDir);
-	const middlewareOutputDir = () => new URL('.netlify/edge-functions/middleware/', rootDir);
+	const ssrOutputDir = () => new URL('./.netlify/v1/functions/ssr/', rootDir);
+	const middlewareOutputDir = () => new URL('.netlify/v1/edge-functions/middleware/', rootDir);
 
 	const cleanFunctions = async () =>
 		await Promise.all([
@@ -241,6 +242,14 @@ export default function netlifyIntegration(
 			},
 			TRACE_CACHE
 		);
+		const config = {
+			includedFiles: ['**/*'],
+			name: 'Astro SSR',
+			nodeBundler: 'none',
+			generator: `@astrojs/netlify@${packageVersion}`,
+			path: "/*",
+			preferStatic: true,
+		};
 
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
@@ -250,19 +259,8 @@ export default function netlifyIntegration(
 					cacheOnDemandPages: Boolean(integrationConfig?.cacheOnDemandPages),
 					notFoundContent,
 				})});
-				export const config = { name: "Astro SSR", generator: "@astrojs/netlify@${packageVersion}", path: "/*", preferStatic: true };
+				export const config = ${inspect(config)};
 			`
-		);
-
-		await writeFile(
-			new URL('.netlify/functions-internal/ssr/ssr.json', rootDir),
-			JSON.stringify({
-				config: {
-					nodeBundler: 'none',
-					includedFiles: [fileURLToPath(new URL('.netlify/functions-internal/ssr/**/*', rootDir))],
-				},
-				version: 1,
-			})
 		);
 	}
 
@@ -423,7 +421,7 @@ export default function netlifyIntegration(
 				_config = config;
 
 				if (config.image?.domains?.length || config.image?.remotePatterns?.length) {
-					await writeNetlifyDeployConfig(config, logger);
+					await writeNetlifyFrameworkConfig(config, logger);
 				}
 
 				const edgeMiddleware = integrationConfig?.edgeMiddleware ?? false;
