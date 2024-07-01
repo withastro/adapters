@@ -8,9 +8,9 @@
   },
   "keywords": [],
   "dependencies": {
-    "astro": "^4.3.5",
-    "execa": "^8",
-    "fast-glob": "^3",
-    "strip-ansi": "^7"
+    "astro": "^4.11.3",
+    "execa": "^8.0.1",
+    "fast-glob": "^3.3.2",
+    "strip-ansi": "^7.1.0"
   }
 }
