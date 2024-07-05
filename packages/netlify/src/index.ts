@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto';
 import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
 import { fileURLToPath } from 'node:url';
-import { inspect } from 'node:util';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
@@ -242,14 +241,6 @@ export default function netlifyIntegration(
 			},
 			TRACE_CACHE
 		);
-		const config = {
-			includedFiles: ['**/*'],
-			name: 'Astro SSR',
-			nodeBundler: 'none',
-			generator: `@astrojs/netlify@${packageVersion}`,
-			path: '/*',
-			preferStatic: true,
-		};
 
 		await writeFile(
 			new URL('./ssr.mjs', ssrOutputDir()),
@@ -259,7 +250,14 @@ export default function netlifyIntegration(
 					cacheOnDemandPages: Boolean(integrationConfig?.cacheOnDemandPages),
 					notFoundContent,
 				})});
-				export const config = ${inspect(config)};
+				export const config = {
+					includedFiles: ['**/*'],
+					name: 'Astro SSR',
+					nodeBundler: 'none',
+					generator: '@astrojs/netlify@${packageVersion}',
+					path: '/*',
+					preferStatic: true,
+				};
 			`
 		);
 	}
