@@ -2,4 +2,4 @@
 '@astrojs/netlify': patch
 ---
 
-allow `node:` prefixed imports
+Allows support for `node:` prefixed imports if using  the Adapter with `edgeMiddleware: true`
