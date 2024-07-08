@@ -1,4 +1,3 @@
-import http from 'http';
 import https from 'node:https';
 
 export const onRequest = (context, next) => {
