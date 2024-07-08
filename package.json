@@ -24,7 +24,7 @@
   },
   "workspaces": ["packages/*"],
   "engines": {
-    "node": ">=18.20.3",
+    "node": ">=20.15.0",
     "pnpm": ">=9.4.0"
   },
   "packageManager": "pnpm@9.4.0",
@@ -47,7 +47,7 @@
     "@biomejs/biome": "1.8.3",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.7",
-    "@types/node": "^18.19.39",
+    "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "esbuild": "^0.22.0",
