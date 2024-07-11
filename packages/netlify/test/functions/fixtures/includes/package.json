@@ -1,0 +1,13 @@
+{
+  "name": "@test/netlify-includes",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@astrojs/netlify": "workspace:",
+    "astro": "^4.11.5"
+  },
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev"
+  }
+}

@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
@@ -24,7 +25,13 @@ export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args)
 		cacheOnDemandPages: boolean;
 		notFoundContent?: string;
 	}) {
+		// The entrypoint is created in `.netlify/v1/build` so we need to go up two levels to get to the root
+		const root = fileURLToPath(new URL('../../', import.meta.url));
 		return async function handler(request: Request, context: Context) {
+			// This entrypoint will be deep inside the directory structure below cwd
+			// We chdir to the root so that we can resolve the correct paths at runtime
+			process.chdir(root);
+
 			const routeData = app.match(request);
 			if (!routeData && typeof integrationConfig.notFoundContent !== 'undefined') {
 				return new Response(integrationConfig.notFoundContent, {

@@ -1,0 +1,12 @@
+---
+import { promises as fs } from 'fs';
+const cwd = process.cwd();
+const file = await fs.readFile('files/include-this.txt', 'utf-8');
+---
+<html>
+<head><title>Testing</title></head>
+<body>
+	<h1>{file}</h1>
+	<p>{cwd}</p>
+</body>
+</html>

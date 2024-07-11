@@ -1,15 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
 import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
 import { build } from 'esbuild';
+import glob from 'fast-glob';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import type { Args } from './ssr-function.js';
-
 const { version: packageVersion } = JSON.parse(
 	await readFile(new URL('../package.json', import.meta.url), 'utf8')
 );
@@ -173,6 +173,18 @@ export interface NetlifyIntegrationConfig {
 	 * @default {true}
 	 */
 	imageCDN?: boolean;
+
+	/**
+	 * Extra files to include in the SSR function bundle. Paths are relative to the project root.
+	 * Glob patterns are supported.
+	 */
+	includedFiles?: string[];
+
+	/**
+	 * Files to exclude from the SSR function bundle. Paths are relative to the project root.
+	 * Glob patterns are supported.
+	 */
+	excludedFiles?: string[];
 }
 
 export default function netlifyIntegration(
@@ -225,18 +237,37 @@ export default function netlifyIntegration(
 		}
 	}
 
+	async function getFilesByGlob(
+		include: Array<string> = [],
+		exclude: Array<string> = []
+	): Promise<Array<URL>> {
+		const files = await glob(include, {
+			cwd: fileURLToPath(rootDir),
+			absolute: true,
+			ignore: exclude,
+		});
+		return files.map((file) => pathToFileURL(file));
+	}
+
 	async function writeSSRFunction({
 		notFoundContent,
 		logger,
 	}: { notFoundContent?: string; logger: AstroIntegrationLogger }) {
 		const entry = new URL('./entry.mjs', ssrBuildDir());
 
+		const includedFiles = await getFilesByGlob(
+			integrationConfig?.includedFiles,
+			integrationConfig?.excludedFiles
+		);
+
+		const excludedFiles = await getFilesByGlob(integrationConfig?.excludedFiles);
+
 		const { handler } = await copyDependenciesToFunction(
 			{
 				entry,
 				outDir: ssrOutputDir(),
-				includeFiles: [],
-				excludeFiles: [],
+				includeFiles: includedFiles,
+				excludeFiles: excludedFiles,
 				logger,
 			},
 			TRACE_CACHE
