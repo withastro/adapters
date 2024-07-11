@@ -121,9 +121,9 @@ async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroInt
 			images: { remote_images: remoteImages },
 			headers: [
 				{
-					for: "/_astro/*",
+					for: '/_astro/*',
 					values: {
-						"cache-control": "public, max-age=31536000, immutable"
+						'cache-control': 'public, max-age=31536000, immutable'
 					}
 				}
 			]
