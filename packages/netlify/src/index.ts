@@ -119,6 +119,14 @@ async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroInt
 		new URL('./config.json', deployConfigDir),
 		JSON.stringify({
 			images: { remote_images: remoteImages },
+			headers: [
+				{
+					for: "/_astro/*",
+					values: {
+						"cache-control": "public, max-age=31536000, immutable"
+					}
+				}
+			]
 		})
 	);
 }
