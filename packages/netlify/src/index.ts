@@ -123,10 +123,10 @@ async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroInt
 				{
 					for: '/_astro/*',
 					values: {
-						'cache-control': 'public, max-age=31536000, immutable'
-					}
-				}
-			]
+						'cache-control': 'public, max-age=31536000, immutable',
+					},
+				},
+			],
 		})
 	);
 }
