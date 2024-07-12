@@ -17,7 +17,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   output: 'server',
   adapter: netlify({
-    includedFiles: ['files/**/*.csv', 'files/include-this.txt'],
-    excludedFiles: ['files/subdirectory/not-this.csv'],
+    includedFiles: ['src/address-data/**/*.csv', 'src/include-this.txt'],
+    excludedFiles: ['node_modules/chonky-module/not-this-massive-file.mp4'],
   })
 });
