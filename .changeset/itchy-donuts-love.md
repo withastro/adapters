@@ -8,7 +8,7 @@ When an Astro site using `server` or `hybrid` rendering is deployed to Netlify, 
 
 The `includedFiles` and `excludedFiles` options allow you specify these inclusions and exclusions as an array of file paths relative to the project root. Both options support glob patterns, so you can include/exclude multiple files at once.
 
-The paths are relative to the site root. If you are loading them using filesystem funcitons, make sure you resolve paths relative to the site root, and not relative to the cxource file. At runtime the compiled file will be in a different location, so paths that are relative to the file will not work. You should instead resolve the path using `path.resolve()` or `process.cwd()`, which will give you the site root.
+The paths are relative to the site root. If you are loading them using filesystem functions, make sure you resolve paths relative to the site root, and not relative to the source file. At runtime the compiled file will be in a different location, so paths that are relative to the file will not work. You should instead resolve the path using `path.resolve()` or `process.cwd()`, which will give you the site root.
 
 ```js
 import netlify from '@astrojs/netlify';
