@@ -29,8 +29,13 @@ export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args)
 		const root = fileURLToPath(new URL('../../', import.meta.url));
 		return async function handler(request: Request, context: Context) {
 			// This entrypoint will be deep inside the directory structure below cwd
-			// We chdir to the root so that we can resolve the correct paths at runtime
-			process.chdir(root);
+			// We chdir to the root so that we can resolve the correct paths when
+			// using relative paths in filesystem operations at runtime
+			try {
+				process.chdir(root);
+			} catch (err) {
+				console.warn('Failed to chdir to root', err);
+			}
 
 			const routeData = app.match(request);
 			if (!routeData && typeof integrationConfig.notFoundContent !== 'undefined') {
