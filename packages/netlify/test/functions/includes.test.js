@@ -49,8 +49,11 @@ describe(
 		});
 
 		it('Includes traced node modules with symlinks', async () => {
-			const expected = new URL('.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow', root);
-			console.log(expected.href)
+			const expected = new URL(
+				'.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow',
+				root
+			);
+			console.log(expected.href);
 			assert.ok(existsSync(expected, 'Expected excluded file to exist in default build'));
 		});
 	},
@@ -58,7 +61,6 @@ describe(
 		timeout: 120000,
 	}
 );
-
 
 describe(
 	'Excluded files',
@@ -72,7 +74,10 @@ describe(
 		});
 
 		it('Excludes traced node modules', async () => {
-			const expected = new URL('.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow', root);
+			const expected = new URL(
+				'.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow',
+				root
+			);
 			assert.ok(!existsSync(expected, 'Expected excluded file to not exist in build'));
 		});
 	},
