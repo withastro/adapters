@@ -47,6 +47,34 @@ describe(
 			assert.equal($('h1').text(), 'hello');
 			assert.equal($('p').text(), fileURLToPath(expectedCwd).slice(0, -1));
 		});
+
+		it('Includes traced node modules with symlinks', async () => {
+			const expected = new URL('.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow', root);
+			console.log(expected.href)
+			assert.ok(existsSync(expected, 'Expected excluded file to exist in default build'));
+		});
+	},
+	{
+		timeout: 120000,
+	}
+);
+
+
+describe(
+	'Excluded files',
+	() => {
+		let fixture;
+		const root = new URL('./fixtures/excludes/', import.meta.url);
+
+		before(async () => {
+			fixture = await loadFixture({ root });
+			await fixture.build();
+		});
+
+		it('Excludes traced node modules', async () => {
+			const expected = new URL('.netlify/v1/functions/ssr/node_modules/.pnpm/cowsay@1.6.0/node_modules/cowsay/cows/happy-whale.cow', root);
+			assert.ok(!existsSync(expected, 'Expected excluded file to not exist in build'));
+		});
 	},
 	{
 		timeout: 120000,

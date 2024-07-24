@@ -4,8 +4,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   output: 'server',
   adapter: netlify({
-    includedFiles: ['files/**/*.csv', 'files/include-this.txt'],
-    excludedFiles: ['files/subdirectory/not-this.csv'],
+    // A long way to the root directory!
+    excludedFiles: ['../../../../../../node_modules/.pnpm/cowsay@*/**'],
   }),
   site: "http://example.com",
 });

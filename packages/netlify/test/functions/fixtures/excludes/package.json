@@ -1,5 +1,5 @@
 {
-  "name": "@test/netlify-includes",
+  "name": "@test/netlify-excludes",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
