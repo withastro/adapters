@@ -1,4 +1,4 @@
-import { whenAmI, When } from '@it-astro:when';
+import { When, whenAmI } from '@it-astro:when';
 import type { MiddlewareHandler } from 'astro';
 
 const middlewares: Record<any, MiddlewareHandler> = {
