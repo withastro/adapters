@@ -74,6 +74,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20240620.0
         version: 4.20240620.0
+      '@inox-tools/astro-when':
+        specifier: ^0.2.0
+        version: 0.2.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))
       esbuild:
         specifier: ^0.22.0
         version: 0.22.0
@@ -1459,6 +1462,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@inox-tools/astro-when@0.2.0':
+    resolution: {integrity: sha512-E5e4dEE7XC+UBhBIDyQ+0oZcPaGxzuZXcoUVvae1CP5a9onNpq7r3UmOewLTOFVa/eZbz4NPrBSItKGhxs1AgA==}
+    peerDependencies:
+      astro: ^4.12.2
+
   '@johnsoncodehk/vscode-html-languageservice@5.2.0-34a5462':
     resolution: {integrity: sha512-etqLfpSJ5zaw76KUNF603be6d6QsiQPmaHr9FKEp4zhLZJzWCCMH6Icak7MtLUFLZLMpL761mZNImi/joBo1ZA==}
 
@@ -2089,6 +2097,15 @@ packages:
 
   as-table@1.0.55:
     resolution: {integrity: sha512-xvsWESUJn0JN421Xb9MQw6AsMHRCUknCe0Wjlxvjud80mU4E6hQf1A6NzQKcYNmYw62MfzEtXc+badstZP3JpQ==}
+
+  ast-types@0.16.1:
+    resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
+    engines: {node: '>=4'}
+
+  astro-integration-kit@0.16.0:
+    resolution: {integrity: sha512-FAWYxsh3H5DfNiqVBAanK9FfBJgzDq6CBKEora73IpWxDX2jPPr8cYndUI6COnWII84wbYK1qHq3lX/fIcQG+Q==}
+    peerDependencies:
+      astro: ^4.12.0
 
   astro@4.10.2:
     resolution: {integrity: sha512-SBdkoOanPsxKlKVU4uu/XG0G7NYAFoqmfBtq9SPMJ34B7Hr1MxVdEugERs8IwYN6UaxdDVcqA++9PvH6Onq2cg==}
@@ -3656,6 +3673,10 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
+  recast@0.23.9:
+    resolution: {integrity: sha512-Hx/BGIbwj+Des3+xy5uAtAbdCyqK9y9wbBcDFDYanLS9JnMqf7OeF87HQwUimE87OEc72mr6tkKUKMBBL+hF9Q==}
+    engines: {node: '>= 4'}
+
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
@@ -4023,6 +4044,9 @@ packages:
 
   tiny-glob@0.2.9:
     resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
+
+  tiny-invariant@1.3.3:
+    resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
   tmp@0.0.33:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
@@ -5535,6 +5559,11 @@ snapshots:
   '@img/sharp-win32-x64@0.33.4':
     optional: true
 
+  '@inox-tools/astro-when@0.2.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))':
+    dependencies:
+      astro: 4.11.3(@types/node@20.14.10)(typescript@5.5.2)
+      astro-integration-kit: 0.16.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))
+
   '@johnsoncodehk/vscode-html-languageservice@5.2.0-34a5462':
     dependencies:
       '@vscode/l10n': 0.0.18
@@ -6267,6 +6296,16 @@ snapshots:
   as-table@1.0.55:
     dependencies:
       printable-characters: 1.0.42
+
+  ast-types@0.16.1:
+    dependencies:
+      tslib: 2.6.2
+
+  astro-integration-kit@0.16.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2)):
+    dependencies:
+      astro: 4.11.3(@types/node@20.14.10)(typescript@5.5.2)
+      pathe: 1.1.2
+      recast: 0.23.9
 
   astro@4.10.2(@types/node@20.14.10)(typescript@5.5.2):
     dependencies:
@@ -8379,6 +8418,14 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
+  recast@0.23.9:
+    dependencies:
+      ast-types: 0.16.1
+      esprima: 4.0.1
+      source-map: 0.6.1
+      tiny-invariant: 1.3.3
+      tslib: 2.6.2
+
   regenerator-runtime@0.14.1: {}
 
   rehype-parse@9.0.0:
@@ -8874,6 +8921,8 @@ snapshots:
     dependencies:
       globalyzer: 0.1.0
       globrex: 0.1.2
+
+  tiny-invariant@1.3.3: {}
 
   tmp@0.0.33:
     dependencies:
