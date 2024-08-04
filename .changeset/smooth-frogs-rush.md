@@ -2,4 +2,4 @@
 '@astrojs/cloudflare': patch
 ---
 
-Fixes peer dependency conflict for Astro package
+Updates a dependency to align the peer dependency version for Astro
