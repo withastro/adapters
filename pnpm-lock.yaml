@@ -75,8 +75,8 @@ importers:
         specifier: ^4.20240620.0
         version: 4.20240620.0
       '@inox-tools/astro-when':
-        specifier: ^0.2.0
-        version: 0.2.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))
+        specifier: ^0.2.1
+        version: 0.2.1(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))
       esbuild:
         specifier: ^0.22.0
         version: 0.22.0
@@ -1524,10 +1524,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inox-tools/astro-when@0.2.0':
-    resolution: {integrity: sha512-E5e4dEE7XC+UBhBIDyQ+0oZcPaGxzuZXcoUVvae1CP5a9onNpq7r3UmOewLTOFVa/eZbz4NPrBSItKGhxs1AgA==}
+  '@inox-tools/astro-when@0.2.1':
+    resolution: {integrity: sha512-jQSiHcbCtCziM6u6UnUJhbKsvoj3xBEc7kc4NhVewPuL1Zjf/xnptzxgAq48qiujOkIGegwBYYnZxlnWaM22Cw==}
     peerDependencies:
-      astro: ^4.12.2
+      astro: ^4
 
   '@johnsoncodehk/vscode-html-languageservice@5.2.0-34a5462':
     resolution: {integrity: sha512-etqLfpSJ5zaw76KUNF603be6d6QsiQPmaHr9FKEp4zhLZJzWCCMH6Icak7MtLUFLZLMpL761mZNImi/joBo1ZA==}
@@ -5857,7 +5857,7 @@ snapshots:
   '@img/sharp-win32-x64@0.33.4':
     optional: true
 
-  '@inox-tools/astro-when@0.2.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))':
+  '@inox-tools/astro-when@0.2.1(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))':
     dependencies:
       astro: 4.11.3(@types/node@20.14.10)(typescript@5.5.2)
       astro-integration-kit: 0.16.0(astro@4.11.3(@types/node@20.14.10)(typescript@5.5.2))
