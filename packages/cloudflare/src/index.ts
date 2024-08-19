@@ -1,13 +1,15 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
-import type { PluginOption } from 'vite';
+import { normalizePath, type PluginOption } from 'vite';
 
 import { createReadStream } from 'node:fs';
-import { appendFile, rename, stat } from 'node:fs/promises';
+import { appendFile, rename, stat, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
 	appendForwardSlash,
 	prependForwardSlash,
 	removeLeadingForwardSlash,
+	startsWithDotDotSlash,
+	startsWithDotSlash,
 } from '@astrojs/internal-helpers/path';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import astroWhen from '@inox-tools/astro-when';
@@ -20,7 +22,9 @@ import {
 import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
-import { spawn } from 'node:child_process';
+import { execa } from 'execa';
+import { fileURLToPath } from 'node:url';
+import { dirname, relative } from 'node:path';
 
 export type { Runtime } from './entrypoints/server.js';
 
@@ -73,32 +77,6 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
-};
-
-// TODO: remove and use execa instead
-const runCommand = async (command: string, cwd: URL, ...args: Array<string>) => {
-	return new Promise<string>((resolve) => {
-		const cmd = spawn(command, args, {
-			stdio: ['inherit', 'pipe', 'pipe'], // Inherit stdin, pipe stdout, pipe stderr
-			shell: true,
-			cwd,
-		});
-
-		let output = '';
-
-		cmd.stdout.on('data', (data) => {
-			process.stdout.write(data.toString());
-			output += data.toString();
-		});
-
-		cmd.stderr.on('data', (data) => {
-			process.stderr.write(data.toString());
-		});
-
-		cmd.on('close', () => {
-			resolve(output);
-		});
-	});
 };
 
 function wrapWithSlashes(path: string): string {
@@ -199,20 +177,44 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					},
 				});
 
-				if ("injectTypes" in params && (args?.platformProxy?.enabled ?? true) === true) {
-					const path = params.injectTypes({
+				if ('injectTypes' in params && (args?.platformProxy?.enabled ?? true) === true) {
+					// TODO: use returned path
+					params.injectTypes({
 						filename: 'env.d.ts',
-						content: `type Runtime = import('@astrojs/cloudflare').Runtime<import('./cloudflare-env')/Env>;
+						content: `type Runtime = import('@astrojs/cloudflare').Runtime<import('./cloudflare-env.d.ts').Env>;
 
 declare namespace App {
   interface Locals extends Runtime {}
 }`,
 					});
-					
-					const relativePath = 'TODO:'
-					// TODO: check if we need mkdir
-					// TODO: use execa
-					await runCommand(`wrangler types ${relativePath}`, params.config.root)
+
+					const destUrl = new URL(
+						'./.astro/integrations/_astrojs_cloudflare/cloudflare-env.d.ts',
+						params.config.root
+					);
+					let relativePath = normalizePath(
+						relative(fileURLToPath(params.config.root), fileURLToPath(destUrl))
+					);
+					if (!startsWithDotSlash(relativePath) || !startsWithDotDotSlash(relativePath)) {
+						relativePath = `./${relativePath}`;
+					}
+
+					// TODO: Check if this will work once deployed (may need a reexport)
+					const wranglerPath = fileURLToPath(
+						new URL('../node_modules/wrangler/bin/wrangler.js', import.meta.url)
+					);
+					try {
+						await mkdir(dirname(fileURLToPath(destUrl)), { recursive: true });
+						await execa(wranglerPath, ['types', relativePath], {
+							cwd: params.config.root,
+						});
+						let content = await readFile(destUrl, 'utf-8');
+						content += '\n export type { Env }';
+						writeFile(destUrl, content, 'utf-8');
+					} catch (err) {
+						params.logger.error('An error occured while generating wrangler types');
+						console.error(err);
+					}
 				}
 			},
 			'astro:server:setup': async ({ server }) => {
