@@ -20,6 +20,7 @@ import {
 import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
+import { spawn } from 'node:child_process';
 
 export type { Runtime } from './entrypoints/server.js';
 
@@ -72,6 +73,32 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
+};
+
+// TODO: remove and use execa instead
+const runCommand = async (command: string, cwd: URL, ...args: Array<string>) => {
+	return new Promise<string>((resolve) => {
+		const cmd = spawn(command, args, {
+			stdio: ['inherit', 'pipe', 'pipe'], // Inherit stdin, pipe stdout, pipe stderr
+			shell: true,
+			cwd,
+		});
+
+		let output = '';
+
+		cmd.stdout.on('data', (data) => {
+			process.stdout.write(data.toString());
+			output += data.toString();
+		});
+
+		cmd.stderr.on('data', (data) => {
+			process.stderr.write(data.toString());
+		});
+
+		cmd.on('close', () => {
+			resolve(output);
+		});
+	});
 };
 
 function wrapWithSlashes(path: string): string {
@@ -141,16 +168,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					order: 'pre',
 				});
 			},
-			'astro:config:done': ({ setAdapter, config }) => {
-				if (config.output === 'static') {
+			'astro:config:done': async (params) => {
+				if (params.config.output === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
 					);
 				}
 
-				_config = config;
+				_config = params.config;
 
-				setAdapter({
+				params.setAdapter({
 					name: '@astrojs/cloudflare',
 					serverEntrypoint: '@astrojs/cloudflare/entrypoints/server.js',
 					exports: ['default'],
@@ -171,6 +198,22 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						envGetSecret: 'experimental',
 					},
 				});
+
+				if ("injectTypes" in params && (args?.platformProxy?.enabled ?? true) === true) {
+					const path = params.injectTypes({
+						filename: 'env.d.ts',
+						content: `type Runtime = import('@astrojs/cloudflare').Runtime<import('./cloudflare-env')/Env>;
+
+declare namespace App {
+  interface Locals extends Runtime {}
+}`,
+					});
+					
+					const relativePath = 'TODO:'
+					// TODO: check if we need mkdir
+					// TODO: use execa
+					await runCommand(`wrangler types ${relativePath}`, params.config.root)
+				}
 			},
 			'astro:server:setup': async ({ server }) => {
 				if ((args?.platformProxy?.enabled ?? true) === true) {
