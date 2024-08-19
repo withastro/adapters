@@ -7,7 +7,8 @@
       "**/fixtures",
       "**/vendor",
       "**/.vercel",
-      "**/.changeset"
+      "**/.changeset",
+      "**/.turbo"
     ],
     "ignoreUnknown": true
   },
