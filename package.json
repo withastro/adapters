@@ -59,7 +59,7 @@
     "prettier": "^3.3.2",
     "prettier-plugin-astro": "^0.14.0",
     "tiny-glob": "^0.2.9",
-    "turbo": "^1.13.4",
+    "turbo": "^2.0.14",
     "typescript": "^5.5.2"
   }
 }
