@@ -1,13 +1,15 @@
 import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
-import type { PluginOption } from 'vite';
+import { normalizePath, type PluginOption } from 'vite';
 
 import { createReadStream } from 'node:fs';
-import { appendFile, rename, stat } from 'node:fs/promises';
+import { appendFile, rename, stat, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import {
 	appendForwardSlash,
 	prependForwardSlash,
 	removeLeadingForwardSlash,
+	startsWithDotDotSlash,
+	startsWithDotSlash,
 } from '@astrojs/internal-helpers/path';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import astroWhen from '@inox-tools/astro-when';
@@ -20,6 +22,9 @@ import {
 import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
+import { execa } from 'execa';
+import { fileURLToPath } from 'node:url';
+import { dirname, relative } from 'node:path';
 
 export type { Runtime } from './entrypoints/server.js';
 
@@ -141,16 +146,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					order: 'pre',
 				});
 			},
-			'astro:config:done': ({ setAdapter, config }) => {
-				if (config.output === 'static') {
+			'astro:config:done': async (params) => {
+				if (params.config.output === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
 					);
 				}
 
-				_config = config;
+				_config = params.config;
 
-				setAdapter({
+				params.setAdapter({
 					name: '@astrojs/cloudflare',
 					serverEntrypoint: '@astrojs/cloudflare/entrypoints/server.js',
 					exports: ['default'],
@@ -171,6 +176,46 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						envGetSecret: 'experimental',
 					},
 				});
+
+				if ('injectTypes' in params && (args?.platformProxy?.enabled ?? true) === true) {
+					// TODO: use returned path
+					params.injectTypes({
+						filename: 'env.d.ts',
+						content: `type Runtime = import('@astrojs/cloudflare').Runtime<import('./cloudflare-env.d.ts').Env>;
+
+declare namespace App {
+  interface Locals extends Runtime {}
+}`,
+					});
+
+					const destUrl = new URL(
+						'./.astro/integrations/_astrojs_cloudflare/cloudflare-env.d.ts',
+						params.config.root
+					);
+					let relativePath = normalizePath(
+						relative(fileURLToPath(params.config.root), fileURLToPath(destUrl))
+					);
+					if (!startsWithDotSlash(relativePath) || !startsWithDotDotSlash(relativePath)) {
+						relativePath = `./${relativePath}`;
+					}
+
+					// TODO: Check if this will work once deployed (may need a reexport)
+					const wranglerPath = fileURLToPath(
+						new URL('../node_modules/wrangler/bin/wrangler.js', import.meta.url)
+					);
+					try {
+						await mkdir(dirname(fileURLToPath(destUrl)), { recursive: true });
+						await execa(wranglerPath, ['types', relativePath], {
+							cwd: params.config.root,
+						});
+						let content = await readFile(destUrl, 'utf-8');
+						content += '\n export type { Env }';
+						writeFile(destUrl, content, 'utf-8');
+					} catch (err) {
+						params.logger.error('An error occured while generating wrangler types');
+						console.error(err);
+					}
+				}
 			},
 			'astro:server:setup': async ({ server }) => {
 				if ((args?.platformProxy?.enabled ?? true) === true) {
