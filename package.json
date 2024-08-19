@@ -15,7 +15,7 @@
     "biome:ci": "biome ci .",
     "format": "biome check --linter-enabled=false --apply ./ && prettier -w \"**/*\" --ignore-unknown --cache",
     "format:prettier": "prettier -w \"**/*\" --ignore-unknown --cache",
-    "test": "turbo run test --concurrency=1 --filter=astro --filter=create-astro --filter=\"@astrojs/*\"",
+    "test": "turbo run test --concurrency=1 --filter=\"@astrojs/*\"",
     "benchmark": "astro-benchmark",
     "lint": "biome lint ./ && eslint . --report-unused-disable-directives",
     "lint:fix": "biome lint --apply ./",
@@ -59,7 +59,7 @@
     "prettier": "^3.3.2",
     "prettier-plugin-astro": "^0.14.0",
     "tiny-glob": "^0.2.9",
-    "turbo": "^1.13.4",
+    "turbo": "^2.0.14",
     "typescript": "^5.5.2"
   }
 }
