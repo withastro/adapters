@@ -8,5 +8,12 @@
     "regexManagers:biomeVersions"
   ],
   "labels": ["dependencies"],
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "postUpdateOptions": ["pnpmDedupe"],
+  "ignorePaths": ["**/node_modules/**"],
+  "ignoreDeps": [
+    // ignore "engines" update
+    "node",
+    "pnpm",
+  ],
 }

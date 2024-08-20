@@ -24,7 +24,7 @@
   },
   "workspaces": ["packages/*"],
   "engines": {
-    "node": ">=20.15.0",
+    "node": "^18.17.1 || ^20.3.0 || >=21.0.0",
     "pnpm": ">=9.4.0"
   },
   "packageManager": "pnpm@9.4.0",
