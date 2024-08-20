@@ -1,7 +1,0 @@
-**/*.d.ts
-packages/**/*.min.js
-packages/**/dist/**/*
-packages/**/fixtures/**/*
-scripts/**/*
-.github
-.changeset
