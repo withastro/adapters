@@ -22,9 +22,6 @@ jobs:
   synchronize:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Get commit ID (workflow dispatch, empty)
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit-id == '' }}
         run: echo "You must provide a full commit ID." && exit 1
