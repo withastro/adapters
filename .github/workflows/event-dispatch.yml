@@ -1,0 +1,75 @@
+name: Event dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      commit-id:
+        description: Commit ID of withastro/astro
+        required: true
+        type: string
+  repository_dispatch:
+    types: [astro-push-main-event]
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get commit ID (workflow dispatch, empty)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit-id == '' }}
+        run: echo "You must provide a full commit ID." && exit 1
+
+      - name: Get commit ID (workflow dispatch, non-empty)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit-id != '' }}
+        run: echo "COMMIT_ID=${{ github.event.inputs.commit-id }}" >> $GITHUB_ENV
+
+      - name: Get commit ID (repository dispatch)
+        if: ${{ github.event_name == 'repository_dispatch'}}
+        run: echo "COMMIT_ID=${{ github.event.client_payload.event.head_commit.id }}" >> "$GITHUB_ENV"
+
+      - name: Get short commit ID
+        run: echo "SHORT_COMMIT_ID=$(echo ${{ env.COMMIT_ID }} | cut -c 1-7)" >> "$GITHUB_ENV"
+
+      - name: Disable git crlf
+        run: git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Checkout Astro repository
+        uses: actions/checkout@v4
+        with:
+          repository: withastro/astro
+          ref: ${{ env.COMMIT_ID }}
+          path: astro
+
+      - name: Compile and link Astro
+        working-directory: astro/packages/astro
+        run: |
+          pnpm install
+          pnpm run build
+
+      - name: Install dependencies, link Astro and build
+        run: |
+          pnpm install
+          pnpm link astro/packages/astro
+          pnpm run build
+
+      - name: Run tests
+        run: pnpm test
