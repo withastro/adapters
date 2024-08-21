@@ -60,7 +60,7 @@ jobs:
           path: astro
 
       - name: Compile and link Astro
-        working-directory: astro/packages/astro
+        working-directory: astro
         run: |
           pnpm install
           pnpm run build
