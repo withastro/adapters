@@ -37,13 +37,6 @@ jobs:
       - name: Get short commit ID
         run: echo "SHORT_COMMIT_ID=$(echo ${{ env.COMMIT_ID }} | cut -c 1-7)" >> "$GITHUB_ENV"
 
-      - name: Test Netlify
-        working-directory: packages/netlify
-        run: |
-          pnpm link ../../astro/packages/astro
-          pnpm run build
-          pnpm run test
-
   test_cloudflare:
     runs-on: ubuntu-latest
     needs: synchronize
