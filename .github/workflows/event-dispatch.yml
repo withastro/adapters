@@ -65,11 +65,20 @@ jobs:
           pnpm install
           pnpm run build
 
-      - name: Install dependencies, link Astro and build
+      - name: Install dependencies
         run: |
           pnpm install
-          pnpm link astro/packages/astro
-          pnpm run build
 
-      - name: Run tests
-        run: pnpm test
+      - name: Test Cloudflare
+        working-directory: packages/cloudflare
+        run: |
+          pnpm link ../../astro/packages/astro
+          pnpm run build
+          pnpm run test
+
+      - name: Test Netlify
+        working-directory: packages/netlify
+        run: |
+          pnpm link ../../astro/packages/astro
+          pnpm run build
+          pnpm run test
