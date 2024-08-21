@@ -7,7 +7,7 @@ on:
         required: true
         type: string
   repository_dispatch:
-    types: [biome-push-main-event]
+    types: [astro-push-main-event]
 
 permissions:
   actions: write
