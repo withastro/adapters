@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@v4
 
       - name: Get commit ID (workflow dispatch, empty)
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit-id == '' }}
@@ -63,7 +63,7 @@ jobs:
           path: astro
 
       - name: Compile and link Astro
-        working-directory: astro
+        working-directory: astro/packages/astro
         run: |
           pnpm install
           pnpm run build
@@ -71,7 +71,7 @@ jobs:
       - name: Install dependencies, link Astro and build
         run: |
           pnpm install
-          pnpm link astro/withastro/astro
+          pnpm link astro/packages/astro
           pnpm run build
 
       - name: Run tests
