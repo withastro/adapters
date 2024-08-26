@@ -15,5 +15,8 @@
     // ignore "engines" update
     "node",
     "pnpm",
+
+    // need further upgrade investigation
+    "@netlify/functions",
   ],
 }
