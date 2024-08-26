@@ -132,7 +132,7 @@ importers:
     devDependencies:
       wrangler:
         specifier: ^3.15.0
-        version: 3.72.0(@cloudflare/workers-types@4.20240821.1)
+        version: 3.72.1(@cloudflare/workers-types@4.20240821.1)
 
   packages/cloudflare/test/fixtures/astro-env:
     dependencies:
@@ -145,7 +145,7 @@ importers:
     devDependencies:
       wrangler:
         specifier: ^3.15.0
-        version: 3.72.0(@cloudflare/workers-types@4.20240821.1)
+        version: 3.72.1(@cloudflare/workers-types@4.20240821.1)
 
   packages/cloudflare/test/fixtures/compile-image-service:
     dependencies:
@@ -198,8 +198,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       '@astrojs/solid-js':
-        specifier: ^3.0.2
-        version: 3.0.2(solid-js@1.7.11)(vite@5.4.2(@types/node@22.4.1))
+        specifier: ^4.4.1
+        version: 4.4.1(solid-js@1.7.11)(vite@5.4.2(@types/node@22.4.1))
       astro:
         specifier: ^4.3.5
         version: 4.14.4(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
@@ -365,11 +365,15 @@ packages:
     resolution: {integrity: sha512-Z9IYjuXSArkAUx3N6xj6+Bnvx8OdUSHA8YoOgyepp3+zJmtVYJIl/I18GozdJVW1p5u/CNpl3Km7/gwTJK85cw==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0}
 
-  '@astrojs/solid-js@3.0.2':
-    resolution: {integrity: sha512-BGTtS/ygAlcopELdjgTURHnxS2AoDRKjpu3Dgp12TOcArBMCiI/rYdHtlB+ligMm9Bbvar8qdzXsT1zlrxK5jQ==}
-    engines: {node: '>=18.14.1'}
+  '@astrojs/solid-js@4.4.1':
+    resolution: {integrity: sha512-C8t+0sK8myZ9xJyL+GvNo0LjiqL8KTAJReb8Bn+0WjsOfCm+0N8GKQdBt5Gqf9Ig59KVZon3ydGa6GmqrkCojw==}
+    engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0}
     peerDependencies:
-      solid-js: ^1.4.3
+      solid-devtools: ^0.30.1
+      solid-js: ^1.8.5
+    peerDependenciesMeta:
+      solid-devtools:
+        optional: true
 
   '@astrojs/telemetry@3.1.0':
     resolution: {integrity: sha512-/ca/+D8MIKEC8/A9cSaPUqQNZm+Es/ZinRv0ZAzvu2ios7POQSsVD+VOj7/hypWNsNM3T7RpfgNq7H2TU1KEHA==}
@@ -4076,16 +4080,6 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@3.72.0:
-    resolution: {integrity: sha512-9sryHTCtCj48vUC5y/M3Dsx02U1bT6mK9E41TXBCpSJgWh8UvWG/xgmu2dY93Mqj9aJIvK/kwwIBRlNFRwF7Hw==}
-    engines: {node: '>=16.17.0'}
-    hasBin: true
-    peerDependencies:
-      '@cloudflare/workers-types': ^4.20240806.0
-    peerDependenciesMeta:
-      '@cloudflare/workers-types':
-        optional: true
-
   wrangler@3.72.1:
     resolution: {integrity: sha512-0UrkDpBJb1KHP6msGF+k14+2CFoF9jFKMKGEPfr6yflCduKVas9qA2ExKiRF5un9PKDY79cszuwvVUtir2NfLg==}
     engines: {node: '>=16.17.0'}
@@ -4261,7 +4255,7 @@ snapshots:
     dependencies:
       prismjs: 1.29.0
 
-  '@astrojs/solid-js@3.0.2(solid-js@1.7.11)(vite@5.4.2(@types/node@22.4.1))':
+  '@astrojs/solid-js@4.4.1(solid-js@1.7.11)(vite@5.4.2(@types/node@22.4.1))':
     dependencies:
       solid-js: 1.7.11
       vite-plugin-solid: 2.10.2(solid-js@1.7.11)(vite@5.4.2(@types/node@22.4.1))
@@ -8466,34 +8460,6 @@ snapshots:
       '@cloudflare/workerd-linux-64': 1.20240806.0
       '@cloudflare/workerd-linux-arm64': 1.20240806.0
       '@cloudflare/workerd-windows-64': 1.20240806.0
-
-  wrangler@3.72.0(@cloudflare/workers-types@4.20240821.1):
-    dependencies:
-      '@cloudflare/kv-asset-handler': 0.3.4
-      '@cloudflare/workers-shared': 0.2.0
-      '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
-      '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
-      blake3-wasm: 2.1.5
-      chokidar: 3.6.0
-      date-fns: 3.6.0
-      esbuild: 0.17.19
-      miniflare: 3.20240806.1
-      nanoid: 3.3.7
-      path-to-regexp: 6.2.2
-      resolve: 1.22.8
-      resolve.exports: 2.0.2
-      selfsigned: 2.4.1
-      source-map: 0.6.1
-      unenv: unenv-nightly@1.10.0-1717606461.a117952
-      workerd: 1.20240806.0
-      xxhash-wasm: 1.0.2
-    optionalDependencies:
-      '@cloudflare/workers-types': 4.20240821.1
-      fsevents: 2.3.3
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
 
   wrangler@3.72.1(@cloudflare/workers-types@4.20240821.1):
     dependencies:
