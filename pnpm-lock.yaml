@@ -316,6 +316,9 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
     devDependencies:
+      '@astrojs/test-utils':
+        specifier: workspace:*
+        version: link:../test-utils
       '@types/node':
         specifier: ^18.17.8
         version: 18.19.47
@@ -506,6 +509,9 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2
     devDependencies:
+      '@astrojs/test-utils':
+        specifier: workspace:*
+        version: link:../test-utils
       astro:
         specifier: ^4.14.6
         version: 4.14.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
