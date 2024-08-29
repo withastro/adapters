@@ -3,7 +3,7 @@
     "changelog": ["@changesets/changelog-github", { "repo": "withastro/adapters" }],
     "commit": false,
     "access": "public",
-    "baseBranch": "main",
+    "baseBranch": "next",
     "updateInternalDependencies": "patch",
     "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
         "onlyUpdatePeerDependentsWhenOutOfRange": true
