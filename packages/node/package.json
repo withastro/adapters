@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "@types/node": "^18.17.8",
+    "@types/node": "^20.16.3",
     "@types/send": "^0.17.4",
     "@types/server-destroy": "^1.0.4",
     "astro": "^4.14.6",
