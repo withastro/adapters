@@ -100,10 +100,6 @@ export default function vercelStatic({
 			'astro:config:done': ({ setAdapter, config }) => {
 				setAdapter(getAdapter());
 				_config = config;
-
-				if (isServerLikeOutput(config)) {
-					throw new Error(`${PACKAGE_NAME} should be used with output: 'static'`);
-				}
 			},
 			'astro:build:start': async () => {
 				// Ensure to have `.vercel/output` empty.

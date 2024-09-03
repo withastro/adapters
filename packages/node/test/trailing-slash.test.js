@@ -21,7 +21,7 @@ describe('Trailing slash', () => {
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
 					base: '/some-base',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'always',
 					outDir: './dist/always-with-base',
 					build: {
@@ -94,7 +94,7 @@ describe('Trailing slash', () => {
 
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'always',
 					outDir: './dist/always-without-base',
 					build: {
@@ -170,7 +170,7 @@ describe('Trailing slash', () => {
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
 					base: '/some-base',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'never',
 					outDir: './dist/never-with-base',
 					build: {
@@ -236,7 +236,7 @@ describe('Trailing slash', () => {
 
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'never',
 					outDir: './dist/never-without-base',
 					build: {
@@ -305,7 +305,7 @@ describe('Trailing slash', () => {
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
 					base: '/some-base',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'ignore',
 					outDir: './dist/ignore-with-base',
 					build: {
@@ -389,7 +389,7 @@ describe('Trailing slash', () => {
 
 				fixture = await loadFixture({
 					root: './fixtures/trailing-slash/',
-					output: 'hybrid',
+					output: 'static',
 					trailingSlash: 'ignore',
 					outDir: './dist/ignore-without-base',
 					build: {

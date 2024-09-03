@@ -185,7 +185,7 @@ describe('Hybrid 404', () => {
 				site: 'https://test.com/',
 				base: '/some-base',
 				root: './fixtures/prerender-404-500/',
-				output: 'hybrid',
+				output: 'static',
 				outDir: './dist/hybrid-with-base',
 				build: {
 					client: './dist/hybrid-with-base/client',
@@ -248,7 +248,7 @@ describe('Hybrid 404', () => {
 				// from being reused
 				site: 'https://test.net/',
 				root: './fixtures/prerender-404-500/',
-				output: 'hybrid',
+				output: 'static',
 				outDir: './dist/hybrid-without-base',
 				build: {
 					client: './dist/hybrid-without-base/client',

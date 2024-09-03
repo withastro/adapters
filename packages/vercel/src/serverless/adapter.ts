@@ -84,6 +84,7 @@ function getAdapter({
 		args: { middlewareSecret, skewProtection },
 		adapterFeatures: {
 			edgeMiddleware,
+			forceServerOutput: true,
 		},
 		supportedAstroFeatures: {
 			hybridOutput: 'stable',
@@ -280,12 +281,6 @@ export default function vercelServerless({
 				_config = config;
 				_buildTempFolder = config.build.server;
 				_serverEntry = config.build.serverEntry;
-
-				if (config.output === 'static') {
-					throw new AstroError(
-						'`output: "server"` or `output: "hybrid"` is required to use the serverless adapter.'
-					);
-				}
 			},
 			'astro:build:ssr': async ({ entryPoints, middlewareEntryPoint }) => {
 				_entryPoints = new Map(

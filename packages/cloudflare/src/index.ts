@@ -141,8 +141,8 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					order: 'pre',
 				});
 			},
-			'astro:config:done': ({ setAdapter, config }) => {
-				if (config.output === 'static') {
+			'astro:config:done': ({ setAdapter, config, buildOutput }) => {
+				if (buildOutput === 'static') {
 					throw new AstroError(
 						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
 					);
