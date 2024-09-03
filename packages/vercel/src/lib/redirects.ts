@@ -49,22 +49,22 @@ function getMatchPattern(segments: RoutePart[][]) {
 			return segment.length === 1 && segment[0].spread
 				? '(?:\\/(.*?))?'
 				: (segmentIndex === 0 ? '' : '/') +
-					segment
-						.map((part) => {
-							if (part)
-								return part.spread
-									? '(.*?)'
-									: part.dynamic
-										? '([^/]+?)'
-										: part.content
-												.normalize()
-												.replace(/\?/g, '%3F')
-												.replace(/#/g, '%23')
-												.replace(/%5B/g, '[')
-												.replace(/%5D/g, ']')
-												.replace(/[*+?^${}()|[\]\\]/g, '\\$&');
-						})
-						.join('');
+						segment
+							.map((part) => {
+								if (part)
+									return part.spread
+										? '(.*?)'
+										: part.dynamic
+											? '([^/]+?)'
+											: part.content
+													.normalize()
+													.replace(/\?/g, '%3F')
+													.replace(/#/g, '%23')
+													.replace(/%5B/g, '[')
+													.replace(/%5D/g, ']')
+													.replace(/[*+?^${}()|[\]\\]/g, '\\$&');
+							})
+							.join('');
 		})
 		.join('');
 }
