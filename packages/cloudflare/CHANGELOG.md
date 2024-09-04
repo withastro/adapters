@@ -1,5 +1,25 @@
 # @astrojs/cloudflare
 
+## 11.0.4
+
+### Patch Changes
+
+- [#344](https://github.com/withastro/adapters/pull/344) [`8d7766e`](https://github.com/withastro/adapters/commit/8d7766ea89e7663f7de4edf7d0ee3e74b79e73af) Thanks [@Fryuni](https://github.com/Fryuni)! - Updates a dependency to align the peer dependency version for Astro
+
+## 11.0.3
+
+### Patch Changes
+
+- [#341](https://github.com/withastro/adapters/pull/341) [`a430ab1`](https://github.com/withastro/adapters/commit/a430ab17e525492db2ff9ecc4d00eb710dd92874) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue if environment variables where used inside the middleware and a prerendering occured.
+
+- [#335](https://github.com/withastro/adapters/pull/335) [`237f332`](https://github.com/withastro/adapters/commit/237f332a819a92cdc2128d1564f5b8558318ad2b) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue displaying images which are optimized during `astro build`
+
+## 11.0.2
+
+### Patch Changes
+
+- [#340](https://github.com/withastro/adapters/pull/340) [`45d0abb`](https://github.com/withastro/adapters/commit/45d0abb52b8e940a7c702a148be779428836396c) Thanks [@alexanderniebuhr](https://github.com/alexanderniebuhr)! - Fixes an issue if environment variables where used inside the middleware and a prerendering occured.
+
 ## 11.0.1
 
 ### Patch Changes

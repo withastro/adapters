@@ -1,17 +1,17 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["**/*", "!test/**/*", "!.astro/**/*", "!.cache/**/*", "!mod.js", "!mod.js.map"],
       "outputs": ["dist/**/*", "!vendor/**", "mod.js", "mod.js.map"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "build:ci": {
       "dependsOn": ["^build:ci"],
       "inputs": ["**/*", "!test/**/*", "!.astro/**/*", "!.cache/**/*", "!mod.js", "!mod.js.map"],
       "outputs": ["dist/**/*", "!vendor/**", "mod.js", "mod.js.map"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "dev": {
       "cache": false,
@@ -19,11 +19,11 @@
     },
     "test": {
       "env": ["RUNNER_OS", "NODE_VERSION"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "test:hosted": {
-      "outputMode": "new-only",
-      "cache": false
+      "cache": false,
+      "outputLogs": "new-only"
     }
   }
 }

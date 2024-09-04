@@ -1,5 +1,19 @@
 # @astrojs/netlify
 
+## 5.5.1
+
+### Patch Changes
+
+- [#350](https://github.com/withastro/adapters/pull/350) [`2248bc7`](https://github.com/withastro/adapters/commit/2248bc7edcbe37e4e75f573f88a200c2ba5afbae) Thanks [@matthewp](https://github.com/matthewp)! - Apply polyfills immediately on function execution
+
+  This moves up when the polyfills are applied so that they are present before Astro runs, preventing a race condition that can cause `crypto` to not be defined early enough in Node 18.
+
+## 5.5.0
+
+### Minor Changes
+
+- [#326](https://github.com/withastro/adapters/pull/326) [`6dd65a0`](https://github.com/withastro/adapters/commit/6dd65a04c2afea941da34a1a1ce7b991f0768615) Thanks [@ascorbic](https://github.com/ascorbic)! - Sets immutable cache headers for static assets
+
 ## 5.4.0
 
 ### Minor Changes

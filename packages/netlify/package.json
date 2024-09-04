@@ -1,7 +1,7 @@
 {
   "name": "@astrojs/netlify",
   "description": "Deploy your site to Netlify",
-  "version": "5.4.0",
+  "version": "5.5.1",
   "type": "module",
   "types": "./dist/index.d.ts",
   "author": "withastro",
@@ -11,7 +11,10 @@
     "url": "https://github.com/withastro/adapters.git",
     "directory": "packages/netlify"
   },
-  "keywords": ["withastro", "astro-adapter"],
+  "keywords": [
+    "withastro",
+    "astro-adapter"
+  ],
   "bugs": "https://github.com/withastro/adapters/issues",
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/netlify/",
   "exports": {
@@ -22,7 +25,9 @@
     "./image-service.js": "./dist/image-service.js",
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -35,25 +40,25 @@
     "@astrojs/internal-helpers": "0.4.1",
     "@astrojs/underscore-redirects": "^0.3.4",
     "@netlify/functions": "^2.8.0",
-    "@vercel/nft": "^0.27.2",
-    "esbuild": "^0.22.0"
+    "@vercel/nft": "^0.27.3",
+    "esbuild": "^0.21.5"
   },
   "peerDependencies": {
     "astro": "^4.2.0"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "@netlify/edge-functions": "^2.8.1",
+    "@netlify/edge-functions": "^2.10.0",
     "@netlify/edge-handler-types": "^0.34.1",
-    "@types/node": "^20.14.10",
-    "astro": "^4.11.5",
+    "@types/node": "^20.16.3",
+    "astro": "^4.15.1",
     "astro-scripts": "workspace:*",
-    "cheerio": "1.0.0-rc.12",
+    "cheerio": "1.0.0",
     "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
     "strip-ansi": "^7.1.0",
-    "typescript": "^5.5.2",
-    "vite": "^4.5.3"
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
   },
   "astro": {
     "external": true

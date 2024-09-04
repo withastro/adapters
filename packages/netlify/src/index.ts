@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
@@ -373,7 +373,6 @@ export default function netlifyIntegration(
 		const parseBase64JSON = <T = unknown>(header: string): T | undefined => {
 			if (typeof req.headers[header] === 'string') {
 				try {
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 					return JSON.parse(Buffer.from(req.headers[header] as string, 'base64').toString('utf8'));
 				} catch {}
 			}
@@ -383,6 +382,7 @@ export default function netlifyIntegration(
 			account: parseBase64JSON('x-nf-account-info') ?? {
 				id: 'mock-netlify-account-id',
 			},
+			// TODO: this has type conflicts with @netlify/functions ^2.8.1
 			deploy: {
 				id:
 					typeof req.headers['x-nf-deploy-id'] === 'string'
@@ -526,7 +526,7 @@ export default function netlifyIntegration(
 
 			// local dev
 			'astro:server:setup': async ({ server }) => {
-				server.middlewares.use((req, res, next) => {
+				server.middlewares.use((req, _res, next) => {
 					const locals = Symbol.for('astro.locals');
 					Reflect.set(req, locals, {
 						...Reflect.get(req, locals),

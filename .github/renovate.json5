@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:weekly",
+    "group:allNonMajor",
+    ":disablePeerDependencies",
+    "regexManagers:biomeVersions"
+  ],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "postUpdateOptions": ["pnpmDedupe"],
+  "ignorePaths": ["**/node_modules/**"],
+  "ignoreDeps": [
+    // ignore "engines" update
+    "node",
+    "pnpm",
+
+    // need further upgrade investigation
+    "@netlify/functions",
+
+    // follow astro deps version
+    "esbuild",
+  ],
+}

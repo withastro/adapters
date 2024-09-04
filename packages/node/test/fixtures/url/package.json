@@ -1,0 +1,9 @@
+{
+  "name": "@test/url",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "astro": "^4.15.1",
+    "@astrojs/node": "workspace:*"
+  }
+}
