@@ -18,15 +18,22 @@ export interface Args {
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
+function getSiteRoot() {
+	// The entrypoint is created in `.netlify/build`, so we can find the root by going one level up
+	const url = import.meta.url;
+	const index = url.lastIndexOf('.netlify/build/');
+	return fileURLToPath(index !== -1 ? url.substring(0, index) : url);
+}
+
 export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
+
+	const root = getSiteRoot();
 
 	function createHandler(integrationConfig: {
 		cacheOnDemandPages: boolean;
 		notFoundContent?: string;
 	}) {
-		// The entrypoint is created in `.netlify/v1/build` so we need to go up two levels to get to the root
-		const root = fileURLToPath(new URL('../../', import.meta.url));
 		return async function handler(request: Request, context: Context) {
 			// This entrypoint will be deep inside the directory structure below cwd
 			// We chdir to the root so that we can resolve the correct paths when

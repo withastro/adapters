@@ -21,3 +21,4 @@ package-lock.json
 # exclude IntelliJ/WebStorm stuff
 .idea
 
+.astro/

@@ -1,0 +1,3 @@
+[build]
+command = "pnpm run --filter @test/netlify-includes... build"
+publish = "dist"
