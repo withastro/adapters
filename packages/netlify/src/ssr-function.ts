@@ -35,9 +35,8 @@ export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args)
 		notFoundContent?: string;
 	}) {
 		return async function handler(request: Request, context: Context) {
-			// This entrypoint will be deep inside the directory structure below cwd
-			// We chdir to the root so that we can resolve the correct paths when
-			// using relative paths in filesystem operations at runtime
+			// Change working directory to the site root, rather than the repo root
+			// This allows relative paths to match those set in `includedFiles` in astro.config.mjs
 			try {
 				process.chdir(root);
 			} catch (err) {
