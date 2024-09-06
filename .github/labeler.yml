@@ -14,3 +14,13 @@
 - any:
   - changed-files:
     - any-glob-to-any-file: 'packages/netlify/**'
+
+'pkg: vercel':
+- any:
+  - changed-files:
+    - any-glob-to-any-file: 'packages/vercel/**'
+
+'pkg: node':
+- any:
+  - changed-files:
+    - any-glob-to-any-file: 'packages/node/**'
