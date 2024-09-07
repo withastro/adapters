@@ -1,6 +1,7 @@
 import { posix, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { copyFilesToFolder } from '@astrojs/internal-helpers/fs';
+import { appendForwardSlash } from '@astrojs/internal-helpers/path';
 import type { AstroIntegrationLogger } from 'astro';
 import { searchForWorkspaceRoot } from 'vite';
 
@@ -28,7 +29,7 @@ export async function copyDependenciesToFunction(
 	logger.info(`Bundling function ${relative(fileURLToPath(outDir), entryPath)}`);
 
 	// Set the base to the workspace root
-	const base = pathToFileURL(searchForWorkspaceRoot(fileURLToPath(root)))
+	const base = pathToFileURL(appendForwardSlash(searchForWorkspaceRoot(fileURLToPath(root))));
 
 	// The Vite bundle includes an import to `@vercel/nft` for some reason,
 	// and that trips up `@vercel/nft` itself during the adapter build. Using a
