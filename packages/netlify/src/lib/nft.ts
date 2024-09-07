@@ -44,7 +44,7 @@ export async function copyDependenciesToFunction(
 			// If you have a path of /home that will appear in your output
 			// and NFT will crawl your home folder. You might have stuff in there, so that's ok.
 			// But linuxbrew is one place we don't want to crawl.
-			'/home/linuxbrew/**',
+			'/home',
 		],
 		cache,
 	});
