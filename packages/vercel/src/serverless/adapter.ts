@@ -388,7 +388,7 @@ export default function vercelServerless({
 								routeDefinitions.push({ src: escapeRegex(route), dest });
 							}
 						}
-						await builder.buildISRFolder(entryFile, '_isr', isrConfig);
+						await builder.buildISRFolder(entryFile, '_isr', isrConfig, _config.root);
 						for (const route of routes) {
 							const src = route.pattern.source;
 							const dest = src.startsWith('^\\/_image') ? NODE_PATH : ISR_PATH;
@@ -520,8 +520,8 @@ class VercelBuilder {
 		});
 	}
 
-	async buildISRFolder(entry: URL, functionName: string, isr: VercelISRConfig) {
-		await this.buildServerlessFolder(entry, functionName);
+	async buildISRFolder(entry: URL, functionName: string, isr: VercelISRConfig, root: URL) {
+		await this.buildServerlessFolder(entry, functionName, root);
 		const prerenderConfig = new URL(
 			`./functions/${functionName}.prerender-config.json`,
 			this.config.outDir
