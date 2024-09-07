@@ -44,10 +44,17 @@ export async function copyDependenciesToFunction(
 			// If you have a path of /home that will appear in your output
 			// and NFT will crawl your home folder. You might have stuff in there, so that's ok.
 			// But linuxbrew is one place we don't want to crawl.
-			'/home/linuxbrew/.linuxbrew/**',
+			'/home/linuxbrew/**',
 		],
 		cache,
 	});
+
+	console.log("RESULT", Array.from(result.reasons).map(item => {
+		return {
+			file: item[0],
+			parents: Array.from(item[1].parents),
+		}
+	}).filter(item => item.file.startsWith('home/linuxbrew')));
 
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
