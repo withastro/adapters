@@ -37,18 +37,17 @@ export async function copyDependenciesToFunction(
 	const { nodeFileTrace } = await import('@vercel/nft');
 	const result = await nodeFileTrace([entryPath], {
 		base: fileURLToPath(base),
-		// If you have a route of /dev this appears in source and NFT will try to
-		// scan your local /dev :8
-		ignore: ['/dev/**'],
+		ignore: [
+			// If you have a route of /dev this appears in source and NFT will try to
+					// scan your local /dev :8
+			'/dev/**',
+			// If you have a path of /home that will appear in your output
+			// and NFT will crawl your home folder. You might have stuff in there, so that's ok.
+			// But linuxbrew is one place we don't want to crawl.
+			'/home/linuxbrew/.linuxbrew/**'
+		],
 		cache,
 	});
-
-	console.log("RESULT", Array.from(result.reasons).map(item => {
-		return {
-			file: item[0],
-			parents: Array.from(item[1].parents),
-		}
-	}).filter(item => item.file.startsWith('home/linuxbrew')));
 
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
