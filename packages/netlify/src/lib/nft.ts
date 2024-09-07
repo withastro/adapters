@@ -39,12 +39,12 @@ export async function copyDependenciesToFunction(
 		base: fileURLToPath(base),
 		ignore: [
 			// If you have a route of /dev this appears in source and NFT will try to
-					// scan your local /dev :8
+			// scan your local /dev :8
 			'/dev/**',
 			// If you have a path of /home that will appear in your output
 			// and NFT will crawl your home folder. You might have stuff in there, so that's ok.
 			// But linuxbrew is one place we don't want to crawl.
-			'/home/linuxbrew/.linuxbrew/**'
+			'/home/linuxbrew/.linuxbrew/**',
 		],
 		cache,
 	});
