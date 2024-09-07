@@ -243,8 +243,8 @@ export default function netlifyIntegration(
 		root,
 	}: {
 		notFoundContent?: string;
-		logger: AstroIntegrationLogger,
-		root: URL
+		logger: AstroIntegrationLogger;
+		root: URL;
 	}) {
 		const entry = new URL('./entry.mjs', ssrBuildDir());
 

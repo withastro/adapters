@@ -35,7 +35,7 @@
     "@astrojs/underscore-redirects": "^0.3.4",
     "@netlify/functions": "^2.8.0",
     "@vercel/nft": "^0.27.3",
-    "esbuild": "^0.21.5",  
+    "esbuild": "^0.21.5",
     "vite": "^5.4.2"
   },
   "peerDependencies": {

@@ -12,7 +12,7 @@ export async function copyDependenciesToFunction(
 		includeFiles,
 		excludeFiles,
 		logger,
-		root
+		root,
 	}: {
 		entry: URL;
 		outDir: URL;
