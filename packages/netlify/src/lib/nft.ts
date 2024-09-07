@@ -40,13 +40,6 @@ export async function copyDependenciesToFunction(
 		cache,
 	});
 
-	console.log("RESULT", Array.from(result.reasons).map(item => {
-		return {
-			file: item[0],
-			parents: Array.from(item[1].parents),
-		}
-	}).filter(item => item.file.startsWith('home/linuxbrew')));
-
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
 			const [, module, file] =

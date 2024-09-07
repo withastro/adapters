@@ -233,6 +233,9 @@ importers:
       esbuild:
         specifier: ^0.21.5
         version: 0.21.5
+      vite:
+        specifier: ^5.4.2
+        version: 5.4.2(@types/node@20.16.3)
     devDependencies:
       '@astrojs/test-utils':
         specifier: workspace:*
@@ -267,9 +270,6 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
-      vite:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/node@20.16.3)
 
   packages/netlify/test/functions/fixtures/cookies:
     dependencies:
@@ -505,6 +505,9 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      vite:
+        specifier: ^5.4.2
+        version: 5.4.2(@types/node@22.4.1)
       web-vitals:
         specifier: ^3.5.2
         version: 3.5.2
