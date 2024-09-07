@@ -43,7 +43,12 @@ export async function copyDependenciesToFunction(
 		cache,
 	});
 
-	console.log("RESULT", result);
+	console.log("RESULT", Array.from(result.reasons).map(item => {
+		return {
+			file: item[0],
+			parents: Array.from(item[1].parents),
+		}
+	}));
 
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
