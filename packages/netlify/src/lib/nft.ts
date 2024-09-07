@@ -29,6 +29,7 @@ export async function copyDependenciesToFunction(
 
 	// Set the base to the workspace root
 	let base = searchForWorkspaceRoot(fileURLToPath(root));
+	console.log("BASE", base, root);
 
 	// The Vite bundle includes an import to `@vercel/nft` for some reason,
 	// and that trips up `@vercel/nft` itself during the adapter build. Using a
