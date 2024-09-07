@@ -43,6 +43,8 @@ export async function copyDependenciesToFunction(
 		cache,
 	});
 
+	console.log("RESULT", result);
+
 	for (const error of result.warnings) {
 		if (error.message.startsWith('Failed to resolve dependency')) {
 			const [, module, file] =
