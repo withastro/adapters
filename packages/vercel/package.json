@@ -45,8 +45,7 @@
     "@vercel/nft": "^0.27.3",
     "esbuild": "^0.21.5",
     "fast-glob": "^3.3.2",
-    "web-vitals": "^3.5.2",
-    "vite": "^5.4.2"
+    "web-vitals": "^3.5.2"
   },
   "peerDependencies": {
     "astro": "^4.2.0"

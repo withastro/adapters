@@ -505,9 +505,6 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
-      vite:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/node@22.4.1)
       web-vitals:
         specifier: ^3.5.2
         version: 3.5.2

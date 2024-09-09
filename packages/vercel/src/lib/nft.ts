@@ -3,7 +3,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { copyFilesToFolder } from '@astrojs/internal-helpers/fs';
 import { appendForwardSlash } from '@astrojs/internal-helpers/path';
 import type { AstroIntegrationLogger } from 'astro';
-import { searchForWorkspaceRoot } from 'vite';
+import { searchForWorkspaceRoot } from './searchRoot.js';
 
 export async function copyDependenciesToFunction(
 	{
