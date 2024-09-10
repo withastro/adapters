@@ -48,6 +48,9 @@ function getMatchPattern(segments: RoutePart[][]) {
 		.map((segment, segmentIndex) => {
 			return segment.length === 1 && segment[0].spread
 				? '(?:\\/(.*?))?'
+                                 // Omit leading slash if segment is a spread.
+                                 // This is handled using a regex in Astro core.
+                                 // To avoid complex data massaging, we handle in-place here.
 				: (segmentIndex === 0 ? '' : '/') +
 						segment
 							.map((part) => {
