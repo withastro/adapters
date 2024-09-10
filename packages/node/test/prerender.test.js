@@ -22,10 +22,6 @@ describe('Prerendering', () => {
 				root: './fixtures/prerender/',
 				output: 'server',
 				outDir: './dist/with-base',
-				build: {
-					client: './dist/with-base/client',
-					server: './dist/with-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -99,10 +95,6 @@ describe('Prerendering', () => {
 				root: './fixtures/prerender/',
 				output: 'server',
 				outDir: './dist/without-base',
-				build: {
-					client: './dist/without-base/client',
-					server: './dist/without-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -165,10 +157,6 @@ describe('Prerendering', () => {
 				root: './fixtures/prerender/',
 				output: 'server',
 				outDir: './dist/via-integration',
-				build: {
-					client: './dist/via-integration/client',
-					server: './dist/via-integration/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 				integrations: [
 					{
@@ -228,10 +216,6 @@ describe('Prerendering', () => {
 				root: './fixtures/prerender/',
 				output: 'server',
 				outDir: './dist/dev',
-				build: {
-					client: './dist/dev/client',
-					server: './dist/dev/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			devServer = await fixture.startDevServer();
@@ -278,10 +262,6 @@ describe('Hybrid rendering', () => {
 				root: './fixtures/prerender/',
 				output: 'static',
 				outDir: './dist/hybrid-with-base',
-				build: {
-					client: './dist/hybrid-with-base/client',
-					server: './dist/hybrid-with-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -353,10 +333,6 @@ describe('Hybrid rendering', () => {
 				root: './fixtures/prerender/',
 				output: 'static',
 				outDir: './dist/hybrid-without-base',
-				build: {
-					client: './dist/hybrid-without-base/client',
-					server: './dist/hybrid-without-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -420,10 +396,6 @@ describe('Hybrid rendering', () => {
 				root: './fixtures/prerender/',
 				output: 'static',
 				outDir: './dist/hybrid-shared-modules',
-				build: {
-					client: './dist/hybrid-shared-modules/client',
-					server: './dist/hybrid-shared-modules/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();

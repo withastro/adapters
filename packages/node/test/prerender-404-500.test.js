@@ -26,10 +26,6 @@ describe('Prerender 404', () => {
 				root: './fixtures/prerender-404-500/',
 				output: 'server',
 				outDir: './dist/server-with-base',
-				build: {
-					client: './dist/server-with-base/client',
-					server: './dist/server-with-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -117,10 +113,6 @@ describe('Prerender 404', () => {
 				root: './fixtures/prerender-404-500/',
 				output: 'server',
 				outDir: './dist/server-without-base',
-				build: {
-					client: './dist/server-without-base/client',
-					server: './dist/server-without-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -187,10 +179,6 @@ describe('Hybrid 404', () => {
 				root: './fixtures/prerender-404-500/',
 				output: 'static',
 				outDir: './dist/hybrid-with-base',
-				build: {
-					client: './dist/hybrid-with-base/client',
-					server: './dist/hybrid-with-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();
@@ -250,10 +238,6 @@ describe('Hybrid 404', () => {
 				root: './fixtures/prerender-404-500/',
 				output: 'static',
 				outDir: './dist/hybrid-without-base',
-				build: {
-					client: './dist/hybrid-without-base/client',
-					server: './dist/hybrid-without-base/server',
-				},
 				adapter: nodejs({ mode: 'standalone' }),
 			});
 			await fixture.build();

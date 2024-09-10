@@ -141,10 +141,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					order: 'pre',
 				});
 			},
-			'astro:config:done': ({ setAdapter, config, buildOutput }) => {
+			'astro:config:done': ({ setAdapter, config, buildOutput, logger }) => {
 				if (buildOutput === 'static') {
-					throw new AstroError(
-						'[@astrojs/cloudflare] A server output with server rendered pages is required to use this adapter. Otherwise, this adapter is not necessary to deploy a completely static site to Cloudflare.'
+					logger.warn(
+						'[@astrojs/cloudflare] This adapter is intended to be used with server rendered pages, which this project does not contain any of. As such, this adapter is unnecessary.'
 					);
 				}
 
