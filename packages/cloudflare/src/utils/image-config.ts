@@ -4,7 +4,7 @@ import { passthroughImageService, sharpImageService } from 'astro/config';
 export function setImageConfig(
 	service: string,
 	config: AstroConfig['image'],
-	command: 'dev' | 'build' | 'preview',
+	command: 'dev' | 'build' | 'preview' | 'sync',
 	logger: AstroIntegrationLogger
 ) {
 	switch (service) {
