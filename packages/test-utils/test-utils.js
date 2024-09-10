@@ -217,15 +217,6 @@ export async function loadFixture(inlineConfig) {
 			app.manifest = manifest;
 			return app;
 		},
-		loadEntryPoint: async (pagePath, routes, streaming) => {
-			const virtualModule = getVirtualModulePageName(RESOLVED_SPLIT_MODULE_ID, pagePath);
-			const filePath = makeSplitEntryPointFileName(virtualModule, routes);
-			const url = new URL(`./server/${filePath}?id=${fixtureId}`, config.outDir);
-			const { createApp, manifest } = await import(url);
-			const app = createApp(streaming);
-			app.manifest = manifest;
-			return app;
-		},
 		editFile: async (filePath, newContentsOrCallback) => {
 			const fileUrl = new URL(filePath.replace(/^\//, ''), config.root);
 			const contents = await fs.promises.readFile(fileUrl, 'utf-8');
