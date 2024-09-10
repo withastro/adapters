@@ -7,7 +7,6 @@ import {
 	getAstroImageConfig,
 	getDefaultImageConfig,
 } from '../image/shared.js';
-import { isServerLikeOutput } from '../lib/prerender.js';
 import { getRedirects } from '../lib/redirects.js';
 import {
 	type VercelSpeedInsightsConfig,
