@@ -10,7 +10,7 @@ export function getAdapter(options: Options): AstroAdapter {
 		exports: ['handler', 'startServer', 'options'],
 		args: options,
 		adapterFeatures: {
-			forceServerOutput: true,
+			buildOutput: 'server',
 			edgeMiddleware: false,
 		},
 		supportedAstroFeatures: {

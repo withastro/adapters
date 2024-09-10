@@ -34,6 +34,7 @@ function getAdapter(): AstroAdapter {
 			envGetSecret: 'unsupported',
 		},
 		adapterFeatures: {
+			buildOutput: 'static',
 			edgeMiddleware: false,
 		},
 	};
