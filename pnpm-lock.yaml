@@ -666,24 +666,6 @@ importers:
         specifier: ^5.0.0-alpha.0
         version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
-  packages/vercel/test/fixtures/with-speed-insights-enabled/output-as-server:
-    dependencies:
-      '@astrojs/vercel':
-        specifier: workspace:*
-        version: link:../../../..
-      astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
-
-  packages/vercel/test/fixtures/with-speed-insights-enabled/output-as-static:
-    dependencies:
-      '@astrojs/vercel':
-        specifier: workspace:*
-        version: link:../../../..
-      astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
-
   packages/vercel/test/fixtures/with-web-analytics-enabled/output-as-static:
     dependencies:
       '@astrojs/vercel':
