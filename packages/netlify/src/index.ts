@@ -5,7 +5,13 @@ import { fileURLToPath } from 'node:url';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
-import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
+import type {
+	AstroConfig,
+	AstroIntegration,
+	AstroIntegrationLogger,
+	HookParameters,
+	RouteData,
+} from 'astro';
 import { build } from 'esbuild';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import type { Args } from './ssr-function.js';
@@ -191,6 +197,8 @@ export default function netlifyIntegration(
 	// Secret used to verify that the caller is the astro-generated edge middleware and not a third-party
 	const middlewareSecret = randomUUID();
 
+	let finalBuildOutput: HookParameters<'astro:config:done'>['buildOutput'];
+
 	const TRACE_CACHE = {};
 
 	const ssrBuildDir = () => new URL('./.netlify/build/', rootDir);
@@ -205,7 +213,7 @@ export default function netlifyIntegration(
 		]);
 
 	async function writeRedirects(routes: RouteData[], dir: URL) {
-		const fallback = _config.output === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
+		const fallback = finalBuildOutput === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
 			dir,
@@ -273,7 +281,7 @@ export default function netlifyIntegration(
 			import { createContext, trySerializeLocals } from 'astro/middleware';
 
 			export default async (request, context) => {
-				const ctx = createContext({ 
+				const ctx = createContext({
 					request,
 					params: {}
 				});
@@ -284,7 +292,7 @@ export default function netlifyIntegration(
 					request.headers.set("x-astro-middleware-secret", "${middlewareSecret}");
 					return context.next();
 				};
-			
+
 				return onRequest(ctx, next);
 			}
 
@@ -425,9 +433,11 @@ export default function netlifyIntegration(
 					},
 				});
 			},
-			'astro:config:done': async ({ config, setAdapter, logger }) => {
+			'astro:config:done': async ({ config, setAdapter, logger, buildOutput }) => {
 				rootDir = config.root;
 				_config = config;
+
+				finalBuildOutput = buildOutput;
 
 				await writeNetlifyFrameworkConfig(config, logger);
 
@@ -462,7 +472,7 @@ export default function netlifyIntegration(
 				await writeRedirects(routes, dir);
 				logger.info('Emitted _redirects');
 
-				if (_config.output !== 'static') {
+				if (finalBuildOutput !== 'static') {
 					let notFoundContent = undefined;
 					try {
 						notFoundContent = await readFile(new URL('./404.html', dir), 'utf8');

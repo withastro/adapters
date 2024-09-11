@@ -9,6 +9,10 @@ export function getAdapter(options: Options): AstroAdapter {
 		previewEntrypoint: '@astrojs/node/preview.js',
 		exports: ['handler', 'startServer', 'options'],
 		args: options,
+		adapterFeatures: {
+			buildOutput: 'server',
+			edgeMiddleware: false,
+		},
 		supportedAstroFeatures: {
 			hybridOutput: 'stable',
 			staticOutput: 'stable',
@@ -44,7 +48,7 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 					},
 				});
 			},
-			'astro:config:done': ({ setAdapter, config, logger }) => {
+			'astro:config:done': ({ setAdapter, config }) => {
 				_options = {
 					...userOptions,
 					client: config.build.client?.toString(),
@@ -54,12 +58,6 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 					assets: config.build.assets,
 				};
 				setAdapter(getAdapter(_options));
-
-				if (config.output === 'static') {
-					logger.warn(
-						`\`output: "server"\` or  \`output: "hybrid"\` is required to use this adapter.`
-					);
-				}
 			},
 		},
 	};
