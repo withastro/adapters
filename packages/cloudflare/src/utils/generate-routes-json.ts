@@ -2,7 +2,7 @@ import type { AstroConfig, AstroIntegrationLogger, RouteData, RoutePart } from '
 
 import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
-import { win32, posix } from 'node:path';
+import { posix, win32 } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
 	prependForwardSlash,
