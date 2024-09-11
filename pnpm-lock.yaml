@@ -73,7 +73,7 @@ importers:
         version: 4.20240821.1
       '@inox-tools/astro-when':
         specifier: ^0.2.2
-        version: 0.2.2(astro@5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))
+        version: 0.2.2(astro@5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -127,8 +127,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
     devDependencies:
       wrangler:
         specifier: ^3.72.2
@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
     devDependencies:
       wrangler:
         specifier: ^3.72.2
@@ -153,8 +153,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/cloudflare/test/fixtures/external-image-service:
     dependencies:
@@ -162,8 +162,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/cloudflare/test/fixtures/module-loader:
     dependencies:
@@ -171,8 +171,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -180,8 +180,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -189,8 +189,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -201,8 +201,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(solid-js@1.8.21)(vite@5.4.2(@types/node@22.4.1))
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
       solid-js:
         specifier: ^1.8.21
         version: 1.8.21
@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/netlify:
     dependencies:
@@ -247,8 +247,8 @@ importers:
         specifier: ^20.16.1
         version: 20.16.1
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@20.16.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@20.16.1)(rollup@4.21.0)(typescript@5.5.4)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -298,8 +298,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@18.19.47)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@18.19.47)(rollup@4.21.0)(typescript@5.5.4)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -350,8 +350,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/bad-urls:
     dependencies:
@@ -359,8 +359,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/encoded:
     dependencies:
@@ -368,8 +368,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/errors:
     dependencies:
@@ -377,8 +377,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/headers:
     dependencies:
@@ -386,8 +386,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/image:
     dependencies:
@@ -395,8 +395,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/locals:
     dependencies:
@@ -404,8 +404,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/node-middleware:
     dependencies:
@@ -413,8 +413,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/prerender:
     dependencies:
@@ -422,8 +422,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/prerender-404-500:
     dependencies:
@@ -431,8 +431,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/preview-headers:
     dependencies:
@@ -440,8 +440,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/trailing-slash:
     dependencies:
@@ -449,8 +449,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/url:
     dependencies:
@@ -458,8 +458,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/node/test/fixtures/well-known-locations:
     dependencies:
@@ -467,14 +467,14 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/test-utils:
     dependencies:
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
       execa:
         specifier: ^8.0.1
         version: 8.0.1
@@ -510,8 +510,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -525,8 +525,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/image:
     dependencies:
@@ -534,8 +534,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/isr:
     dependencies:
@@ -543,8 +543,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/max-duration:
     dependencies:
@@ -552,8 +552,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/middleware-with-edge-file:
     dependencies:
@@ -561,8 +561,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/middleware-without-edge-file:
     dependencies:
@@ -570,8 +570,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/no-output:
     dependencies:
@@ -579,8 +579,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/prerendered-error-pages:
     dependencies:
@@ -588,8 +588,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/redirects:
     dependencies:
@@ -597,8 +597,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/redirects-serverless:
     dependencies:
@@ -606,8 +606,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/server-islands:
     dependencies:
@@ -615,8 +615,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/serverless-prerender:
     dependencies:
@@ -624,8 +624,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/serverless-with-dynamic-routes:
     dependencies:
@@ -633,8 +633,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/static:
     dependencies:
@@ -642,8 +642,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/static-assets:
     dependencies:
@@ -651,8 +651,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/streaming:
     dependencies:
@@ -660,8 +660,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/fixtures/with-web-analytics-enabled/output-as-static:
     dependencies:
@@ -669,8 +669,8 @@ importers:
         specifier: workspace:*
         version: link:../../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   packages/vercel/test/hosted/hosted-astro-project:
     dependencies:
@@ -678,8 +678,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+        specifier: ^5.0.0-alpha.6
+        version: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
 
   scripts:
     dependencies:
@@ -717,8 +717,8 @@ packages:
       prettier-plugin-astro:
         optional: true
 
-  '@astrojs/markdown-remark@6.0.0-alpha.0':
-    resolution: {integrity: sha512-ojZNNxrOQYxbECLY9GRSXRcwDR0FE656g6ekUGQzRxFFmYir8e44toAjp5gseoRRIR4Z9W66tLXkEOa3kunsgg==}
+  '@astrojs/markdown-remark@6.0.0-alpha.1':
+    resolution: {integrity: sha512-lBM4RX8ljVpH3OPGdmeonCd65ATnjbZNgsysOIXyJSkP8RuX/EU2wSY2k8Ait34KjZUegISabpKHD5fslctRsw==}
 
   '@astrojs/prism@3.1.0':
     resolution: {integrity: sha512-Z9IYjuXSArkAUx3N6xj6+Bnvx8OdUSHA8YoOgyepp3+zJmtVYJIl/I18GozdJVW1p5u/CNpl3Km7/gwTJK85cw==}
@@ -758,14 +758,6 @@ packages:
 
   '@babel/generator@7.25.0':
     resolution: {integrity: sha512-3LEEcj3PVW8pW2R1SR1M89g/qrYk/m/mB/tLqn7dn4sbBUQyTqnlod+II2U4dqiGtUmkcnAmkMDralTFZttRiw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/generator@7.25.5':
-    resolution: {integrity: sha512-abd43wyLfbWoxC6ahM8xTkqLpGB2iWBVyuKC9/srhFunCd1SDNrV1s72bBpK4hLj8KLzHBBcOblvLQZBNw9r3w==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-annotate-as-pure@7.24.7':
-    resolution: {integrity: sha512-BaDeOonYvhdKw+JoMVkAixAAJzG2jVPIwWoKBPdYuY9b452e2rPuI9QPYh3KpofZ3pW2akOmwZLOiOsHMiqRAg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-compilation-targets@7.25.2':
@@ -830,12 +822,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/plugin-transform-react-jsx@7.25.2':
-    resolution: {integrity: sha512-KQsqEAVBpU82NM/B/N9j9WOdphom1SZH3R+2V7INrQUH+V9EBFwZsEJl8eBIVeQE62FxJCc70jzEZwqU7RcVqA==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
   '@babel/runtime@7.24.1':
     resolution: {integrity: sha512-+BIznRzyqBf+2wCTxcKE3wDjfGeCoVE61KSHGpkzqrLi8qxqFwBeUFyId2cxkTmm55fzDGnm0+yCxaxygrLUnQ==}
     engines: {node: '>=6.9.0'}
@@ -846,10 +832,6 @@ packages:
 
   '@babel/traverse@7.25.3':
     resolution: {integrity: sha512-HefgyP1x754oGCsKmV5reSmtV7IXj/kpaE1XYY+D9G5PvKKoFfSbiS4M77MdjuwlZKDIKFCffq9rPU+H/s3ZdQ==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/traverse@7.25.4':
-    resolution: {integrity: sha512-VJ4XsrD+nOvlXyLzmLzUs/0qjFS4sK30te5yEFlvbbUNEgKaVb2BHZUpAL+ttLPQAHNrsI3zZisbfha5Cvr8vg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.25.2':
@@ -1938,8 +1920,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@shikijs/core@1.14.1':
-    resolution: {integrity: sha512-KyHIIpKNaT20FtFPFjCQB5WVSTpLR/n+jQXhWHWVUMm9MaOaG9BGOG0MSyt7yA4+Lm+4c9rTc03tt3nYzeYSfw==}
+  '@shikijs/core@1.16.3':
+    resolution: {integrity: sha512-yETIvrETCeC39gSPIiSADmjri9FwKmxz0QvONMtTIUYlKZe90CJkvcjPksayC2VQOtzOJonEiULUa8v8crUQvA==}
+
+  '@shikijs/vscode-textmate@9.2.2':
+    resolution: {integrity: sha512-TMp15K+GGYrWlZM8+Lnj9EaHEFmOen0WJBrfa17hF7taDOYthuPPV0GWzfd/9iMij0akS/8Yw2ikquH7uVi/fg==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -2242,8 +2227,8 @@ packages:
     peerDependencies:
       astro: ^4.12.0
 
-  astro@5.0.0-alpha.1:
-    resolution: {integrity: sha512-gAcv5jiX0Xbx7V1GcqdN8YmB57BhKk781ubwbEWF8wX1dCP9OMWytnzXcWOFvaK1rhp3Dnc0+5B8hLiv+TyKPw==}
+  astro@5.0.0-alpha.6:
+    resolution: {integrity: sha512-Qkuy21jtws2V4zceWyXzHqENGEWFEfvX0bAwKZrBR3h6IqMFehs0du/RUpxhmXAKNEVCyBXa0sphApA3r3z7oQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -3004,6 +2989,9 @@ packages:
   hast-util-from-html@2.0.1:
     resolution: {integrity: sha512-RXQBLMl9kjKVNkJTIO6bZyb2n+cUH8LFaSSzo82jiLT6Tfc+Pt7VQCS+/h3YwG4jaNE2TA2sdJisGWR+aJrp0g==}
 
+  hast-util-from-html@2.0.2:
+    resolution: {integrity: sha512-HwOHwxdt2zC5KQ/CNoybBntRook2zJvfZE/u5/Ap7aLPe22bDqen7KwGkOqOyzL5zIqKwiYX/OTtE0FWgr6XXA==}
+
   hast-util-from-parse5@8.0.1:
     resolution: {integrity: sha512-Er/Iixbc7IEa7r/XLtuG52zoqn/b3Xng/w6aZQ0xGVxzhw5xUFxcRqdPzP6yFi/4HBYRaifaI5fQ1RH8n0ZeOQ==}
 
@@ -3291,6 +3279,9 @@ packages:
 
   magic-string@0.30.11:
     resolution: {integrity: sha512-+Wri9p0QHMy+545hKww7YAu5NyzF8iomPL/RQazugQ9+Ez4Ic3mERMd8ZTX5rfK944j+560ZJi8iAwgak1Ac7A==}
+
+  magicast@0.3.5:
+    resolution: {integrity: sha512-L0WhttDl+2BOsybvEOLK7fW3UA0OQ0IQ2d6Zl2x/a6vVRs3bAY0ECOSHHeL5jD+SbOpOCUEi0y1DgHEn9Qn1AQ==}
 
   make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -3626,6 +3617,9 @@ packages:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
 
+  oniguruma-to-js@0.3.3:
+    resolution: {integrity: sha512-m90/WEhgs8g4BxG37+Nu3YrMfJDs2YXtYtIllhsEPR+wP3+K4EZk6dDUvy2v2K4MNFDDOYKL4/yqYPXDqyozTQ==}
+
   only-allow@1.2.1:
     resolution: {integrity: sha512-M7CJbmv7UCopc0neRKdzfoGWaVZC+xC1925GitKH9EAqYFzX9//25Q7oX4+jw0tiCCj+t5l6VZh8UPH23NZkMA==}
     hasBin: true
@@ -3861,6 +3855,9 @@ packages:
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
+  regex@4.3.2:
+    resolution: {integrity: sha512-kK/AA3A9K6q2js89+VMymcboLOlF5lZRCYJv3gzszXFHBr6kO6qLGzbm+UIugBEV8SMMKCTR59txoY6ctRHYVw==}
+
   regexp-ast-analysis@0.7.1:
     resolution: {integrity: sha512-sZuz1dYW/ZsfG17WSAG7eS85r5a0dDsvg+7BiiYR5o6lKCAtUrEwdmRmaGF6rwVj3LcmAeYkOWKEPlbPzN3Y3A==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
@@ -4057,8 +4054,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  shiki@1.14.1:
-    resolution: {integrity: sha512-FujAN40NEejeXdzPt+3sZ3F2dx1U24BY2XTY01+MG8mbxCiA2XukXdcbyMyLAHJ/1AUUnQd1tZlvIjefWWEJeA==}
+  shiki@1.16.3:
+    resolution: {integrity: sha512-GypUE+fEd06FqDs63LSAVlmq7WsahhPQU62cgZxGF+TJT5LjD2k7HTxXj4/CKOVuMM3+wWQ1t4Y5oooeJFRRBQ==}
 
   shimmer@1.2.1:
     resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
@@ -4206,6 +4203,9 @@ packages:
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
+  tinyexec@0.3.0:
+    resolution: {integrity: sha512-tVGE0mVJPGb0chKhqmsoosjsS+qUnJVGJpZgsHYQcGoPlG3B51R3PouqTgEGH2Dc9jjFyOqOpix6ZHNMXp1FZg==}
+
   tmp@0.0.33:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
@@ -4237,8 +4237,8 @@ packages:
     peerDependencies:
       typescript: '>=4.2.0'
 
-  tsconfck@3.1.1:
-    resolution: {integrity: sha512-00eoI6WY57SvZEVjm13stEVE90VkEdJAFGgpFLTsZbJyW/LwFQ7uQxJHWpZ2hzSWgCPKc9AnBnNP+0X7o3hAmQ==}
+  tsconfck@3.1.3:
+    resolution: {integrity: sha512-ulNZP1SVpRDesxeMLON/LtWM8HIgAJEIVpVVhBM6gsmvQ8+Rh+ZG7FWGvHh7Ah3pRABwVJWklWCr/BTZSv0xnQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
     peerDependencies:
@@ -4452,6 +4452,14 @@ packages:
 
   vitefu@0.2.5:
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      vite:
+        optional: true
+
+  vitefu@1.0.2:
+    resolution: {integrity: sha512-0/iAvbXyM3RiPPJ4lyD4w6Mjgtf4ejTK6TPvTNG3H32PLwuT0N/ZjJLiXug7ETE/LWtTeHw9WRv7uX/tIKYyKg==}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     peerDependenciesMeta:
@@ -4773,11 +4781,11 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@astrojs/markdown-remark@6.0.0-alpha.0':
+  '@astrojs/markdown-remark@6.0.0-alpha.1':
     dependencies:
       '@astrojs/prism': 3.1.0
       github-slugger: 2.0.0
-      hast-util-from-html: 2.0.1
+      hast-util-from-html: 2.0.2
       hast-util-to-text: 4.0.2
       import-meta-resolve: 4.1.0
       mdast-util-definitions: 6.0.0
@@ -4787,7 +4795,7 @@ snapshots:
       remark-parse: 11.0.0
       remark-rehype: 11.1.0
       remark-smartypants: 3.0.2
-      shiki: 1.14.1
+      shiki: 1.16.3
       unified: 11.0.5
       unist-util-remove-position: 5.0.0
       unist-util-visit: 5.0.0
@@ -4856,21 +4864,10 @@ snapshots:
 
   '@babel/generator@7.25.0':
     dependencies:
-      '@babel/types': 7.25.2
-      '@jridgewell/gen-mapping': 0.3.5
-      '@jridgewell/trace-mapping': 0.3.25
-      jsesc: 2.5.2
-
-  '@babel/generator@7.25.5':
-    dependencies:
       '@babel/types': 7.25.4
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 2.5.2
-
-  '@babel/helper-annotate-as-pure@7.24.7':
-    dependencies:
-      '@babel/types': 7.25.4
 
   '@babel/helper-compilation-targets@7.25.2':
     dependencies:
@@ -4882,12 +4879,12 @@ snapshots:
 
   '@babel/helper-module-imports@7.18.6':
     dependencies:
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@babel/helper-module-imports@7.24.7':
     dependencies:
       '@babel/traverse': 7.25.3
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
     transitivePeerDependencies:
       - supports-color
 
@@ -4906,7 +4903,7 @@ snapshots:
   '@babel/helper-simple-access@7.24.7':
     dependencies:
       '@babel/traverse': 7.25.3
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
     transitivePeerDependencies:
       - supports-color
 
@@ -4919,7 +4916,7 @@ snapshots:
   '@babel/helpers@7.25.0':
     dependencies:
       '@babel/template': 7.25.0
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -4930,7 +4927,7 @@ snapshots:
 
   '@babel/parser@7.25.3':
     dependencies:
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@babel/parser@7.25.4':
     dependencies:
@@ -4941,17 +4938,6 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.24.8
 
-  '@babel/plugin-transform-react-jsx@7.25.2(@babel/core@7.25.2)':
-    dependencies:
-      '@babel/core': 7.25.2
-      '@babel/helper-annotate-as-pure': 7.24.7
-      '@babel/helper-module-imports': 7.24.7
-      '@babel/helper-plugin-utils': 7.24.8
-      '@babel/plugin-syntax-jsx': 7.24.7(@babel/core@7.25.2)
-      '@babel/types': 7.25.4
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/runtime@7.24.1':
     dependencies:
       regenerator-runtime: 0.14.1
@@ -4960,25 +4946,13 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.24.7
       '@babel/parser': 7.25.3
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@babel/traverse@7.25.3':
     dependencies:
       '@babel/code-frame': 7.24.7
       '@babel/generator': 7.25.0
       '@babel/parser': 7.25.3
-      '@babel/template': 7.25.0
-      '@babel/types': 7.25.2
-      debug: 4.3.6
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@babel/traverse@7.25.4':
-    dependencies:
-      '@babel/code-frame': 7.24.7
-      '@babel/generator': 7.25.5
-      '@babel/parser': 7.25.4
       '@babel/template': 7.25.0
       '@babel/types': 7.25.4
       debug: 4.3.6
@@ -5602,10 +5576,10 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inox-tools/astro-when@0.2.2(astro@5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))':
+  '@inox-tools/astro-when@0.2.2(astro@5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))':
     dependencies:
-      astro: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
-      astro-integration-kit: 0.16.0(astro@5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))
+      astro: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+      astro-integration-kit: 0.16.0(astro@5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4))
       debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
@@ -5949,9 +5923,14 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.21.0':
     optional: true
 
-  '@shikijs/core@1.14.1':
+  '@shikijs/core@1.16.3':
     dependencies:
+      '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
+      oniguruma-to-js: 0.3.3
+      regex: 4.3.2
+
+  '@shikijs/vscode-textmate@9.2.2': {}
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -5963,16 +5942,16 @@ snapshots:
 
   '@types/babel__generator@7.6.8':
     dependencies:
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@types/babel__template@7.4.4':
     dependencies:
       '@babel/parser': 7.25.3
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@types/babel__traverse@7.20.5':
     dependencies:
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
 
   '@types/body-parser@1.19.5':
     dependencies:
@@ -6319,27 +6298,21 @@ snapshots:
     dependencies:
       tslib: 2.6.2
 
-  astro-integration-kit@0.16.0(astro@5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)):
+  astro-integration-kit@0.16.0(astro@5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)):
     dependencies:
-      astro: 5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
+      astro: 5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4)
       pathe: 1.1.2
       recast: 0.23.9
 
-  astro@5.0.0-alpha.1(@types/node@18.19.47)(rollup@4.21.0)(typescript@5.5.4):
+  astro@5.0.0-alpha.6(@types/node@18.19.47)(rollup@4.21.0)(typescript@5.5.4):
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/internal-helpers': 0.4.1
-      '@astrojs/markdown-remark': 6.0.0-alpha.0
+      '@astrojs/markdown-remark': 6.0.0-alpha.1
       '@astrojs/telemetry': 3.1.0
-      '@babel/core': 7.25.2
-      '@babel/generator': 7.25.5
-      '@babel/parser': 7.25.4
-      '@babel/plugin-transform-react-jsx': 7.25.2(@babel/core@7.25.2)
-      '@babel/traverse': 7.25.4
       '@babel/types': 7.25.4
       '@oslojs/encoding': 0.4.1
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
-      '@types/babel__core': 7.20.5
       '@types/cookie': 0.6.0
       acorn: 8.12.1
       aria-query: 5.3.0
@@ -6359,8 +6332,8 @@ snapshots:
       es-module-lexer: 1.5.4
       esbuild: 0.21.5
       estree-walker: 3.0.3
-      execa: 8.0.1
       fast-glob: 3.3.2
+      fastq: 1.17.1
       flattie: 1.1.1
       github-slugger: 2.0.0
       gray-matter: 4.0.3
@@ -6369,6 +6342,7 @@ snapshots:
       js-yaml: 4.1.0
       kleur: 4.1.5
       magic-string: 0.30.11
+      magicast: 0.3.5
       micromatch: 4.0.8
       mrmime: 2.0.0
       neotraverse: 0.6.18
@@ -6380,14 +6354,15 @@ snapshots:
       prompts: 2.4.2
       rehype: 13.0.1
       semver: 7.6.3
-      shiki: 1.14.1
+      shiki: 1.16.3
       string-width: 7.2.0
       strip-ansi: 7.1.0
-      tsconfck: 3.1.1(typescript@5.5.4)
+      tinyexec: 0.3.0
+      tsconfck: 3.1.3(typescript@5.5.4)
       unist-util-visit: 5.0.0
       vfile: 6.0.3
       vite: 5.4.2(@types/node@18.19.47)
-      vitefu: 0.2.5(vite@5.4.2(@types/node@18.19.47))
+      vitefu: 1.0.2(vite@5.4.2(@types/node@18.19.47))
       which-pm: 3.0.0
       xxhash-wasm: 1.0.2
       yargs-parser: 21.1.1
@@ -6409,21 +6384,15 @@ snapshots:
       - terser
       - typescript
 
-  astro@5.0.0-alpha.1(@types/node@20.16.1)(rollup@4.21.0)(typescript@5.5.4):
+  astro@5.0.0-alpha.6(@types/node@20.16.1)(rollup@4.21.0)(typescript@5.5.4):
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/internal-helpers': 0.4.1
-      '@astrojs/markdown-remark': 6.0.0-alpha.0
+      '@astrojs/markdown-remark': 6.0.0-alpha.1
       '@astrojs/telemetry': 3.1.0
-      '@babel/core': 7.25.2
-      '@babel/generator': 7.25.5
-      '@babel/parser': 7.25.4
-      '@babel/plugin-transform-react-jsx': 7.25.2(@babel/core@7.25.2)
-      '@babel/traverse': 7.25.4
       '@babel/types': 7.25.4
       '@oslojs/encoding': 0.4.1
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
-      '@types/babel__core': 7.20.5
       '@types/cookie': 0.6.0
       acorn: 8.12.1
       aria-query: 5.3.0
@@ -6443,8 +6412,8 @@ snapshots:
       es-module-lexer: 1.5.4
       esbuild: 0.21.5
       estree-walker: 3.0.3
-      execa: 8.0.1
       fast-glob: 3.3.2
+      fastq: 1.17.1
       flattie: 1.1.1
       github-slugger: 2.0.0
       gray-matter: 4.0.3
@@ -6453,6 +6422,7 @@ snapshots:
       js-yaml: 4.1.0
       kleur: 4.1.5
       magic-string: 0.30.11
+      magicast: 0.3.5
       micromatch: 4.0.8
       mrmime: 2.0.0
       neotraverse: 0.6.18
@@ -6464,14 +6434,15 @@ snapshots:
       prompts: 2.4.2
       rehype: 13.0.1
       semver: 7.6.3
-      shiki: 1.14.1
+      shiki: 1.16.3
       string-width: 7.2.0
       strip-ansi: 7.1.0
-      tsconfck: 3.1.1(typescript@5.5.4)
+      tinyexec: 0.3.0
+      tsconfck: 3.1.3(typescript@5.5.4)
       unist-util-visit: 5.0.0
       vfile: 6.0.3
       vite: 5.4.2(@types/node@20.16.1)
-      vitefu: 0.2.5(vite@5.4.2(@types/node@20.16.1))
+      vitefu: 1.0.2(vite@5.4.2(@types/node@20.16.1))
       which-pm: 3.0.0
       xxhash-wasm: 1.0.2
       yargs-parser: 21.1.1
@@ -6493,21 +6464,15 @@ snapshots:
       - terser
       - typescript
 
-  astro@5.0.0-alpha.1(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4):
+  astro@5.0.0-alpha.6(@types/node@22.4.1)(rollup@4.21.0)(typescript@5.5.4):
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/internal-helpers': 0.4.1
-      '@astrojs/markdown-remark': 6.0.0-alpha.0
+      '@astrojs/markdown-remark': 6.0.0-alpha.1
       '@astrojs/telemetry': 3.1.0
-      '@babel/core': 7.25.2
-      '@babel/generator': 7.25.5
-      '@babel/parser': 7.25.4
-      '@babel/plugin-transform-react-jsx': 7.25.2(@babel/core@7.25.2)
-      '@babel/traverse': 7.25.4
       '@babel/types': 7.25.4
       '@oslojs/encoding': 0.4.1
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
-      '@types/babel__core': 7.20.5
       '@types/cookie': 0.6.0
       acorn: 8.12.1
       aria-query: 5.3.0
@@ -6527,8 +6492,8 @@ snapshots:
       es-module-lexer: 1.5.4
       esbuild: 0.21.5
       estree-walker: 3.0.3
-      execa: 8.0.1
       fast-glob: 3.3.2
+      fastq: 1.17.1
       flattie: 1.1.1
       github-slugger: 2.0.0
       gray-matter: 4.0.3
@@ -6537,6 +6502,7 @@ snapshots:
       js-yaml: 4.1.0
       kleur: 4.1.5
       magic-string: 0.30.11
+      magicast: 0.3.5
       micromatch: 4.0.8
       mrmime: 2.0.0
       neotraverse: 0.6.18
@@ -6548,14 +6514,15 @@ snapshots:
       prompts: 2.4.2
       rehype: 13.0.1
       semver: 7.6.3
-      shiki: 1.14.1
+      shiki: 1.16.3
       string-width: 7.2.0
       strip-ansi: 7.1.0
-      tsconfck: 3.1.1(typescript@5.5.4)
+      tinyexec: 0.3.0
+      tsconfck: 3.1.3(typescript@5.5.4)
       unist-util-visit: 5.0.0
       vfile: 6.0.3
       vite: 5.4.2(@types/node@22.4.1)
-      vitefu: 0.2.5(vite@5.4.2(@types/node@22.4.1))
+      vitefu: 1.0.2(vite@5.4.2(@types/node@22.4.1))
       which-pm: 3.0.0
       xxhash-wasm: 1.0.2
       yargs-parser: 21.1.1
@@ -6586,7 +6553,7 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-syntax-jsx': 7.24.7(@babel/core@7.25.2)
-      '@babel/types': 7.25.2
+      '@babel/types': 7.25.4
       html-entities: 2.3.3
       validate-html-nesting: 1.2.2
 
@@ -7433,6 +7400,15 @@ snapshots:
       vfile: 6.0.3
       vfile-message: 4.0.2
 
+  hast-util-from-html@2.0.2:
+    dependencies:
+      '@types/hast': 3.0.4
+      devlop: 1.1.0
+      hast-util-from-parse5: 8.0.1
+      parse5: 7.1.2
+      vfile: 6.0.3
+      vfile-message: 4.0.2
+
   hast-util-from-parse5@8.0.1:
     dependencies:
       '@types/hast': 3.0.4
@@ -7731,6 +7707,12 @@ snapshots:
   magic-string@0.30.11:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  magicast@0.3.5:
+    dependencies:
+      '@babel/parser': 7.25.4
+      '@babel/types': 7.25.4
+      source-map-js: 1.2.0
 
   make-dir@3.1.0:
     dependencies:
@@ -8224,6 +8206,8 @@ snapshots:
     dependencies:
       mimic-function: 5.0.1
 
+  oniguruma-to-js@0.3.3: {}
+
   only-allow@1.2.1:
     dependencies:
       which-pm-runs: 1.1.0
@@ -8464,6 +8448,8 @@ snapshots:
       '@eslint-community/regexpp': 4.11.0
 
   regenerator-runtime@0.14.1: {}
+
+  regex@4.3.2: {}
 
   regexp-ast-analysis@0.7.1:
     dependencies:
@@ -8758,9 +8744,10 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  shiki@1.14.1:
+  shiki@1.16.3:
     dependencies:
-      '@shikijs/core': 1.14.1
+      '@shikijs/core': 1.16.3
+      '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
 
   shimmer@1.2.1: {}
@@ -8907,6 +8894,8 @@ snapshots:
 
   tiny-invariant@1.3.3: {}
 
+  tinyexec@0.3.0: {}
+
   tmp@0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
@@ -8929,7 +8918,7 @@ snapshots:
     dependencies:
       typescript: 5.5.4
 
-  tsconfck@3.1.1(typescript@5.5.4):
+  tsconfck@3.1.3(typescript@5.5.4):
     optionalDependencies:
       typescript: 5.5.4
 
@@ -9144,15 +9133,19 @@ snapshots:
       '@types/node': 22.4.1
       fsevents: 2.3.3
 
-  vitefu@0.2.5(vite@5.4.2(@types/node@18.19.47)):
+  vitefu@0.2.5(vite@5.4.2(@types/node@22.4.1)):
+    optionalDependencies:
+      vite: 5.4.2(@types/node@22.4.1)
+
+  vitefu@1.0.2(vite@5.4.2(@types/node@18.19.47)):
     optionalDependencies:
       vite: 5.4.2(@types/node@18.19.47)
 
-  vitefu@0.2.5(vite@5.4.2(@types/node@20.16.1)):
+  vitefu@1.0.2(vite@5.4.2(@types/node@20.16.1)):
     optionalDependencies:
       vite: 5.4.2(@types/node@20.16.1)
 
-  vitefu@0.2.5(vite@5.4.2(@types/node@22.4.1)):
+  vitefu@1.0.2(vite@5.4.2(@types/node@22.4.1)):
     optionalDependencies:
       vite: 5.4.2(@types/node@22.4.1)
 

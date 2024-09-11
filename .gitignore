@@ -11,6 +11,7 @@ package-lock.json
 .eslintcache
 .pnpm-store
 .idea/
+**/fixtures/**/.astro
 
 # ignore top-level vscode settings
 /.vscode/settings.json
@@ -20,4 +21,3 @@ package-lock.json
 
 # exclude IntelliJ/WebStorm stuff
 .idea
-
