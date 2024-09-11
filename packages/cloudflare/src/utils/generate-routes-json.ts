@@ -232,7 +232,7 @@ export async function createRoutesFile(
 	for (const page of pages) {
 		if (page.pathname === '404') hasPrerendered404 = true;
 		const pageSegments = removeLeadingForwardSlash(page.pathname)
-			.split(process.platform === `win32` ? win32.sep : posix.sep)
+			.split(process.platform === 'win32' ? win32.sep : posix.sep)
 			.filter(Boolean)
 			.map((s) => {
 				return getParts(s);
