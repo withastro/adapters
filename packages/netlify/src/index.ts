@@ -5,7 +5,13 @@ import { fileURLToPath } from 'node:url';
 import { emptyDir } from '@astrojs/internal-helpers/fs';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import type { Context } from '@netlify/functions';
-import type { AstroConfig, AstroIntegration, AstroIntegrationLogger, RouteData } from 'astro';
+import type {
+	AstroConfig,
+	AstroIntegration,
+	AstroIntegrationLogger,
+	HookParameters,
+	RouteData,
+} from 'astro';
 import { build } from 'esbuild';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import type { Args } from './ssr-function.js';
@@ -201,7 +207,7 @@ export default function netlifyIntegration(
 	// Secret used to verify that the caller is the astro-generated edge middleware and not a third-party
 	const middlewareSecret = randomUUID();
 
-	let finalBuildOutput: 'server' | 'static' | undefined;
+	let finalBuildOutput: HookParameters<'astro:config:done'>['buildOutput'];
 
 	const TRACE_CACHE = {};
 
