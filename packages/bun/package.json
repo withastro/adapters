@@ -1,0 +1,57 @@
+{
+  "name": "@astrojs/bun",
+  "description": "Deploy your site to a Bun.js server",
+  "version": "8.3.3",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "author": "withastro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/withastro/adapters.git",
+    "directory": "packages/bun"
+  },
+  "keywords": ["withastro", "astro-adapter"],
+  "bugs": "https://github.com/withastro/adapters/issues",
+  "homepage": "https://docs.astro.build/en/guides/integrations-guide/bun/",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./preview": {
+      "types": "./dist/preview.d.ts",
+      "default": "./dist/preview.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests\" && exit 0"
+  },
+  "dependencies": {
+    "server-destroy": "^1.0.1"
+  },
+  "peerDependencies": {
+    "astro": "^4.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/test-utils": "workspace:*",
+    "@types/bun": "^1.1.9",
+    "@types/node": "^18.19.50",
+    "@types/server-destroy": "^1.0.4",
+    "astro": "^4.15.4",
+    "astro-scripts": "workspace:*",
+    "cheerio": "1.0.0",
+    "express": "^4.19.2",
+    "node-mocks-http": "^1.15.1"
+  },
+  "publishConfig": {
+    "provenance": true
+  }
+}

@@ -21,3 +21,7 @@ package-lock.json
 # exclude IntelliJ/WebStorm stuff
 .idea
 
+# exclude tests artifacts
+**/test/**/.astro
+**/test/**/env.d.ts
+
