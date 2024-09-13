@@ -17,24 +17,11 @@ export function getAdapter(options: Options): AstroAdapter {
 			hybridOutput: 'stable',
 			staticOutput: 'stable',
 			serverOutput: 'stable',
-			assets: {
-				supportKind: 'stable',
-				isSharpCompatible: true,
-			},
+			sharpImageService: 'stable',
 			i18nDomains: 'experimental',
 			envGetSecret: 'stable',
 		},
 	};
-}
-
-// TODO: remove once we don't use a TLA anymore
-async function shouldExternalizeAstroEnvSetup() {
-	try {
-		await import('astro/env/setup');
-		return false;
-	} catch {
-		return true;
-	}
 }
 
 export default function createIntegration(userOptions: UserOptions): AstroIntegration {
@@ -54,11 +41,6 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 					vite: {
 						ssr: {
 							noExternal: ['@astrojs/node'],
-							...((await shouldExternalizeAstroEnvSetup())
-								? {
-										external: ['astro/env/setup'],
-									}
-								: {}),
 						},
 					},
 				});

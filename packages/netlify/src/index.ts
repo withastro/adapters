@@ -141,16 +141,6 @@ async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroInt
 	);
 }
 
-// TODO: remove once we don't use a TLA anymore
-async function shouldExternalizeAstroEnvSetup() {
-	try {
-		await import('astro/env/setup');
-		return false;
-	} catch {
-		return true;
-	}
-}
-
 export interface NetlifyIntegrationConfig {
 	/**
 	 * If enabled, On-Demand-Rendered pages are cached for up to a year.
@@ -435,11 +425,6 @@ export default function netlifyIntegration(
 								ignored: [fileURLToPath(new URL('./.netlify/**', rootDir))],
 							},
 						},
-						...((await shouldExternalizeAstroEnvSetup())
-							? {
-									ssr: { external: ['astro/env/setup'] },
-								}
-							: {}),
 					},
 					image: {
 						service: {
@@ -470,12 +455,7 @@ export default function netlifyIntegration(
 						hybridOutput: 'stable',
 						staticOutput: 'stable',
 						serverOutput: 'stable',
-						assets: {
-							// keeping this as experimental at least until Netlify Image CDN is out of beta
-							supportKind: 'experimental',
-							// still using Netlify Image CDN instead
-							isSharpCompatible: true,
-						},
+						sharpImageService: 'stable',
 						envGetSecret: 'experimental',
 					},
 				});
