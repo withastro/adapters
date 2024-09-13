@@ -47,7 +47,7 @@
     "web-vitals": "^3.5.2"
   },
   "peerDependencies": {
-    "astro": "^5.0.0-alpha.6"
+    "astro": "^5.0.0-alpha.7"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
