@@ -170,7 +170,7 @@ describe('_routes.json generation', () => {
 					'/_image',
 					'/dynamicPages/*',
 					'/mixedPages/dynamic',
-					'/mixedPages/subfolder/dynamic'
+					'/mixedPages/subfolder/dynamic',
 				],
 				exclude: [
 					'/_astro/*',
@@ -180,7 +180,7 @@ describe('_routes.json generation', () => {
 					'/404',
 					'/mixedPages/static',
 					'/mixedPages/subfolder/static',
-					'/staticPages/*'
+					'/staticPages/*',
 				],
 			});
 		});
