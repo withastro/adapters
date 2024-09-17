@@ -8,5 +8,13 @@
     "@astrojs/test-utils": "0.0.1",
     "@astrojs/vercel": "8.0.0-alpha.1"
   },
-  "changesets": []
+  "changesets": [
+    "blue-owls-peel",
+    "early-berries-rush",
+    "eighty-badgers-change",
+    "flat-dolls-nail",
+    "olive-jobs-press",
+    "sixty-trainers-shout",
+    "sweet-geckos-double"
+  ]
 }
