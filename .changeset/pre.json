@@ -1,9 +1,9 @@
 {
   "mode": "pre",
-  "tag": "alpha",
+  "tag": "beta",
   "initialVersions": {
     "@astrojs/cloudflare": "11.0.4",
-    "@astrojs/netlify": "5.5.1",
+    "@astrojs/netlify": "5.5.3",
     "@astrojs/node": "9.0.0-alpha.1",
     "@astrojs/test-utils": "0.0.1",
     "@astrojs/vercel": "8.0.0-alpha.1"
