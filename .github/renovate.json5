@@ -18,5 +18,8 @@
 
     // need further upgrade investigation
     "@netlify/functions",
+
+    // follow astro deps version
+    "esbuild",
   ],
 }
