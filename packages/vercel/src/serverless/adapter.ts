@@ -7,7 +7,7 @@ import type {
 	AstroConfig,
 	AstroIntegration,
 	AstroIntegrationLogger,
-	RouteData,
+	IntegrationRouteData,
 } from 'astro';
 import { AstroError } from 'astro/errors';
 import glob from 'fast-glob';
@@ -86,10 +86,7 @@ function getAdapter({
 			hybridOutput: 'stable',
 			staticOutput: 'stable',
 			serverOutput: 'stable',
-			assets: {
-				supportKind: 'stable',
-				isSharpCompatible: true,
-			},
+			sharpImageService: 'stable',
 			i18nDomains: 'experimental',
 			envGetSecret: 'stable',
 		},
@@ -182,7 +179,7 @@ export default function vercelServerless({
 	let _config: AstroConfig;
 	let _buildTempFolder: URL;
 	let _serverEntry: string;
-	let _entryPoints: Map<RouteData, URL>;
+	let _entryPoints: Map<IntegrationRouteData, URL>;
 	let _middlewareEntryPoint: URL | undefined;
 	// Extra files to be merged with `includeFiles` during build
 	const extraFilesToInclude: URL[] = [];
@@ -242,10 +239,7 @@ export default function vercelServerless({
 					},
 					vite: {
 						ssr: {
-							external: [
-								'@vercel/nft',
-								...((await shouldExternalizeAstroEnvSetup()) ? ['astro/env/setup'] : []),
-							],
+							external: ['@vercel/nft'],
 						},
 					},
 					...getAstroImageConfig(
@@ -302,7 +296,8 @@ export default function vercelServerless({
 
 				// Multiple entrypoint support
 				if (_entryPoints.size) {
-					const getRouteFuncName = (route: RouteData) => route.component.replace('src/pages/', '');
+					const getRouteFuncName = (route: IntegrationRouteData) =>
+						route.component.replace('src/pages/', '');
 
 					const getFallbackFuncName = (entryFile: URL) =>
 						basename(entryFile.toString())
@@ -314,7 +309,7 @@ export default function vercelServerless({
 							? getRouteFuncName(route)
 							: getFallbackFuncName(entryFile);
 
-						await builder.buildServerlessFolder(entryFile, func);
+						await builder.buildServerlessFolder(entryFile, func, _config.root);
 
 						routeDefinitions.push({
 							src: route.pattern.source,
@@ -325,7 +320,7 @@ export default function vercelServerless({
 					const entryFile = new URL(_serverEntry, _buildTempFolder);
 					if (isr) {
 						const isrConfig = typeof isr === 'object' ? isr : {};
-						await builder.buildServerlessFolder(entryFile, NODE_PATH);
+						await builder.buildServerlessFolder(entryFile, NODE_PATH, _config.root);
 						if (isrConfig.exclude?.length) {
 							const dest = _middlewareEntryPoint ? MIDDLEWARE_PATH : NODE_PATH;
 							for (const route of isrConfig.exclude) {
@@ -333,14 +328,14 @@ export default function vercelServerless({
 								routeDefinitions.push({ src: escapeRegex(route), dest });
 							}
 						}
-						await builder.buildISRFolder(entryFile, '_isr', isrConfig);
+						await builder.buildISRFolder(entryFile, '_isr', isrConfig, _config.root);
 						for (const route of routes) {
 							const src = route.pattern.source;
 							const dest = src.startsWith('^\\/_image') ? NODE_PATH : ISR_PATH;
 							if (!route.prerender) routeDefinitions.push({ src, dest });
 						}
 					} else {
-						await builder.buildServerlessFolder(entryFile, NODE_PATH);
+						await builder.buildServerlessFolder(entryFile, NODE_PATH, _config.root);
 						const dest = _middlewareEntryPoint ? MIDDLEWARE_PATH : NODE_PATH;
 						for (const route of routes) {
 							if (!route.prerender) routeDefinitions.push({ src: route.pattern.source, dest });
@@ -408,16 +403,6 @@ export default function vercelServerless({
 
 type Runtime = `nodejs${string}.x`;
 
-// TODO: remove once we don't use a TLA anymore
-async function shouldExternalizeAstroEnvSetup() {
-	try {
-		await import('astro/env/setup');
-		return false;
-	} catch {
-		return true;
-	}
-}
-
 class VercelBuilder {
 	readonly NTF_CACHE = {};
 
@@ -430,7 +415,7 @@ class VercelBuilder {
 		readonly runtime = getRuntime(process, logger)
 	) {}
 
-	async buildServerlessFolder(entry: URL, functionName: string) {
+	async buildServerlessFolder(entry: URL, functionName: string, root: URL) {
 		const { config, includeFiles, excludeFiles, logger, NTF_CACHE, runtime, maxDuration } = this;
 		// .vercel/output/functions/<name>.func/
 		const functionFolder = new URL(`./functions/${functionName}.func/`, config.outDir);
@@ -445,6 +430,7 @@ class VercelBuilder {
 				includeFiles,
 				excludeFiles,
 				logger,
+				root,
 			},
 			NTF_CACHE
 		);
@@ -464,8 +450,8 @@ class VercelBuilder {
 		});
 	}
 
-	async buildISRFolder(entry: URL, functionName: string, isr: VercelISRConfig) {
-		await this.buildServerlessFolder(entry, functionName);
+	async buildISRFolder(entry: URL, functionName: string, isr: VercelISRConfig, root: URL) {
+		await this.buildServerlessFolder(entry, functionName, root);
 		const prerenderConfig = new URL(
 			`./functions/${functionName}.prerender-config.json`,
 			this.config.outDir

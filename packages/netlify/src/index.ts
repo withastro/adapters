@@ -10,7 +10,7 @@ import type {
 	AstroIntegration,
 	AstroIntegrationLogger,
 	HookParameters,
-	RouteData,
+	IntegrationRouteData,
 } from 'astro';
 import { build } from 'esbuild';
 import { copyDependenciesToFunction } from './lib/nft.js';
@@ -26,7 +26,7 @@ export interface NetlifyLocals {
 	};
 }
 
-const isStaticRedirect = (route: RouteData) =>
+const isStaticRedirect = (route: IntegrationRouteData) =>
 	route.type === 'redirect' && (route.redirect || route.redirectRoute);
 
 type RemotePattern = AstroConfig['image']['remotePatterns'][number];
@@ -52,11 +52,11 @@ export function remotePatternToRegex(
 	if (hostname) {
 		if (hostname.startsWith('**.')) {
 			// match any number of subdomains
-			regexStr += '([a-z0-9]+\\.)*';
+			regexStr += '([a-z0-9-]+\\.)*';
 			hostname = hostname.substring(3);
 		} else if (hostname.startsWith('*.')) {
 			// match one subdomain
-			regexStr += '([a-z0-9]+\\.)?';
+			regexStr += '([a-z0-9-]+\\.)?';
 			hostname = hostname.substring(2); // Remove '*.' from the beginning
 		}
 		// Escape dots in the hostname
@@ -141,16 +141,6 @@ async function writeNetlifyFrameworkConfig(config: AstroConfig, logger: AstroInt
 	);
 }
 
-// TODO: remove once we don't use a TLA anymore
-async function shouldExternalizeAstroEnvSetup() {
-	try {
-		await import('astro/env/setup');
-		return false;
-	} catch {
-		return true;
-	}
-}
-
 export interface NetlifyIntegrationConfig {
 	/**
 	 * If enabled, On-Demand-Rendered pages are cached for up to a year.
@@ -222,7 +212,7 @@ export default function netlifyIntegration(
 			emptyDir(ssrBuildDir()),
 		]);
 
-	async function writeRedirects(routes: RouteData[], dir: URL) {
+	async function writeRedirects(routes: IntegrationRouteData[], dir: URL) {
 		const fallback = finalBuildOutput === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
@@ -248,7 +238,12 @@ export default function netlifyIntegration(
 	async function writeSSRFunction({
 		notFoundContent,
 		logger,
-	}: { notFoundContent?: string; logger: AstroIntegrationLogger }) {
+		root,
+	}: {
+		notFoundContent?: string;
+		logger: AstroIntegrationLogger;
+		root: URL;
+	}) {
 		const entry = new URL('./entry.mjs', ssrBuildDir());
 
 		const { handler } = await copyDependenciesToFunction(
@@ -258,6 +253,7 @@ export default function netlifyIntegration(
 				includeFiles: [],
 				excludeFiles: [],
 				logger,
+				root,
 			},
 			TRACE_CACHE
 		);
@@ -435,11 +431,6 @@ export default function netlifyIntegration(
 								ignored: [fileURLToPath(new URL('./.netlify/**', rootDir))],
 							},
 						},
-						...((await shouldExternalizeAstroEnvSetup())
-							? {
-									ssr: { external: ['astro/env/setup'] },
-								}
-							: {}),
 					},
 					image: {
 						service: {
@@ -470,12 +461,7 @@ export default function netlifyIntegration(
 						hybridOutput: 'stable',
 						staticOutput: 'stable',
 						serverOutput: 'stable',
-						assets: {
-							// keeping this as experimental at least until Netlify Image CDN is out of beta
-							supportKind: 'experimental',
-							// still using Netlify Image CDN instead
-							isSharpCompatible: true,
-						},
+						sharpImageService: 'stable',
 						envGetSecret: 'experimental',
 					},
 				});
@@ -492,7 +478,7 @@ export default function netlifyIntegration(
 					try {
 						notFoundContent = await readFile(new URL('./404.html', dir), 'utf8');
 					} catch {}
-					await writeSSRFunction({ notFoundContent, logger });
+					await writeSSRFunction({ notFoundContent, logger, root: _config.root });
 					logger.info('Generated SSR Function');
 				}
 				if (astroMiddlewareEntryPoint) {
