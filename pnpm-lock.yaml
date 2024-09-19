@@ -505,9 +505,6 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
-      web-vitals:
-        specifier: ^3.5.2
-        version: 3.5.2
     devDependencies:
       '@astrojs/test-utils':
         specifier: workspace:*
@@ -662,24 +659,6 @@ importers:
       '@astrojs/vercel':
         specifier: workspace:*
         version: link:../../..
-      astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-alpha.8(@types/node@22.4.1)(rollup@4.21.2)(typescript@5.5.4)
-
-  packages/vercel/test/fixtures/with-speed-insights-enabled/output-as-server:
-    dependencies:
-      '@astrojs/vercel':
-        specifier: workspace:*
-        version: link:../../../..
-      astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-alpha.8(@types/node@22.4.1)(rollup@4.21.2)(typescript@5.5.4)
-
-  packages/vercel/test/fixtures/with-speed-insights-enabled/output-as-static:
-    dependencies:
-      '@astrojs/vercel':
-        specifier: workspace:*
-        version: link:../../../..
       astro:
         specifier: ^5.0.0-alpha.8
         version: 5.0.0-alpha.8(@types/node@22.4.1)(rollup@4.21.2)(typescript@5.5.4)
@@ -4639,9 +4618,6 @@ packages:
   web-streams-polyfill@3.3.3:
     resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
-
-  web-vitals@3.5.2:
-    resolution: {integrity: sha512-c0rhqNcHXRkY/ogGDJQxZ9Im9D19hDihbzSQJrsioex+KnFgmMzBiy57Z1EjkhX/+OjyBpclDCzz2ITtjokFmg==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -9316,8 +9292,6 @@ snapshots:
   web-namespaces@2.0.1: {}
 
   web-streams-polyfill@3.3.3: {}
-
-  web-vitals@3.5.2: {}
 
   webidl-conversions@3.0.1: {}
 
