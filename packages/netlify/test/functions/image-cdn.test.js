@@ -33,7 +33,7 @@ describe(
 				const astronautPage = await fixture.readFile('astronaut/index.html');
 				const $ = cheerio.load(astronautPage);
 				const imgSrc = $('img[alt="an astronaut floating in space"]').attr('src');
-				assert.ok(imgSrc.startsWith("/.netlify/image"));
+				assert.ok(imgSrc.startsWith('/.netlify/image'));
 			});
 
 			it('relativizes local image URLs', async () => {
