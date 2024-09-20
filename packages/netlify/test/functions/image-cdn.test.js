@@ -2,6 +2,7 @@ import * as assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { remotePatternToRegex } from '@astrojs/netlify';
 import { loadFixture } from '@astrojs/test-utils';
+import * as cheerio from 'cheerio';
 
 describe(
 	'Image CDN',
@@ -30,7 +31,21 @@ describe(
 				await fixture.build();
 
 				const astronautPage = await fixture.readFile('astronaut/index.html');
-				assert.equal(astronautPage.includes(`src="/.netlify/image`), true);
+				const $ = cheerio.load(astronautPage);
+				const imgSrc = $('img[alt="an astronaut floating in space"]').attr('src');
+				assert.ok(imgSrc.startsWith("/.netlify/image"));
+			});
+
+			it('relativizes local image URLs', async () => {
+				process.env.NETLIFY = 'true';
+				const fixture = await loadFixture({ root });
+				await fixture.build();
+
+				const astronautPage = await fixture.readFile('astronaut/index.html');
+				const $ = cheerio.load(astronautPage);
+				const imgSrc = $('img[alt="an astronaut in a LM"]').attr('src');
+				const url = new URL(imgSrc, 'http://example.com');
+				assert.equal(url.searchParams.get('url'), '/buzz.jpg');
 			});
 
 			it('respects image CDN opt-out', async () => {

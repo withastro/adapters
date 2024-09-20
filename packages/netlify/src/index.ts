@@ -468,9 +468,7 @@ export default function netlifyIntegration(
 						staticOutput: 'stable',
 						serverOutput: 'stable',
 						assets: {
-							// keeping this as experimental at least until Netlify Image CDN is out of beta
-							supportKind: 'experimental',
-							// still using Netlify Image CDN instead
+							supportKind: 'stable',
 							isSharpCompatible: true,
 							isSquooshCompatible: true,
 						},

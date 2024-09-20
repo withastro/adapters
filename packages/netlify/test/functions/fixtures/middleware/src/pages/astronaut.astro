@@ -5,5 +5,8 @@ import astronautImage from "../astronaut.jpg"
 export const prerender = true;
 ---
 
+{import.meta.env.SITE}
+
 <Image src={astronautImage} alt="an astronaut floating in space" />
 
+<Image src={new URL('/buzz.jpg', Astro.site).href} alt="an astronaut in a LM" width={400} height={300} />
