@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { globby as glob } from 'globby';
+import glob from 'tiny-glob';
 
 const { GITHUB_REF = 'main' } = process.env;
 const baseUrl = new URL(`https://github.com/withastro/adapters/blob/${GITHUB_REF}/`);
@@ -82,7 +82,7 @@ function singularlize(text) {
 const packageMap = new Map();
 async function generatePackageMap() {
 	const packageRoot = new URL('../../packages/', import.meta.url);
-	const packages = await glob(['*/package.json', '*/*/package.json'], {
+	const packages = await glob('*/package.json', {
 		cwd: fileURLToPath(packageRoot),
 	});
 	await Promise.all(

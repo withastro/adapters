@@ -46,11 +46,11 @@ export function remotePatternToRegex(
 	if (hostname) {
 		if (hostname.startsWith('**.')) {
 			// match any number of subdomains
-			regexStr += '([a-z0-9]+\\.)*';
+			regexStr += '([a-z0-9-]+\\.)*';
 			hostname = hostname.substring(3);
 		} else if (hostname.startsWith('*.')) {
 			// match one subdomain
-			regexStr += '([a-z0-9]+\\.)?';
+			regexStr += '([a-z0-9-]+\\.)?';
 			hostname = hostname.substring(2); // Remove '*.' from the beginning
 		}
 		// Escape dots in the hostname
@@ -380,7 +380,7 @@ export default function netlifyIntegration(
 			ip:
 				typeof req.headers['x-nf-client-connection-ip'] === 'string'
 					? req.headers['x-nf-client-connection-ip']
-					: req.socket.remoteAddress ?? '127.0.0.1',
+					: (req.socket.remoteAddress ?? '127.0.0.1'),
 			server: {
 				region: 'local-dev',
 			},
