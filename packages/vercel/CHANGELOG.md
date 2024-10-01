@@ -1,5 +1,11 @@
 # @astrojs/vercel
 
+## 8.0.0-beta.3
+
+### Major Changes
+
+- [#384](https://github.com/withastro/adapters/pull/384) [`7d83f60`](https://github.com/withastro/adapters/commit/7d83f601b8fbe5b4787ec640c0d6e46199f0ff95) Thanks [@bluwy](https://github.com/bluwy)! - Removes deprecated `speedInsights` option in favor of Vercel's direct support: https://vercel.com/docs/speed-insights/quickstart
+
 ## 8.0.0-beta.2
 
 ### Major Changes
