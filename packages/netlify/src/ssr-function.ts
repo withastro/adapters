@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import type { Context } from '@netlify/functions';
 import type { SSRManifest } from 'astro';
 import { App } from 'astro/app';
@@ -17,14 +18,31 @@ export interface Args {
 
 const clientAddressSymbol = Symbol.for('astro.clientAddress');
 
+function getSiteRoot() {
+	// The entrypoint is created in `.netlify/build`, so we can find the root by going one level up
+	const url = import.meta.url;
+	const index = url.lastIndexOf('.netlify/build/');
+	return fileURLToPath(index !== -1 ? url.substring(0, index) : url);
+}
+
 export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args) => {
 	const app = new App(manifest);
+
+	const root = getSiteRoot();
 
 	function createHandler(integrationConfig: {
 		cacheOnDemandPages: boolean;
 		notFoundContent?: string;
 	}) {
 		return async function handler(request: Request, context: Context) {
+			// Change working directory to the site root, rather than the repo root
+			// This allows relative paths to match those set in `includedFiles` in astro.config.mjs
+			try {
+				process.chdir(root);
+			} catch (err) {
+				console.warn('Failed to chdir to root', err);
+			}
+
 			const routeData = app.match(request);
 			if (!routeData && typeof integrationConfig.notFoundContent !== 'undefined') {
 				return new Response(integrationConfig.notFoundContent, {

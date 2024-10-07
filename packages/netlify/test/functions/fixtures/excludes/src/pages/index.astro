@@ -1,0 +1,18 @@
+---
+
+async function moo() {
+	const cow = await import('cowsay')
+	return cow.say({ text: 'Moo!' });
+}
+
+if(Astro.url.searchParams.get('moo')) {
+	await moo();
+}
+
+---
+<html>
+<head><title>Testing</title></head>
+<body>
+	<h1>Hi</h1>
+</body>
+</html>
