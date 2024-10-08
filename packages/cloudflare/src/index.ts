@@ -63,7 +63,6 @@ export type Options = {
 		/** Configuration persistence settings. Default '.wrangler/state/v3' */
 		persist?: boolean | { path: string };
 	};
-
 	/**
 	 * Allow bundling cloudflare worker specific file types as importable modules. Defaults to true.
 	 * When enabled, allows imports of '.wasm', '.bin', and '.txt' file types
@@ -72,6 +71,12 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
+	/**
+	 * 
+	 */
+	cloudflare?: {
+		workerAssets?: boolean;
+	}
 };
 
 function wrapWithSlashes(path: string): string {
@@ -117,12 +122,17 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				addWatchFile,
 				addMiddleware,
 			}) => {
+				let clientURL = new URL(`.${wrapWithSlashes(config.base)}`, config.outDir);
+				if (args?.cloudflare?.workerAssets) {
+					clientURL = new URL(`./assets/${wrapWithSlashes(config.base)}`, config.outDir);
+				}
+
 				updateConfig({
 					build: {
-						client: new URL(`.${wrapWithSlashes(config.base)}`, config.outDir),
+						client: clientURL,
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
-						redirects: false,
+						redirects: !!args?.cloudflare?.workerAssets,
 					},
 					vite: {
 						plugins: [
@@ -289,79 +299,81 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 				}
 
-				let redirectsExists = false;
-				try {
-					const redirectsStat = await stat(new URL('./_redirects', _config.outDir));
-					if (redirectsStat.isFile()) {
-						redirectsExists = true;
+				if (!args?.cloudflare?.workerAssets) {
+					let redirectsExists = false;
+					try {
+						const redirectsStat = await stat(new URL('./_redirects', _config.outDir));
+						if (redirectsStat.isFile()) {
+							redirectsExists = true;
+						}
+					} catch (error) {
+						redirectsExists = false;
 					}
-				} catch (error) {
-					redirectsExists = false;
-				}
 
-				const redirects: RouteData['segments'][] = [];
-				if (redirectsExists) {
-					const rl = createInterface({
-						input: createReadStream(new URL('./_redirects', _config.outDir)),
-						crlfDelay: Number.POSITIVE_INFINITY,
-					});
+					const redirects: RouteData['segments'][] = [];
+					if (redirectsExists) {
+						const rl = createInterface({
+							input: createReadStream(new URL('./_redirects', _config.outDir)),
+							crlfDelay: Number.POSITIVE_INFINITY,
+						});
 
-					for await (const line of rl) {
-						const parts = line.split(' ');
-						if (parts.length >= 2) {
-							const p = removeLeadingForwardSlash(parts[0])
-								.split('/')
-								.filter(Boolean)
-								.map((s: string) => {
-									const syntax = s
-										.replace(/\/:.*?(?=\/|$)/g, '/*')
-										// remove query params as they are not supported by cloudflare
-										.replace(/\?.*$/, '');
-									return getParts(syntax);
-								});
-							redirects.push(p);
+						for await (const line of rl) {
+							const parts = line.split(' ');
+							if (parts.length >= 2) {
+								const p = removeLeadingForwardSlash(parts[0])
+									.split('/')
+									.filter(Boolean)
+									.map((s: string) => {
+										const syntax = s
+											.replace(/\/:.*?(?=\/|$)/g, '/*')
+											// remove query params as they are not supported by cloudflare
+											.replace(/\?.*$/, '');
+										return getParts(syntax);
+									});
+								redirects.push(p);
+							}
 						}
 					}
-				}
 
-				let routesExists = false;
-				try {
-					const routesStat = await stat(new URL('./_routes.json', _config.outDir));
-					if (routesStat.isFile()) {
-						routesExists = true;
-					}
-				} catch (error) {
-					routesExists = false;
-				}
-
-				if (!routesExists) {
-					await createRoutesFile(
-						_config,
-						logger,
-						routes,
-						pages,
-						redirects,
-						args?.routes?.extend?.include,
-						args?.routes?.extend?.exclude
-					);
-				}
-
-				const redirectRoutes: [RouteData, string][] = [];
-				for (const route of routes) {
-					if (route.type === 'redirect') redirectRoutes.push([route, '']);
-				}
-
-				const trueRedirects = createRedirectsFromAstroRoutes({
-					config: _config,
-					routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
-					dir,
-				});
-
-				if (!trueRedirects.empty()) {
+					let routesExists = false;
 					try {
-						await appendFile(new URL('./_redirects', _config.outDir), trueRedirects.print());
+						const routesStat = await stat(new URL('./_routes.json', _config.outDir));
+						if (routesStat.isFile()) {
+							routesExists = true;
+						}
 					} catch (error) {
-						logger.error('Failed to write _redirects file');
+						routesExists = false;
+					}
+
+					if (!routesExists) {
+						await createRoutesFile(
+							_config,
+							logger,
+							routes,
+							pages,
+							redirects,
+							args?.routes?.extend?.include,
+							args?.routes?.extend?.exclude
+						);
+					}
+
+					const redirectRoutes: [RouteData, string][] = [];
+					for (const route of routes) {
+						if (route.type === 'redirect') redirectRoutes.push([route, '']);
+					}
+
+					const trueRedirects = createRedirectsFromAstroRoutes({
+						config: _config,
+						routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
+						dir,
+					});
+
+					if (!trueRedirects.empty()) {
+						try {
+							await appendFile(new URL('./_redirects', _config.outDir), trueRedirects.print());
+						} catch (error) {
+							logger.error('Failed to write _redirects file');
+						}
 					}
 				}
 			},
