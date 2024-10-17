@@ -17,9 +17,18 @@ const service: ExternalImageService = {
 	getURL(options) {
 		const query = new URLSearchParams();
 
-		const fileSrc = isESMImportedImage(options.src)
+		let fileSrc = isESMImportedImage(options.src)
 			? removeLeadingForwardSlash(options.src.src)
 			: options.src;
+		const site = import.meta.env.SITE;
+		if (URL.canParse(fileSrc)) {
+			const url = new URL(fileSrc);
+			if (import.meta.env.NETLIFY_LOCAL && url.hostname === 'localhost') {
+				fileSrc = fileSrc.substring(url.origin.length);
+			} else if (site && fileSrc.startsWith(site)) {
+				fileSrc = fileSrc.substring(site.length);
+			}
+		}
 
 		query.set('url', fileSrc);
 
