@@ -130,6 +130,14 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							// Allows imports of '.wasm', '.bin', and '.txt' file types
 							cloudflareModulePlugin,
 						],
+						ssr: {
+							external: ['cloudflare:sockets'],
+						},
+						build: {
+							rollupOptions: {
+								external: ['cloudflare:sockets'],
+							},
+						}
 					},
 					integrations: [astroWhen()],
 					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
