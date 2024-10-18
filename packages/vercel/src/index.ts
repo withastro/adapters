@@ -67,9 +67,9 @@ function getAdapter({
 	edgeMiddleware,
 	middlewareSecret,
 	skewProtection,
-						buildOutput
+	buildOutput,
 }: {
-	buildOutput: "server" | "static"
+	buildOutput: 'server' | 'static';
 	edgeMiddleware: boolean;
 	middlewareSecret: string;
 	skewProtection: boolean;
@@ -221,10 +221,10 @@ export default function vercelAdapter({
 							if (vercelConfig.trailingSlash === true && config.trailingSlash === 'always') {
 								logger.warn(
 									'\n' +
-									`\tYour "vercel.json" \`trailingSlash\` configuration (set to \`true\`) will conflict with your Astro \`trailinglSlash\` configuration (set to \`"always"\`).\n` +
-									// biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-									`\tThis would cause infinite redirects under certain conditions and throw an \`ERR_TOO_MANY_REDIRECTS\` error.\n` +
-									`\tTo prevent this, your Astro configuration is updated to \`"ignore"\` during builds.\n`
+										`\tYour "vercel.json" \`trailingSlash\` configuration (set to \`true\`) will conflict with your Astro \`trailinglSlash\` configuration (set to \`"always"\`).\n` +
+										// biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+										`\tThis would cause infinite redirects under certain conditions and throw an \`ERR_TOO_MANY_REDIRECTS\` error.\n` +
+										`\tTo prevent this, your Astro configuration is updated to \`"ignore"\` during builds.\n`
 								);
 								updateConfig({
 									trailingSlash: 'ignore',
@@ -282,7 +282,7 @@ export default function vercelAdapter({
 							edgeMiddleware: false,
 							middlewareSecret: '',
 							skewProtection,
-							buildOutput
+							buildOutput,
 						})
 					);
 				}
@@ -327,8 +327,6 @@ export default function vercelAdapter({
 
 						mergeGlobbedIncludes(_config.vite.assetsInclude);
 					}
-
-
 
 					const includeFiles = _includeFiles
 						.map((file) => new URL(file, _config.root))
@@ -403,7 +401,7 @@ export default function vercelAdapter({
 				const destination =
 					buildOutput === 'server'
 						? new URL('./config.json', _config.outDir)
-						: new URL('./.vercel/output/config.json', _config.root)
+						: new URL('./.vercel/output/config.json', _config.root);
 				const finalRoutes = [
 					...getRedirects(routes, _config),
 					{
@@ -413,7 +411,7 @@ export default function vercelAdapter({
 					},
 					{ handle: 'filesystem' },
 				];
-				if (buildOutput === "server") {
+				if (buildOutput === 'server') {
 					finalRoutes.push(...routeDefinitions);
 				}
 
@@ -434,11 +432,8 @@ export default function vercelAdapter({
 							dest: '/404.html',
 							status: 404,
 						});
-
 					}
 				}
-
-
 
 				let images: VercelImageConfig | undefined;
 				if (imageService || imagesConfig) {
