@@ -19,10 +19,10 @@ export type DevImageService = 'sharp' | (string & {});
 type ImageFormat = 'image/avif' | 'image/webp';
 
 type RemotePattern = {
-	protocol?: 'http' | 'https';
-	hostname: string;
-	port?: string;
-	pathname?: string;
+	port?: string | undefined;
+	protocol?: string | undefined;
+	hostname?: string | undefined;
+	pathname?: string | undefined;
 };
 
 export type VercelImageConfig = {
