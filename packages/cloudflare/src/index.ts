@@ -137,7 +137,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							rollupOptions: {
 								external: ['cloudflare:sockets'],
 							},
-						}
+						},
 					},
 					integrations: [astroWhen()],
 					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
