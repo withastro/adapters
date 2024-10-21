@@ -35,13 +35,15 @@ export function createExports(manifest: SSRManifest) {
 
 		// static assets fallback, in case default _routes.json is not used
 		if (manifest.assets.has(pathname)) {
-			return env.ASSETS.fetch(request);
+			return env.ASSETS.fetch(request.url.replace(/\.html$/, ''));
 		}
 
 		const routeData = app.match(request);
 		if (!routeData) {
 			// https://developers.cloudflare.com/pages/functions/api-reference/#envassetsfetch
-			const asset = await env.ASSETS.fetch(request);
+			const asset = await env.ASSETS.fetch(
+				request.url.replace(/index.html$/, '').replace(/\.html$/, '')
+			);
 			if (asset.status !== 404) {
 				return asset;
 			}

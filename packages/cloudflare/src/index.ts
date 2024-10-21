@@ -72,10 +72,15 @@ export type Options = {
 	 */
 	cloudflareModules?: boolean;
 	/**
-	 *
+	 * Lists all experimental features the adapter supports.
 	 */
-	cloudflare?: {
-		workerAssets?: boolean;
+	experimental?: {
+		/**
+		 * Enables support for Cloudflare Workers assets. Defaults to false.
+		 */
+		cloudflare?: {
+			workerAssets?: boolean;
+		};
 	};
 };
 
@@ -123,7 +128,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				addMiddleware,
 			}) => {
 				let clientURL = new URL(`.${wrapWithSlashes(config.base)}`, config.outDir);
-				if (args?.cloudflare?.workerAssets) {
+				if (args?.experimental?.cloudflare?.workerAssets) {
 					clientURL = new URL(`./assets/${wrapWithSlashes(config.base)}`, config.outDir);
 				}
 
@@ -132,7 +137,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						client: clientURL,
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
-						redirects: !!args?.cloudflare?.workerAssets,
+						redirects: !!args?.experimental?.cloudflare?.workerAssets,
 					},
 					vite: {
 						plugins: [
@@ -299,7 +304,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 				}
 
-				if (!args?.cloudflare?.workerAssets) {
+				if (!args?.experimental?.cloudflare?.workerAssets) {
 					let redirectsExists = false;
 					try {
 						const redirectsStat = await stat(new URL('./_redirects', _config.outDir));
