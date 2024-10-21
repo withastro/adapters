@@ -133,12 +133,12 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								name: 'vite:cf-imports',
 								enforce: 'pre',
 								resolveId(source) {
-									if (source.startsWith("cloudflare:")) {
+									if (source.startsWith('cloudflare:')) {
 										return { id: source, external: true };
 									}
 									return null;
 								},
-							}
+							},
 						],
 					},
 					integrations: [astroWhen()],
