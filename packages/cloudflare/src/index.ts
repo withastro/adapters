@@ -72,11 +72,11 @@ export type Options = {
 	 */
 	cloudflareModules?: boolean;
 	/**
-	 * 
+	 *
 	 */
 	cloudflare?: {
 		workerAssets?: boolean;
-	}
+	};
 };
 
 function wrapWithSlashes(path: string): string {

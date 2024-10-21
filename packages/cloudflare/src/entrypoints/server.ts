@@ -41,9 +41,7 @@ export function createExports(manifest: SSRManifest) {
 		const routeData = app.match(request);
 		if (!routeData) {
 			// https://developers.cloudflare.com/pages/functions/api-reference/#envassetsfetch
-			const asset = await env.ASSETS.fetch(
-				request
-			);
+			const asset = await env.ASSETS.fetch(request);
 			if (asset.status !== 404) {
 				return asset;
 			}
