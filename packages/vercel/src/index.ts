@@ -16,6 +16,7 @@ import {
 	getAstroImageConfig,
 	getDefaultImageConfig,
 } from './image/shared.js';
+import type { RemotePattern } from './image/shared.js';
 import { copyDependenciesToFunction } from './lib/nft.js';
 import { escapeRegex, getRedirects } from './lib/redirects.js';
 import {
@@ -442,10 +443,17 @@ export default function vercelAdapter({
 							...imagesConfig,
 							domains: [...imagesConfig.domains, ..._config.image.domains],
 							remotePatterns: [
-								...(imagesConfig.remotePatterns ?? []),
-								..._config.image.remotePatterns,
+								// ...(imagesConfig.remotePatterns ?? []),
+								// ..._config.image.remotePatterns,
 							],
 						};
+						if (imagesConfig.remotePatterns) {
+							images.remotePatterns?.push(...imagesConfig.remotePatterns);
+						}
+						const remotePatterns = _config.image.remotePatterns;
+						if (isAcceptedPattern(remotePatterns)) {
+							images.remotePatterns?.push(remotePatterns);
+						}
 					} else {
 						images = getDefaultImageConfig(_config.image);
 					}
@@ -466,6 +474,13 @@ export default function vercelAdapter({
 			},
 		},
 	};
+}
+
+function isAcceptedPattern(pattern: any): pattern is RemotePattern {
+	if (pattern?.port.statsWith('http') || pattern?.port.startsWith('https')) {
+		return true;
+	}
+	return false;
 }
 
 type Runtime = `nodejs${string}.x`;
