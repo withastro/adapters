@@ -445,8 +445,10 @@ export default function vercelAdapter({
 							remotePatterns: [...(imagesConfig.remotePatterns ?? [])],
 						};
 						const remotePatterns = _config.image.remotePatterns;
-						if (isAcceptedPattern(remotePatterns)) {
-							images.remotePatterns?.push(remotePatterns);
+						for (const pattern of remotePatterns) {
+							if (isAcceptedPattern(pattern)) {
+								images.remotePatterns?.push(pattern);
+							}
 						}
 					} else {
 						images = getDefaultImageConfig(_config.image);
