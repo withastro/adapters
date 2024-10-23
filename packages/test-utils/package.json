@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "astro": "^4.15.12",
+    "astro": "^4.16.7",
     "execa": "^8.0.1",
     "fast-glob": "^3.3.2",
     "strip-ansi": "^7.1.0"
