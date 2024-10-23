@@ -443,13 +443,9 @@ export default function vercelAdapter({
 							...imagesConfig,
 							domains: [...imagesConfig.domains, ..._config.image.domains],
 							remotePatterns: [
-								// ...(imagesConfig.remotePatterns ?? []),
-								// ..._config.image.remotePatterns,
+								...(imagesConfig.remotePatterns ?? []),
 							],
 						};
-						if (imagesConfig.remotePatterns) {
-							images.remotePatterns?.push(...imagesConfig.remotePatterns);
-						}
 						const remotePatterns = _config.image.remotePatterns;
 						if (isAcceptedPattern(remotePatterns)) {
 							images.remotePatterns?.push(remotePatterns);
