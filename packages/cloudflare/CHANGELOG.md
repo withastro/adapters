@@ -1,5 +1,11 @@
 # @astrojs/cloudflare
 
+## 11.2.0
+
+### Minor Changes
+
+- [#423](https://github.com/withastro/adapters/pull/423) [`169ac24`](https://github.com/withastro/adapters/commit/169ac24451d8ac0e47dda27f7148d2ddad66e3dc) Thanks [@schummar](https://github.com/schummar)! - Changes the logic which generates the `_routes.json` file to improve generation for projects with many static pages, while still making sure all routes work as expected.
+
 ## 11.1.0
 
 ### Minor Changes
