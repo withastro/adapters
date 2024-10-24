@@ -473,7 +473,10 @@ export default function vercelAdapter({
 }
 
 function isAcceptedPattern(pattern: any): pattern is RemotePattern {
-	if (pattern?.port.statsWith('http') || pattern?.port.startsWith('https')) {
+	if (!pattern?.hostname) {
+		return false;
+	}
+	if (pattern?.protocol?.statsWith('http') || pattern?.protocol?.startsWith('https')) {
 		return true;
 	}
 	return false;
