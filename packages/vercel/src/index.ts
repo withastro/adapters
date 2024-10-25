@@ -476,7 +476,7 @@ function isAcceptedPattern(pattern: any): pattern is RemotePattern {
 	if (!pattern?.hostname) {
 		return false;
 	}
-	if (pattern?.protocol?.statsWith('http') || pattern?.protocol?.startsWith('https')) {
+	if (pattern?.protocol === 'http' || pattern?.protocol === 'https') {
 		return true;
 	}
 	return false;
