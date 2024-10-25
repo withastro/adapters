@@ -473,13 +473,16 @@ export default function vercelAdapter({
 }
 
 function isAcceptedPattern(pattern: any): pattern is RemotePattern {
-	if (!pattern?.hostname) {
+	if (pattern == null) {
 		return false;
 	}
-	if (pattern?.protocol === 'http' || pattern?.protocol === 'https') {
-		return true;
+	if (!pattern.hostname) {
+		return false;
 	}
-	return false;
+	if (pattern.protocol && (pattern.protocol !== 'http' || pattern.protocol !== 'https')) {
+		return false;
+	}
+	return true;
 }
 
 type Runtime = `nodejs${string}.x`;
