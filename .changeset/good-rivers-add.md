@@ -1,5 +1,5 @@
 ---
-'@astrojs/cloudflare': minor
+'@astrojs/cloudflare': patch
 ---
 
-Improves default config to support `cloudflare:sockets` imports
+Fixes an issue where `cloudflare:` scoped imports made the build fail. We externalize all imports with the `cloudflare:` scope by default now.
