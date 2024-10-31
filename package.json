@@ -38,7 +38,7 @@
         "react-dom",
         "@types/react"
       ],
-      "allowAny": ["astro"]
+      "allowAny": ["astro", "vite"]
     }
   },
   "devDependencies": {

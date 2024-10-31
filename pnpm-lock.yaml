@@ -118,8 +118,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@22.8.5)
+        specifier: 6.0.0-beta.2
+        version: 6.0.0-beta.2(@types/node@22.8.5)
 
   packages/cloudflare/test/fixtures/astro-dev-platform:
     dependencies:
@@ -234,8 +234,8 @@ importers:
         specifier: ^0.24.0
         version: 0.24.0
       vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.17.4)
+        specifier: 6.0.0-beta.2
+        version: 6.0.0-beta.2(@types/node@20.17.4)
     devDependencies:
       '@astrojs/test-utils':
         specifier: workspace:*
@@ -4341,37 +4341,6 @@ packages:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     peerDependenciesMeta:
       '@testing-library/jest-dom':
-        optional: true
-
-  vite@5.4.10:
-    resolution: {integrity: sha512-1hvaPshuPUtxeQ0hsVH3Mud0ZanOLwVTneA1EgbAM5LhaZEqyPWGRQ7BtaMvUrTDeEaC8pxtj6a6jku3x4z6SQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
         optional: true
 
   vite@6.0.0-beta.2:
@@ -8963,24 +8932,6 @@ snapshots:
       vitefu: 0.2.5(vite@6.0.0-beta.2(@types/node@22.8.5))
     transitivePeerDependencies:
       - supports-color
-
-  vite@5.4.10(@types/node@20.17.4):
-    dependencies:
-      esbuild: 0.21.5
-      postcss: 8.4.47
-      rollup: 4.24.3
-    optionalDependencies:
-      '@types/node': 20.17.4
-      fsevents: 2.3.3
-
-  vite@5.4.10(@types/node@22.8.5):
-    dependencies:
-      esbuild: 0.21.5
-      postcss: 8.4.47
-      rollup: 4.24.3
-    optionalDependencies:
-      '@types/node': 22.8.5
-      fsevents: 2.3.3
 
   vite@6.0.0-beta.2(@types/node@18.19.62):
     dependencies:
