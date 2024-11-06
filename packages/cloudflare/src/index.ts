@@ -219,7 +219,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					const aliases = [
 						{
 							find: 'react-dom/server',
-							replacement: 'react-dom/server.browser',
+							replacement: 'react-dom/server.edge',
 						},
 					];
 
