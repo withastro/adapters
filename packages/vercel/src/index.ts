@@ -189,7 +189,7 @@ export default function vercelAdapter({
 	// Secret used to verify that the caller is the astro-generated edge middleware and not a third-party
 	const middlewareSecret = crypto.randomUUID();
 
-	let buildOutput: 'server' | 'static';
+	let _buildOutput: 'server' | 'static';
 
 	let staticDir: URL | undefined;
 
@@ -226,10 +226,10 @@ export default function vercelAdapter({
 					),
 				});
 			},
-			'astro:config:done': ({ setAdapter, config, logger }) => {
-				buildOutput = config.output;
+			'astro:config:done': ({ setAdapter, config, logger, buildOutput }) => {
+				_buildOutput = buildOutput;
 
-				if (buildOutput === 'server') {
+				if (_buildOutput === 'server') {
 					if (maxDuration && maxDuration > 900) {
 						logger.warn(
 							`maxDuration is set to ${maxDuration} seconds, which is longer than the maximum allowed duration of 900 seconds.`
@@ -256,14 +256,14 @@ export default function vercelAdapter({
 							logger.warn(`Your "vercel.json" config is not a valid json file.`);
 						}
 					}
-					setAdapter(getAdapter({ buildOutput, edgeMiddleware, middlewareSecret, skewProtection }));
+					setAdapter(getAdapter({ buildOutput: _buildOutput, edgeMiddleware, middlewareSecret, skewProtection }));
 				} else {
 					setAdapter(
 						getAdapter({
 							edgeMiddleware: false,
 							middlewareSecret: '',
 							skewProtection,
-							buildOutput,
+							buildOutput: _buildOutput,
 						})
 					);
 				}
@@ -289,7 +289,7 @@ export default function vercelAdapter({
 					}
 					mkdirSync(new URL('./.vercel/output/static/', _config.root), { recursive: true });
 
-					if (buildOutput === 'static' && staticDir) {
+					if (_buildOutput === 'static' && staticDir) {
 						cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
 							recursive: true,
 						});
@@ -309,7 +309,7 @@ export default function vercelAdapter({
 					middlewarePath?: string;
 				}> = [];
 
-				if (buildOutput === 'server') {
+				if (_buildOutput === 'server') {
 					// Merge any includes from `vite.assetsInclude
 					if (_config.vite.assetsInclude) {
 						const mergeGlobbedIncludes = (globPattern: unknown) => {
@@ -407,12 +407,12 @@ export default function vercelAdapter({
 					},
 					{ handle: 'filesystem' },
 				];
-				if (buildOutput === 'server') {
+				if (_buildOutput === 'server') {
 					finalRoutes.push(...routeDefinitions);
 				}
 
 				if (fourOhFourRoute) {
-					if (buildOutput === 'server') {
+					if (_buildOutput === 'server') {
 						finalRoutes.push({
 							src: '/.*',
 							dest: fourOhFourRoute.prerender
@@ -459,7 +459,7 @@ export default function vercelAdapter({
 				});
 
 				// Remove temporary folder
-				if (buildOutput === 'server') {
+				if (_buildOutput === 'server') {
 					await removeDir(_buildTempFolder);
 				}
 			},
