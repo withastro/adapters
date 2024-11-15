@@ -1,0 +1,23 @@
+{
+  "name": "Astro Vitest with Cloudflare adapter hanging process",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest run",
+    "test:hanging-process": "vitest run --reporter=hanging-process"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "workspace:^11.2.0",
+    "astro": "^4.16.12",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.5"
+  }
+}
