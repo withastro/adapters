@@ -291,13 +291,16 @@ export default function netlifyIntegration(
 
 	async function writeMiddleware(entrypoint: URL) {
 		await mkdir(middlewareOutputDir(), { recursive: true });
+		console.log(_config.experimental?.session);
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
 			/* ts */ `
-			import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
+			import { onRequest, getManifest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
 			import { createContext, trySerializeLocals } from 'astro/middleware';
 
 			export default async (request, context) => {
+				const manifest = await getManifest();
+				console.log({manifest});
 				const ctx = createContext({
 					request,
 					params: {},
@@ -352,6 +355,14 @@ export default function netlifyIntegration(
 							path: args.path,
 							external: true,
 						}));
+						build.onResolve({ filter: /^@astro-session-driver$/ }, async (args) => {
+							const resolved = await build.resolve('unstorage/drivers/netlify-blobs', {
+								kind: 'import-statement',
+								resolveDir: args.resolveDir,
+							});
+							console.log(resolved);
+							return resolved;
+						});
 					},
 				},
 			],
@@ -469,6 +480,21 @@ export default function netlifyIntegration(
 						service: {
 							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
+					},
+					experimental: {
+						session:
+							config.experimental.session ??
+							(isRunningInNetlify
+								? {
+										driver: 'netlifyBlobs',
+										options: {
+											name: 'astro-sessions',
+											consistency: 'strong',
+										},
+									}
+								: {
+										driver: 'fs',
+									}),
 					},
 				});
 			},
