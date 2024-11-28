@@ -189,7 +189,8 @@ export function cloudflareModuleLoader(
 			}
 			for (const [fileName, repls] of replacementsByFileName.entries()) {
 				const filepath = path.join(baseDir, '_worker.js', fileName);
-				if (!(await path.exists(filePath))) continue
+				const fileExists = await fs.access(filepath).then(() => true).catch(() => false)
+                		if (!(fileExists)) continue
 				const contents = await fs.readFile(filepath, 'utf-8');
 				let updated = contents;
 				for (const replacement of repls) {
