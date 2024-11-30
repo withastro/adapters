@@ -1,4 +1,9 @@
-import type { AstroConfig, AstroIntegration, IntegrationResolvedRoute, IntegrationRouteData } from 'astro';
+import type {
+	AstroConfig,
+	AstroIntegration,
+	IntegrationResolvedRoute,
+	IntegrationRouteData,
+} from 'astro';
 import type { PluginOption } from 'vite';
 
 import { createReadStream } from 'node:fs';
@@ -21,7 +26,7 @@ import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 
-export type IntegrationResolvedRouteWithDistUrl = IntegrationResolvedRoute & { distURL?: URL[] }
+export type IntegrationResolvedRouteWithDistUrl = IntegrationResolvedRoute & { distURL?: URL[] };
 export type { Runtime } from './entrypoints/server.js';
 
 export type Options = {
@@ -93,7 +98,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 		args?.cloudflareModules ?? true
 	);
 
-	let _routes: IntegrationResolvedRouteWithDistUrl[]
+	let _routes: IntegrationResolvedRouteWithDistUrl[];
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -334,9 +339,9 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 				if (!routesExists) {
 					for (const route of _routes) {
-						const distURL = assets.get(route.pattern)
+						const distURL = assets.get(route.pattern);
 						if (distURL) {
-							Object.assign(route, { distURL })
+							Object.assign(route, { distURL });
 						}
 					}
 					await createRoutesFile(
@@ -353,16 +358,20 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				const redirectRoutes: [IntegrationRouteData, string][] = [];
 				for (const route of _routes) {
 					// TODO: Replace workaround after upstream @astrojs/underscore-redirects is changed, to support new IntegrationResolvedRoute type
-					if (route.type === 'redirect') redirectRoutes.push([{
-						pattern: route.patternRegex,
-						component: route.entrypoint,
-						prerender: route.isPrerendered,
-						route: route.pattern,
-						generate: route.generate,
-						params: route.params,
-						segments: route.segments,
-						type: route.type,
-					}, '']);
+					if (route.type === 'redirect')
+						redirectRoutes.push([
+							{
+								pattern: route.patternRegex,
+								component: route.entrypoint,
+								prerender: route.isPrerendered,
+								route: route.pattern,
+								generate: route.generate,
+								params: route.params,
+								segments: route.segments,
+								type: route.type,
+							},
+							'',
+						]);
 				}
 
 				const trueRedirects = createRedirectsFromAstroRoutes({

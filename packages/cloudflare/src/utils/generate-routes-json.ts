@@ -64,7 +64,10 @@ async function writeRoutesFileToOutDir(
 	}
 }
 
-function segmentsToCfSyntax(segments: IntegrationResolvedRouteWithDistUrl['segments'], _config: AstroConfig) {
+function segmentsToCfSyntax(
+	segments: IntegrationResolvedRouteWithDistUrl['segments'],
+	_config: AstroConfig
+) {
 	const pathSegments = [];
 	if (removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)).length > 0) {
 		pathSegments.push(removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)));
@@ -171,13 +174,13 @@ export async function createRoutesFile(
 	redirects: IntegrationResolvedRouteWithDistUrl['segments'][],
 	includeExtends:
 		| {
-			pattern: string;
-		}[]
+				pattern: string;
+		  }[]
 		| undefined,
 	excludeExtends:
 		| {
-			pattern: string;
-		}[]
+				pattern: string;
+		  }[]
 		| undefined
 ) {
 	const includePaths: string[][] = [];
@@ -322,9 +325,9 @@ export async function createRoutesFile(
 				.slice(
 					0,
 					CLOUDFLARE_COMBINED_LIMIT -
-					EXTENDED_INCLUDE_RULES_COUNT -
-					EXTENDED_EXCLUDE_RULES_COUNT -
-					1
+						EXTENDED_INCLUDE_RULES_COUNT -
+						EXTENDED_EXCLUDE_RULES_COUNT -
+						1
 				)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 		);
@@ -337,8 +340,8 @@ export async function createRoutesFile(
 				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			includedPathsHaveWildcard
 				? deduplicatedExcludePaths
-					.map((path) => `${prependForwardSlash(path.join('/'))}`)
-					.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+						.map((path) => `${prependForwardSlash(path.join('/'))}`)
+						.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 				: []
 		);
 	}
