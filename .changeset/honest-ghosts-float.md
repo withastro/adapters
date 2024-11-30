@@ -12,9 +12,7 @@ export default defineConfig({
   output: 'server',
 	adapter: cloudflare({
 +		experimental: {
-+			cloudflare: {
-+				workerAssets: true,
-+			},
++			workerAssets: true,
 +		}
 	}),
 });

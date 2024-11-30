@@ -9,12 +9,6 @@ export default defineConfig({
 			API_SECRET: envField.string({ context: 'server', access: 'secret' }),
 		},
 	},
-	adapter: cloudflare({
-		experimental: {
-			cloudflare: {
-				workerAssets: true,
-			},
-		}
-	}),
+	adapter: cloudflare(),
 	output: 'server',
 });

@@ -57,6 +57,7 @@ export type Options = {
 		/** Toggle the proxy. Default `undefined`, which equals to `true`. */
 		enabled?: boolean;
 	};
+
 	/**
 	 * Allow bundling cloudflare worker specific file types as importable modules. Defaults to true.
 	 * When enabled, allows imports of '.wasm', '.bin', and '.txt' file types
@@ -65,6 +66,7 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
+
 	/**
 	 * Lists all experimental features the adapter supports.
 	 */
@@ -72,7 +74,6 @@ export type Options = {
 		/**
 		 * Enables support for Cloudflare Workers assets. Defaults to false.
 		 */
-
 		workerAssets?: boolean;
 	};
 };
