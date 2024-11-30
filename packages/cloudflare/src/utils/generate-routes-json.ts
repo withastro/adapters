@@ -1,4 +1,5 @@
-import type { AstroConfig, AstroIntegrationLogger, IntegrationRouteData, RoutePart } from 'astro';
+import type { AstroConfig, AstroIntegrationLogger, RoutePart } from 'astro';
+import type { IntegrationResolvedRouteWithDistUrl } from '../index.js';
 
 import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -63,7 +64,7 @@ async function writeRoutesFileToOutDir(
 	}
 }
 
-function segmentsToCfSyntax(segments: IntegrationRouteData['segments'], _config: AstroConfig) {
+function segmentsToCfSyntax(segments: IntegrationResolvedRouteWithDistUrl['segments'], _config: AstroConfig) {
 	const pathSegments = [];
 	if (removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)).length > 0) {
 		pathSegments.push(removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)));
@@ -163,20 +164,20 @@ class PathTrie {
 export async function createRoutesFile(
 	_config: AstroConfig,
 	logger: AstroIntegrationLogger,
-	routes: IntegrationRouteData[],
+	routes: IntegrationResolvedRouteWithDistUrl[],
 	pages: {
 		pathname: string;
 	}[],
-	redirects: IntegrationRouteData['segments'][],
+	redirects: IntegrationResolvedRouteWithDistUrl['segments'][],
 	includeExtends:
 		| {
-				pattern: string;
-		  }[]
+			pattern: string;
+		}[]
 		| undefined,
 	excludeExtends:
 		| {
-				pattern: string;
-		  }[]
+			pattern: string;
+		}[]
 		| undefined
 ) {
 	const includePaths: string[][] = [];
@@ -223,17 +224,17 @@ export async function createRoutesFile(
 	let hasPrerendered404 = false;
 	for (const route of routes) {
 		const convertedPath = segmentsToCfSyntax(route.segments, _config);
-		if (route.pathname === '/404' && route.prerender === true) hasPrerendered404 = true;
+		if (route.pathname === '/404' && route.isPrerendered === true) hasPrerendered404 = true;
 
 		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (route.type) {
 			case 'page':
-				if (route.prerender === false) includePaths.push(convertedPath);
+				if (route.isPrerendered === false) includePaths.push(convertedPath);
 
 				break;
 
 			case 'endpoint':
-				if (route.prerender === false) includePaths.push(convertedPath);
+				if (route.isPrerendered === false) includePaths.push(convertedPath);
 				else excludePaths.push(convertedPath);
 
 				break;
@@ -321,9 +322,9 @@ export async function createRoutesFile(
 				.slice(
 					0,
 					CLOUDFLARE_COMBINED_LIMIT -
-						EXTENDED_INCLUDE_RULES_COUNT -
-						EXTENDED_EXCLUDE_RULES_COUNT -
-						1
+					EXTENDED_INCLUDE_RULES_COUNT -
+					EXTENDED_EXCLUDE_RULES_COUNT -
+					1
 				)
 				.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 		);
@@ -336,8 +337,8 @@ export async function createRoutesFile(
 				.concat(includeExtends?.map((entry) => entry.pattern) ?? []),
 			includedPathsHaveWildcard
 				? deduplicatedExcludePaths
-						.map((path) => `${prependForwardSlash(path.join('/'))}`)
-						.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
+					.map((path) => `${prependForwardSlash(path.join('/'))}`)
+					.concat(excludeExtends?.map((entry) => entry.pattern) ?? [])
 				: []
 		);
 	}
