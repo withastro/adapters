@@ -1,4 +1,4 @@
-import type { AstroConfig, AstroIntegrationLogger, RouteData, RoutePart } from 'astro';
+import type { AstroConfig, AstroIntegrationLogger, IntegrationRouteData, RoutePart } from 'astro';
 
 import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -63,7 +63,7 @@ async function writeRoutesFileToOutDir(
 	}
 }
 
-function segmentsToCfSyntax(segments: RouteData['segments'], _config: AstroConfig) {
+function segmentsToCfSyntax(segments: IntegrationRouteData['segments'], _config: AstroConfig) {
 	const pathSegments = [];
 	if (removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)).length > 0) {
 		pathSegments.push(removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)));
@@ -163,11 +163,11 @@ class PathTrie {
 export async function createRoutesFile(
 	_config: AstroConfig,
 	logger: AstroIntegrationLogger,
-	routes: RouteData[],
+	routes: IntegrationRouteData[],
 	pages: {
 		pathname: string;
 	}[],
-	redirects: RouteData['segments'][],
+	redirects: IntegrationRouteData['segments'][],
 	includeExtends:
 		| {
 				pattern: string;
@@ -225,6 +225,7 @@ export async function createRoutesFile(
 		const convertedPath = segmentsToCfSyntax(route.segments, _config);
 		if (route.pathname === '/404' && route.prerender === true) hasPrerendered404 = true;
 
+		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (route.type) {
 			case 'page':
 				if (route.prerender === false) includePaths.push(convertedPath);
@@ -307,11 +308,10 @@ export async function createRoutesFile(
 	const EXTENDED_EXCLUDE_RULES_COUNT = excludeExtends?.length ?? 0;
 	const EXCLUDE_RULES_COUNT = AUTOMATIC_EXCLUDE_RULES_COUNT + EXTENDED_EXCLUDE_RULES_COUNT;
 
-	if (
-		!hasPrerendered404 ||
-		INCLUDE_RULES_COUNT > CLOUDFLARE_COMBINED_LIMIT ||
-		EXCLUDE_RULES_COUNT > CLOUDFLARE_COMBINED_LIMIT
-	) {
+	const OPTION2_TOTAL_COUNT =
+		INCLUDE_RULES_COUNT + (includedPathsHaveWildcard ? EXCLUDE_RULES_COUNT : 0);
+
+	if (!hasPrerendered404 || OPTION2_TOTAL_COUNT > CLOUDFLARE_COMBINED_LIMIT) {
 		await writeRoutesFileToOutDir(
 			_config,
 			logger,

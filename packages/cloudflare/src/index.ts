@@ -1,4 +1,4 @@
-import type { AstroConfig, AstroIntegration, RouteData } from 'astro';
+import type { AstroConfig, AstroIntegration, IntegrationRouteData } from 'astro';
 import type { PluginOption } from 'vite';
 
 import { createReadStream } from 'node:fs';
@@ -12,7 +12,7 @@ import {
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import astroWhen from '@inox-tools/astro-when';
 import { AstroError } from 'astro/errors';
-import { getPlatformProxy } from 'wrangler';
+import { type GetPlatformProxyOptions, getPlatformProxy } from 'wrangler';
 import {
 	type CloudflareModulePluginExtra,
 	cloudflareModuleLoader,
@@ -53,15 +53,9 @@ export type Options = {
 	/**
 	 * Proxy configuration for the platform.
 	 */
-	platformProxy?: {
+	platformProxy?: GetPlatformProxyOptions & {
 		/** Toggle the proxy. Default `undefined`, which equals to `true`. */
 		enabled?: boolean;
-		/** Path to the configuration file. Default `wrangler.toml`. */
-		configPath?: string;
-		/** Enable experimental support for JSON configuration. Default `false`. */
-		experimentalJsonConfig?: boolean;
-		/** Configuration persistence settings. Default '.wrangler/state/v3' */
-		persist?: boolean | { path: string };
 	};
 	/**
 	 * Allow bundling cloudflare worker specific file types as importable modules. Defaults to true.
@@ -91,22 +85,14 @@ function wrapWithSlashes(path: string): string {
 function setProcessEnv(config: AstroConfig, env: Record<string, unknown>) {
 	const getEnv = createGetEnv(env);
 
-	if (config.experimental.env?.schema) {
-		for (const key of Object.keys(config.experimental.env.schema)) {
+	if (config.env?.schema) {
+		for (const key of Object.keys(config.env.schema)) {
 			const value = getEnv(key);
 			if (value !== undefined) {
 				process.env[key] = value;
 			}
 		}
 	}
-}
-
-function createPlatformProxy(platformProxy: Options['platformProxy']) {
-	return getPlatformProxy({
-		configPath: platformProxy?.configPath,
-		experimentalJsonConfig: platformProxy?.experimentalJsonConfig ?? false,
-		persist: platformProxy?.persist ?? true,
-	});
 }
 
 export default function createIntegration(args?: Options): AstroIntegration {
@@ -144,6 +130,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							// https://developers.cloudflare.com/pages/functions/module-support/
 							// Allows imports of '.wasm', '.bin', and '.txt' file types
 							cloudflareModulePlugin,
+							{
+								name: 'vite:cf-imports',
+								enforce: 'pre',
+								resolveId(source) {
+									if (source.startsWith('cloudflare:')) {
+										return { id: source, external: true };
+									}
+									return null;
+								},
+							},
 						],
 					},
 					integrations: [astroWhen()],
@@ -156,10 +152,10 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					order: 'pre',
 				});
 			},
-			'astro:config:done': ({ setAdapter, config }) => {
-				if (config.output === 'static') {
-					throw new AstroError(
-						'[@astrojs/cloudflare] `output: "server"` or `output: "hybrid"` is required to use this adapter. Otherwise, this adapter is not necessary to deploy a static site to Cloudflare.'
+			'astro:config:done': ({ setAdapter, config, buildOutput, logger }) => {
+				if (buildOutput === 'static') {
+					logger.warn(
+						'[@astrojs/cloudflare] This adapter is intended to be used with server rendered pages, which this project does not contain any of. As such, this adapter is unnecessary.'
 					);
 				}
 
@@ -170,26 +166,22 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					serverEntrypoint: '@astrojs/cloudflare/entrypoints/server.js',
 					exports: ['default'],
 					adapterFeatures: {
-						functionPerRoute: false,
 						edgeMiddleware: false,
+						buildOutput: 'server',
 					},
 					supportedAstroFeatures: {
 						serverOutput: 'stable',
 						hybridOutput: 'stable',
 						staticOutput: 'unsupported',
 						i18nDomains: 'experimental',
-						assets: {
-							supportKind: 'stable',
-							isSharpCompatible: false,
-							isSquooshCompatible: false,
-						},
+						sharpImageService: 'limited',
 						envGetSecret: 'experimental',
 					},
 				});
 			},
 			'astro:server:setup': async ({ server }) => {
 				if ((args?.platformProxy?.enabled ?? true) === true) {
-					const platformProxy = await createPlatformProxy(args?.platformProxy);
+					const platformProxy = await getPlatformProxy(args?.platformProxy);
 
 					setProcessEnv(_config, platformProxy.env);
 
@@ -315,7 +307,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						redirectsExists = false;
 					}
 
-					const redirects: RouteData['segments'][] = [];
+					const redirects: IntegrationRouteData['segments'][] = [];
 					if (redirectsExists) {
 						const rl = createInterface({
 							input: createReadStream(new URL('./_redirects', _config.outDir)),
@@ -362,7 +354,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						);
 					}
 
-					const redirectRoutes: [RouteData, string][] = [];
+					const redirectRoutes: [IntegrationRouteData, string][] = [];
 					for (const route of routes) {
 						if (route.type === 'redirect') redirectRoutes.push([route, '']);
 					}

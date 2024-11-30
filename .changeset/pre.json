@@ -1,0 +1,25 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@astrojs/cloudflare": "11.0.4",
+    "@astrojs/netlify": "5.5.3",
+    "@astrojs/node": "9.0.0-alpha.1",
+    "@astrojs/test-utils": "0.0.1",
+    "@astrojs/vercel": "8.0.0-alpha.1"
+  },
+  "changesets": [
+    "blue-owls-peel",
+    "early-berries-rush",
+    "eighty-badgers-change",
+    "fast-singers-design",
+    "flat-dolls-nail",
+    "olive-jobs-press",
+    "rare-candles-unite",
+    "silver-lemons-bow",
+    "sixty-trainers-shout",
+    "slow-mangos-call",
+    "sweet-geckos-double",
+    "yellow-avocados-share"
+  ]
+}

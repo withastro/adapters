@@ -38,26 +38,26 @@
         "react-dom",
         "@types/react"
       ],
-      "allowAny": ["astro"]
+      "allowAny": ["astro", "vite"]
     }
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.3",
-    "@biomejs/biome": "1.9.2",
+    "@astrojs/check": "^0.9.4",
+    "@biomejs/biome": "1.9.4",
     "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.8",
-    "@types/node": "^20.16.5",
-    "esbuild": "^0.21.5",
-    "eslint": "^9.11.0",
+    "@changesets/cli": "^2.27.10",
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-regexp": "^2.6.0",
+    "eslint-plugin-regexp": "^2.7.0",
     "only-allow": "^1.2.1",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.1",
     "prettier-plugin-astro": "^0.14.1",
-    "turbo": "^2.1.2",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.6.0"
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.16.0"
   }
 }
