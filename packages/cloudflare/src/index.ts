@@ -72,9 +72,8 @@ export type Options = {
 		/**
 		 * Enables support for Cloudflare Workers assets. Defaults to false.
 		 */
-		cloudflare?: {
-			workerAssets?: boolean;
-		};
+
+		workerAssets?: boolean;
 	};
 };
 
@@ -114,7 +113,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				addMiddleware,
 			}) => {
 				let clientURL = new URL(`.${wrapWithSlashes(config.base)}`, config.outDir);
-				if (args?.experimental?.cloudflare?.workerAssets) {
+				if (args?.experimental?.workerAssets) {
 					clientURL = new URL(`./assets/${wrapWithSlashes(config.base)}`, config.outDir);
 				}
 
@@ -123,7 +122,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						client: clientURL,
 						server: new URL('./_worker.js/', config.outDir),
 						serverEntry: 'index.js',
-						redirects: !!args?.experimental?.cloudflare?.workerAssets,
+						redirects: !!args?.experimental?.workerAssets,
 					},
 					vite: {
 						plugins: [
@@ -296,7 +295,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					}
 				}
 
-				if (!args?.experimental?.cloudflare?.workerAssets) {
+				if (!args?.experimental?.workerAssets) {
 					let redirectsExists = false;
 					try {
 						const redirectsStat = await stat(new URL('./_redirects', _config.outDir));
