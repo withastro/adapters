@@ -4,7 +4,7 @@
 
 Adds experimental support for Cloudflare Workers Assets mode. To use this, update your settings as follows:
 
-```
+```diff
 import cloudflare from '@astrojs/cloudflare';
 import { defineConfig } from 'astro/config';
 
