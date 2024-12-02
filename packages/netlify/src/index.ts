@@ -300,7 +300,6 @@ export default function netlifyIntegration(
 
 			export default async (request, context) => {
 				const manifest = await getManifest();
-				console.log({manifest});
 				const ctx = createContext({
 					request,
 					params: {},
@@ -327,6 +326,10 @@ export default function netlifyIntegration(
 				};
 				const next = () => {
 					const { netlify, ...otherLocals } = ctx.locals;
+					const data = Reflect.get(ctx.session, "data");
+					if(data) {
+						request.headers.set("x-astro-session", trySerializeLocals(data));
+					}
 					request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
 					request.headers.set("x-astro-middleware-secret", "${middlewareSecret}");
 					return context.next();
@@ -396,8 +399,6 @@ export default function netlifyIntegration(
 			account: parseBase64JSON('x-nf-account-info') ?? {
 				id: 'mock-netlify-account-id',
 			},
-			// TODO: this has type conflicts with @netlify/functions ^2.8.1
-			// @ts-expect-error: this has type conflicts with @netlify/functions ^2.8.1
 			deploy: {
 				id:
 					typeof req.headers['x-nf-deploy-id'] === 'string'

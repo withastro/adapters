@@ -32,21 +32,30 @@ export const createExports = (manifest: SSRManifest, { middlewareSecret }: Args)
 
 			Reflect.set(request, clientAddressSymbol, context.ip);
 			let locals: Record<string, unknown> = {};
+			let initialSessionData: Record<string, unknown> = {};
 
 			const astroLocalsHeader = request.headers.get('x-astro-locals');
+			const astroSessionHeader = request.headers.get('x-astro-session');
 			const middlewareSecretHeader = request.headers.get('x-astro-middleware-secret');
-			if (astroLocalsHeader) {
+			// hide the secret from the rest of user and library code
+			request.headers.delete('x-astro-middleware-secret');
+			if (astroLocalsHeader || astroSessionHeader) {
 				if (middlewareSecretHeader !== middlewareSecret) {
 					return new Response('Forbidden', { status: 403 });
 				}
-				// hide the secret from the rest of user and library code
-				request.headers.delete('x-astro-middleware-secret');
-				locals = JSON.parse(astroLocalsHeader);
+
+				if (astroLocalsHeader) {
+					locals = JSON.parse(astroLocalsHeader);
+				}
+				if (astroSessionHeader) {
+					console.log('astroSessionHeader', astroSessionHeader);
+					initialSessionData = JSON.parse(astroSessionHeader);
+				}
 			}
 
 			locals.netlify = { context };
 
-			const response = await app.render(request, { routeData, locals });
+			const response = await app.render(request, { routeData, locals, initialSessionData });
 
 			if (app.setCookieHeaders) {
 				for (const setCookieHeader of app.setCookieHeaders(response)) {

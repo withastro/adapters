@@ -6,7 +6,7 @@
     "@astrojs/netlify": "workspace:*"
   },
   "devDependencies": {
-    "astro": "0.0.0-sessions-20241128134018"
+    "astro": "^5.1.6"
   },
   "scripts": {
     "build": "astro build",
