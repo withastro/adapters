@@ -81,6 +81,16 @@ describe('Trailing slash', () => {
 				assert.equal(res.status, 200);
 				assert.equal(css, 'h1 { color: red; }\n');
 			});
+
+			it('Does not add trailing slash to astro actions', async () => {
+				const res = await fetch(`http://${server.host}:${server.port}/some-base/_actions/test`, {
+					method: 'POST',
+				});
+				const json = await res.json();
+
+				assert.equal(res.status, 200);
+				assert.equal(json[1], 'Hello from server!');
+			});
 		});
 		describe('Without base', async () => {
 			before(async () => {
@@ -148,6 +158,16 @@ describe('Trailing slash', () => {
 
 				assert.equal(res.status, 200);
 				assert.equal(css, 'h1 { color: red; }\n');
+			});
+
+			it('Does not add trailing slash to astro actions', async () => {
+				const res = await fetch(`http://${server.host}:${server.port}/_actions/test`, {
+					method: 'POST',
+				});
+				const json = await res.json();
+
+				assert.equal(res.status, 200);
+				assert.equal(json[1], 'Hello from server!');
 			});
 		});
 	});

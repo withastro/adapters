@@ -8,6 +8,7 @@ import type { Options } from './types.js';
 
 // check for a dot followed by a extension made up of lowercase characters
 const isSubresourceRegex = /.+\.[a-z]+$/i;
+const isActionRegex = /^\/?_actions\/.+/;
 
 /**
  * Creates a Node.js http listener for static files and prerendered pages.
@@ -56,8 +57,11 @@ export function createStaticHandler(app: NodeApp, options: Options) {
 					}
 					break;
 				case 'always':
-					// trailing slash is not added to "subresources"
-					if (!hasSlash && !isSubresourceRegex.test(urlPath)) {
+					// biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
+					const isActionRequest = isActionRegex.test(app.removeBase(urlPath)) && req.method === 'POST';
+
+					// trailing slash is not added to "subresources" and "astro actions"
+					if (!hasSlash && !isSubresourceRegex.test(urlPath) && !isActionRequest) {
 						// biome-ignore lint/style/useTemplate: <explanation>
 						pathname = urlPath + '/' + (urlQuery ? '?' + urlQuery : '');
 						res.statusCode = 301;
