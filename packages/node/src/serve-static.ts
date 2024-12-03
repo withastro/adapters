@@ -58,7 +58,8 @@ export function createStaticHandler(app: NodeApp, options: Options) {
 					break;
 				case 'always':
 					// biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
-					const isActionRequest = isActionRegex.test(app.removeBase(urlPath)) && req.method === 'POST';
+					const isActionRequest =
+						isActionRegex.test(app.removeBase(urlPath)) && req.method === 'POST';
 
 					// trailing slash is not added to "subresources" and "astro actions"
 					if (!hasSlash && !isSubresourceRegex.test(urlPath) && !isActionRequest) {
