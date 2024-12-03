@@ -73,7 +73,7 @@ importers:
         version: 4.20241127.0
       '@inox-tools/astro-when':
         specifier: ^0.2.4
-        version: 0.2.4(astro@5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
+        version: 0.2.4(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
       esbuild:
         specifier: ^0.24.0
         version: 0.24.0
@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -127,8 +127,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
     devDependencies:
       wrangler:
         specifier: ^3.84.0
@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
     devDependencies:
       wrangler:
         specifier: ^3.84.0
@@ -153,8 +153,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/external-image-service:
     dependencies:
@@ -162,8 +162,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/module-loader:
     dependencies:
@@ -171,8 +171,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/no-output:
     dependencies:
@@ -180,8 +180,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/routes-json:
     dependencies:
@@ -189,8 +189,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/with-solid-js:
     dependencies:
@@ -201,8 +201,8 @@ importers:
         specifier: ^4.4.2
         version: 4.4.4(@types/node@22.10.1)(solid-js@1.9.3)
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       solid-js:
         specifier: ^1.9.3
         version: 1.9.3
@@ -213,8 +213,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/netlify:
     dependencies:
@@ -250,8 +250,8 @@ importers:
         specifier: ^22.10.0
         version: 22.10.1
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -298,8 +298,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/netlify/test/static/fixtures/redirects:
     dependencies:
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -350,8 +350,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/bad-urls:
     dependencies:
@@ -359,8 +359,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/encoded:
     dependencies:
@@ -368,8 +368,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/errors:
     dependencies:
@@ -377,8 +377,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/headers:
     dependencies:
@@ -386,8 +386,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/image:
     dependencies:
@@ -395,8 +395,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/locals:
     dependencies:
@@ -404,8 +404,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/node-middleware:
     dependencies:
@@ -413,8 +413,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/prerender:
     dependencies:
@@ -422,8 +422,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/prerender-404-500:
     dependencies:
@@ -431,8 +431,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/preview-headers:
     dependencies:
@@ -440,8 +440,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/trailing-slash:
     dependencies:
@@ -449,8 +449,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/url:
     dependencies:
@@ -458,8 +458,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/node/test/fixtures/well-known-locations:
     dependencies:
@@ -467,14 +467,14 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/test-utils:
     dependencies:
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       execa:
         specifier: ^8.0.1
         version: 8.0.1
@@ -510,8 +510,8 @@ importers:
         specifier: workspace:*
         version: link:../test-utils
       astro:
-        specifier: ^5.0.0-alpha.15
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       astro-scripts:
         specifier: workspace:*
         version: link:../../scripts
@@ -525,8 +525,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/image:
     dependencies:
@@ -534,8 +534,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/isr:
     dependencies:
@@ -543,8 +543,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/max-duration:
     dependencies:
@@ -552,8 +552,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/middleware-with-edge-file:
     dependencies:
@@ -561,8 +561,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/middleware-without-edge-file:
     dependencies:
@@ -570,8 +570,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/no-output:
     dependencies:
@@ -579,8 +579,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/prerendered-error-pages:
     dependencies:
@@ -588,8 +588,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/redirects:
     dependencies:
@@ -597,8 +597,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/redirects-serverless:
     dependencies:
@@ -606,8 +606,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/server-islands:
     dependencies:
@@ -615,8 +615,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/serverless-prerender:
     dependencies:
@@ -624,8 +624,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/serverless-with-dynamic-routes:
     dependencies:
@@ -633,8 +633,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-beta.5
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/static:
     dependencies:
@@ -642,8 +642,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/static-assets:
     dependencies:
@@ -651,8 +651,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/streaming:
     dependencies:
@@ -660,8 +660,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/fixtures/with-web-analytics-enabled/output-as-static:
     dependencies:
@@ -669,8 +669,8 @@ importers:
         specifier: workspace:*
         version: link:../../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   packages/vercel/test/hosted/hosted-astro-project:
     dependencies:
@@ -678,8 +678,8 @@ importers:
         specifier: workspace:*
         version: link:../../..
       astro:
-        specifier: ^5.0.0-alpha.8
-        version: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+        specifier: ^5.0.0
+        version: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
 
   scripts:
     dependencies:
@@ -705,6 +705,9 @@ packages:
   '@astrojs/internal-helpers@0.4.1':
     resolution: {integrity: sha512-bMf9jFihO8YP940uD70SI/RDzIhUHJAolWVcO1v5PUivxGKvfLZTLTVVxEYzGYyPsA3ivdLNqMnL5VgmQySa+g==}
 
+  '@astrojs/internal-helpers@0.4.2':
+    resolution: {integrity: sha512-EdDWkC3JJVcpGpqJAU/5hSk2LKXyG3mNGkzGoAuyK+xoPHbaVdSuIWoN1QTnmK3N/gGfaaAfM8gO2KDCAW7S3w==}
+
   '@astrojs/language-server@2.15.4':
     resolution: {integrity: sha512-JivzASqTPR2bao9BWsSc/woPHH7OGSGc9aMxXL4U6egVTqBycB3ZHdBJPuOCVtcGLrzdWTosAqVPz1BVoxE0+A==}
     hasBin: true
@@ -717,11 +720,11 @@ packages:
       prettier-plugin-astro:
         optional: true
 
-  '@astrojs/markdown-remark@6.0.0-beta.3':
-    resolution: {integrity: sha512-M6wGxQH9rRwsmcJ+IVfYJ8moYmPVXE2u2pcPJx+VbOEMgJ7gmnJ1eso40KP0JOvq8nGPlcfeyqba45WrYxhKlA==}
+  '@astrojs/markdown-remark@6.0.0':
+    resolution: {integrity: sha512-Tabo7xM44Pz2Yf9qpdaCCgxRmtaypi2YCinqTUNefDrWUa+OyKW62OuNeCaGwNh/ys+QAd9FUWN5/3HgPWjP4Q==}
 
-  '@astrojs/prism@3.2.0-beta.0':
-    resolution: {integrity: sha512-0OZSIFV0accYiNZRoDjMkGsp+M3DNemBxEQJ4rphB6vL5mPBBgTKPwD+zf3H1PmOysIYltSJ6rzSI8JCnGqVIg==}
+  '@astrojs/prism@3.2.0':
+    resolution: {integrity: sha512-GilTHKGCW6HMq7y3BUv9Ac7GMe/MO9gi9GW62GzKtth0SwukCu/qp2wLiGpEujhY+VVhaG9v7kv/5vFzvf4NYw==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=22.0.0}
 
   '@astrojs/solid-js@4.4.4':
@@ -734,8 +737,8 @@ packages:
       solid-devtools:
         optional: true
 
-  '@astrojs/telemetry@3.2.0-beta.0':
-    resolution: {integrity: sha512-8KCnaFAVsm/0KdXzWN0Afz50Ijyr1uHT31bE5AgCF5CLMh0dUpEOvHgZ++zLLq+VFj+5e4o0L6TLXMeAVHECBg==}
+  '@astrojs/telemetry@3.2.0':
+    resolution: {integrity: sha512-wxhSKRfKugLwLlr4OFfcqovk+LIFtKwLyGPqMsv+9/ibqqnW3Gv7tBhtKEb0gAyUAC4G9BTVQeQahqnQAhd6IQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=22.0.0}
 
   '@astrojs/underscore-redirects@0.4.0-beta.1':
@@ -2067,8 +2070,8 @@ packages:
     peerDependencies:
       astro: ^4.12.0
 
-  astro@5.0.0-beta.12:
-    resolution: {integrity: sha512-ZZSjXSZXtgfE89iSW8bhOTgKFha5To6GL2rbkZH6IzXg60xplcIQFYJ2Q5/U0I2/2Qv+ydL3H79Jiaw/DTSHjw==}
+  astro@5.0.0:
+    resolution: {integrity: sha512-hsDlZ8m8rHWDdvCi3TcgFT6vS2S4Wt33m9AUOPfLUZ1JkzchIKtviWbGFqJCu3LhlpnUHyP2AxujWVm+IBS6tw==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -4466,6 +4469,8 @@ snapshots:
 
   '@astrojs/internal-helpers@0.4.1': {}
 
+  '@astrojs/internal-helpers@0.4.2': {}
+
   '@astrojs/language-server@2.15.4(prettier-plugin-astro@0.14.1)(prettier@3.4.1)(typescript@5.7.2)':
     dependencies:
       '@astrojs/compiler': 2.10.3
@@ -4492,9 +4497,9 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@astrojs/markdown-remark@6.0.0-beta.3':
+  '@astrojs/markdown-remark@6.0.0':
     dependencies:
-      '@astrojs/prism': 3.2.0-beta.0
+      '@astrojs/prism': 3.2.0
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.3
       hast-util-to-text: 4.0.2
@@ -4516,7 +4521,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/prism@3.2.0-beta.0':
+  '@astrojs/prism@3.2.0':
     dependencies:
       prismjs: 1.29.0
 
@@ -4537,7 +4542,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@astrojs/telemetry@3.2.0-beta.0':
+  '@astrojs/telemetry@3.2.0':
     dependencies:
       ci-info: 4.1.0
       debug: 4.3.7
@@ -5264,10 +5269,10 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inox-tools/astro-when@0.2.4(astro@5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))':
+  '@inox-tools/astro-when@0.2.4(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))':
     dependencies:
-      astro: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
-      astro-integration-kit: 0.16.1(astro@5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
+      astro: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+      astro-integration-kit: 0.16.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
       debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
@@ -5762,18 +5767,18 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  astro-integration-kit@0.16.1(astro@5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)):
+  astro-integration-kit@0.16.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)):
     dependencies:
-      astro: 5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
+      astro: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       pathe: 1.1.2
       recast: 0.23.9
 
-  astro@5.0.0-beta.12(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1):
+  astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1):
     dependencies:
       '@astrojs/compiler': 2.10.3
-      '@astrojs/internal-helpers': 0.4.1
-      '@astrojs/markdown-remark': 6.0.0-beta.3
-      '@astrojs/telemetry': 3.2.0-beta.0
+      '@astrojs/internal-helpers': 0.4.2
+      '@astrojs/markdown-remark': 6.0.0
+      '@astrojs/telemetry': 3.2.0
       '@oslojs/encoding': 1.1.0
       '@rollup/pluginutils': 5.1.3(rollup@4.27.4)
       '@types/cookie': 0.6.0
