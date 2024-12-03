@@ -13,9 +13,12 @@ import type { RequestHandler } from './types.js';
 export default function createMiddleware(app: NodeApp): RequestHandler {
 	const handler = createAppHandler(app);
 	const logger = app.getAdapterLogger();
+	console.log("HERE", handler, logger)
 	// using spread args because express trips up if the function's
 	// stringified body includes req, res, next, locals directly
 	return async (...args) => {
+		console.log("CALLED")
+
 		// assume normal invocation at first
 		const [req, res, next, locals] = args;
 		// short circuit if it is an error invocation
