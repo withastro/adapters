@@ -3,9 +3,8 @@ import * as cheerio from 'cheerio';
 import { after, before, describe, it } from 'node:test';
 import nodejs from '../dist/index.js';
 import { loadFixture } from './test-utils.js';
-import {inferRemoteSize} from "astro/assets/utils/inferRemoteSize.js"
+import { inferRemoteSize } from 'astro/assets/utils/inferRemoteSize.js';
 
-// Temporary skip until we figure out the "Could not find Sharp" issue as `sharp` is bundled
 describe('Image endpoint', () => {
 	/** @type {import('./test-utils').Fixture} */
 	let fixture;
@@ -38,8 +37,7 @@ describe('Image endpoint', () => {
 		const size = await inferRemoteSize(`http://localhost:4321${img}`);
 		assert.equal(size.format, 'webp');
 		assert.equal(size.width, 50);
-		assert.equal(size.height, 33)
-
+		assert.equal(size.height, 33);
 	});
 
 	it('it returns remote images', async () => {
@@ -51,6 +49,6 @@ describe('Image endpoint', () => {
 		const size = await inferRemoteSize(`http://localhost:4321${img}`);
 		assert.equal(size.format, 'webp');
 		assert.equal(size.width, 400);
-		assert.equal(size.height, 300)
+		assert.equal(size.height, 300);
 	});
 });
