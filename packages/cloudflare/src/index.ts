@@ -126,6 +126,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 								},
 							},
 						],
+						ssr: {
+							resolve: {
+								conditions: ["worker"]
+							}
+						}
 					},
 					integrations: [astroWhen()],
 					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
