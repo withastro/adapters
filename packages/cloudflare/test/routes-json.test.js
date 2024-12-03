@@ -101,7 +101,7 @@ describe('_routes.json generation', () => {
 
 			assert.deepEqual(routes, {
 				version: 1,
-				include: ['/_image', '/a/*',  '/another'],
+				include: ['/_image', '/a/*', '/another'],
 				exclude: ['/_astro/*', '/redirectme', '/public.txt', '/a', '/a/redirect', '/404', '/b'],
 			});
 		});
@@ -131,7 +131,7 @@ describe('_routes.json generation', () => {
 
 			assert.deepEqual(routes, {
 				version: 1,
-				include: ['/_image', '/a/*', ],
+				include: ['/_image', '/a/*'],
 				exclude: [
 					'/_astro/*',
 					'/redirectme',
