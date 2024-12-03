@@ -60,7 +60,7 @@ describe('ISR', () => {
 			{
 				src: '^\\/two\\/?$',
 				dest: '/_isr?x_astro_path=$0',
-			}
+			},
 		]);
 	});
 });
