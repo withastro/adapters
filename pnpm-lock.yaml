@@ -89,6 +89,9 @@ importers:
       tiny-glob:
         specifier: ^0.2.9
         version: 0.2.9
+      vite:
+        specifier: ^6.0.1
+        version: 6.0.1(@types/node@22.10.1)(yaml@2.6.1)
       wrangler:
         specifier: ^3.91.0
         version: 3.91.0(@cloudflare/workers-types@4.20241127.0)
@@ -117,9 +120,6 @@ importers:
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
-      vite:
-        specifier: 6.0.1
-        version: 6.0.1(@types/node@22.10.1)(yaml@2.6.1)
 
   packages/cloudflare/test/fixtures/astro-dev-platform:
     dependencies:
@@ -234,7 +234,7 @@ importers:
         specifier: ^0.24.0
         version: 0.24.0
       vite:
-        specifier: 6.0.1
+        specifier: ^6.0.1
         version: 6.0.1(@types/node@22.10.1)(yaml@2.6.1)
     devDependencies:
       '@astrojs/test-utils':
