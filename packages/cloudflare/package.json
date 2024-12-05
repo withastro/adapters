@@ -11,7 +11,10 @@
     "url": "https://github.com/withastro/adapters.git",
     "directory": "packages/cloudflare"
   },
-  "keywords": ["withastro", "astro-adapter"],
+  "keywords": [
+    "withastro",
+    "astro-adapter"
+  ],
   "bugs": "https://github.com/withastro/adapters/issues",
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/cloudflare/",
   "exports": {
@@ -22,7 +25,9 @@
     "./image-endpoint": "./dist/entrypoints/image-endpoint.js",
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "astro-scripts test \"test/**/*.test.js\""
@@ -40,7 +45,7 @@
     "wrangler": "^3.101.0"
   },
   "peerDependencies": {
-    "astro": "^5.0.0"
+    "astro": "0.0.0-sessions-20241205163205"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",

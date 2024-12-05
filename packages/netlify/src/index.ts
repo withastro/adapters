@@ -291,15 +291,13 @@ export default function netlifyIntegration(
 
 	async function writeMiddleware(entrypoint: URL) {
 		await mkdir(middlewareOutputDir(), { recursive: true });
-		console.log(_config.experimental?.session);
 		await writeFile(
 			new URL('./entry.mjs', middlewareOutputDir()),
 			/* ts */ `
-			import { onRequest, getManifest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
+			import { onRequest } from "${fileURLToPath(entrypoint).replaceAll('\\', '/')}";
 			import { createContext, trySerializeLocals } from 'astro/middleware';
 
 			export default async (request, context) => {
-				const manifest = await getManifest();
 				const ctx = createContext({
 					request,
 					params: {},
@@ -326,10 +324,6 @@ export default function netlifyIntegration(
 				};
 				const next = () => {
 					const { netlify, ...otherLocals } = ctx.locals;
-					const data = Reflect.get(ctx.session, "data");
-					if(data) {
-						request.headers.set("x-astro-session", trySerializeLocals(data));
-					}
 					request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
 					request.headers.set("x-astro-middleware-secret", "${middlewareSecret}");
 					return context.next();
@@ -358,14 +352,6 @@ export default function netlifyIntegration(
 							path: args.path,
 							external: true,
 						}));
-						build.onResolve({ filter: /^@astro-session-driver$/ }, async (args) => {
-							const resolved = await build.resolve('unstorage/drivers/netlify-blobs', {
-								kind: 'import-statement',
-								resolveDir: args.resolveDir,
-							});
-							console.log(resolved);
-							return resolved;
-						});
 					},
 				},
 			],
@@ -399,6 +385,8 @@ export default function netlifyIntegration(
 			account: parseBase64JSON('x-nf-account-info') ?? {
 				id: 'mock-netlify-account-id',
 			},
+			// TODO: this has type conflicts with @netlify/functions ^2.8.1
+			// @ts-expect-error: this has type conflicts with @netlify/functions ^2.8.1
 			deploy: {
 				id:
 					typeof req.headers['x-nf-deploy-id'] === 'string'

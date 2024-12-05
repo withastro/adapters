@@ -10,7 +10,10 @@
     "url": "https://github.com/withastro/adapters.git",
     "directory": "packages/vercel"
   },
-  "keywords": ["withastro", "astro-adapter"],
+  "keywords": [
+    "withastro",
+    "astro-adapter"
+  ],
   "bugs": "https://github.com/withastro/adapters/issues",
   "homepage": "https://docs.astro.build/en/guides/integrations-guide/vercel/",
   "exports": {
@@ -25,11 +28,18 @@
   },
   "typesVersions": {
     "*": {
-      "serverless": ["dist/serverless/adapter.d.ts"],
-      "static": ["dist/static/adapter.d.ts"]
+      "serverless": [
+        "dist/serverless/adapter.d.ts"
+      ],
+      "static": [
+        "dist/static/adapter.d.ts"
+      ]
     }
   },
-  "files": ["dist", "types.d.ts"],
+  "files": [
+    "dist",
+    "types.d.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "astro-scripts test --timeout 50000 \"test/**/!(hosted).test.js\"",
@@ -44,7 +54,7 @@
     "fast-glob": "^3.3.3"
   },
   "peerDependencies": {
-    "astro": "^5.0.0"
+    "astro": "0.0.0-sessions-20241205163205"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
