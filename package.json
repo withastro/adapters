@@ -29,15 +29,6 @@
   "packageManager": "pnpm@9.7.1",
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "rollup",
-        "@babel/core",
-        "@babel/plugin-transform-react-jsx",
-        "vite",
-        "react",
-        "react-dom",
-        "@types/react"
-      ],
       "allowAny": ["astro", "vite"]
     }
   },
