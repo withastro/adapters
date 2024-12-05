@@ -72,8 +72,8 @@ importers:
         specifier: ^4.20241112.0
         version: 4.20241127.0
       '@inox-tools/astro-when':
-        specifier: ^0.2.4
-        version: 0.2.4(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
+        specifier: ^1.0.1
+        version: 1.0.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
       esbuild:
         specifier: ^0.24.0
         version: 0.24.0
@@ -1624,10 +1624,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@inox-tools/astro-when@0.2.4':
-    resolution: {integrity: sha512-A1urUbru+Ni7UnsWui0Cq3rGXE75XsiVmU3vmJXhA9duQ4JyIYxLZALDSsqsT0pAzBrUWokZ09fALJ5eJUPtZQ==}
+  '@inox-tools/astro-when@1.0.1':
+    resolution: {integrity: sha512-x/62MFEfzSMYaQGIoxg5k10YL5X9LYWEmFPtew/Z3AOKhWrLx+LHnqimRkbfV4JVMDj+F0ZP5a+xRRjHbZ6Maw==}
     peerDependencies:
-      astro: ^4
+      astro: ^5
 
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
@@ -2111,10 +2111,10 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
 
-  astro-integration-kit@0.16.1:
-    resolution: {integrity: sha512-N/iam0PAFrRT9azYZqscP1HowQhC77Dwlp912P0/72k+kwUVgO3m73F26XXukHYoZBsrHgrUrfsWBxuCH3kEUg==}
+  astro-integration-kit@0.17.0:
+    resolution: {integrity: sha512-fe31CCKmrGYn/kkBd1J4b7P02gEdMdEIFBz14zdAud+YAmJeLtZD6wmrCz3LDau+lE1oM1hQnvmZXVSM/YveKw==}
     peerDependencies:
-      astro: ^4.12.0
+      astro: ^4.12.0 || ^5.0.0-beta
 
   astro@5.0.0:
     resolution: {integrity: sha512-hsDlZ8m8rHWDdvCi3TcgFT6vS2S4Wt33m9AUOPfLUZ1JkzchIKtviWbGFqJCu3LhlpnUHyP2AxujWVm+IBS6tw==}
@@ -5378,10 +5378,10 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inox-tools/astro-when@0.2.4(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))':
+  '@inox-tools/astro-when@1.0.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))':
     dependencies:
       astro: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
-      astro-integration-kit: 0.16.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
+      astro-integration-kit: 0.17.0(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1))
       debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
@@ -5904,7 +5904,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  astro-integration-kit@0.16.1(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)):
+  astro-integration-kit@0.17.0(astro@5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)):
     dependencies:
       astro: 5.0.0(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)(yaml@2.6.1)
       pathe: 1.1.2
