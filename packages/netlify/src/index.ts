@@ -457,6 +457,21 @@ export default function netlifyIntegration(
 							entrypoint: enableImageCDN ? '@astrojs/netlify/image-service.js' : undefined,
 						},
 					},
+					experimental: {
+						session:
+							config.experimental.session ??
+							(isRunningInNetlify
+								? {
+										driver: 'netlifyBlobs',
+										options: {
+											name: 'astro-sessions',
+											consistency: 'strong',
+										},
+									}
+								: {
+										driver: 'fs',
+									}),
+					},
 				});
 			},
 			'astro:config:done': async ({ config, setAdapter, logger, buildOutput }) => {

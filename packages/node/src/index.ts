@@ -1,6 +1,7 @@
 import type { AstroAdapter, AstroIntegration } from 'astro';
 import { AstroError } from 'astro/errors';
 import type { Options, UserOptions } from './types.js';
+import { fileURLToPath } from 'node:url';
 
 export function getAdapter(options: Options): AstroAdapter {
 	return {
@@ -43,6 +44,14 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 							noExternal: ['@astrojs/node'],
 						},
 					},
+					experimental: {
+						session: config.experimental.session ?? {
+							driver: 'astro/storage/drivers/fs-lite',
+							options: {
+								base: fileURLToPath(new URL("sessions", config.cacheDir)),
+							}
+						},
+					}
 				});
 			},
 			'astro:config:done': ({ setAdapter, config }) => {
