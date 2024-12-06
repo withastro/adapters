@@ -63,7 +63,7 @@ const SUPPORTED_NODE_VERSIONS: Record<
 	| { status: 'deprecated'; removal: Date }
 > = {
 	18: { status: 'retiring', removal: 'Early 2025', warnDate: new Date('October 1 2024') },
-	20: { status: 'default' },
+	20: { status: 'available' },
 	22: { status: 'default' },
 };
 
