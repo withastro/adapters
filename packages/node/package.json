@@ -34,13 +34,13 @@
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "@types/node": "^22.10.0",
+    "@types/node": "^22.10.1",
     "@types/send": "^0.17.4",
     "@types/server-destroy": "^1.0.4",
-    "astro": "^5.0.0",
+    "astro": "^5.0.3",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "node-mocks-http": "^1.16.1"
   },
   "publishConfig": {
