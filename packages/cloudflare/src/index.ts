@@ -17,6 +17,7 @@ import {
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
 import astroWhen from '@inox-tools/astro-when';
 import { AstroError } from 'astro/errors';
+import { defaultServerConditions } from 'vite';
 import { type GetPlatformProxyOptions, getPlatformProxy } from 'wrangler';
 import {
 	type CloudflareModulePluginExtra,
@@ -138,8 +139,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					integrations: [astroWhen()],
 					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
 				});
-				addWatchFile(new URL('./wrangler.toml', config.root));
-				addWatchFile(new URL('./wrangler.json', config.root));
+				if (args?.platformProxy?.configPath) {
+					addWatchFile(new URL(args.platformProxy.configPath, config.root));
+				} else {
+					addWatchFile(new URL('./wrangler.toml', config.root));
+					addWatchFile(new URL('./wrangler.json', config.root));
+					addWatchFile(new URL('./wrangler.jsonc', config.root));
+				}
 				addMiddleware({
 					entrypoint: '@astrojs/cloudflare/entrypoints/middleware.js',
 					order: 'pre',
@@ -224,12 +230,13 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						}
 					}
 
-					vite.resolve.conditions ||= [];
-					// We need those conditions, previous these conditions where applied at the esbuild step which we removed
-					// https://github.com/withastro/astro/pull/7092
-					vite.resolve.conditions.push('workerd', 'worker');
-
+					// Support `workerd` and `worker` conditions for the ssr environment
+					// (previously supported in esbuild instead: https://github.com/withastro/astro/pull/7092)
 					vite.ssr ||= {};
+					vite.ssr.resolve ||= {};
+					vite.ssr.resolve.conditions ||= [...defaultServerConditions];
+					vite.ssr.resolve.conditions.push('workerd', 'worker');
+
 					vite.ssr.target = 'webworker';
 					vite.ssr.noExternal = true;
 
@@ -260,21 +267,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						'process.env': 'process.env',
 						...vite.define,
 					};
-				}
-				// we thought that vite config inside `if (target === 'server')` would not apply for client
-				// but it seems like the same `vite` reference is used for both
-				// so we need to reset the previous conflicting setting
-				// in the future we should look into a more robust solution
-				if (target === 'client') {
-					vite.resolve ||= {};
-					vite.resolve.conditions ||= [];
-					vite.resolve.conditions = vite.resolve.conditions.filter(
-						(c) => c !== 'workerd' && c !== 'worker'
-					);
-
-					vite.build ||= {};
-					vite.build.rollupOptions ||= {};
-					vite.build.rollupOptions.output ||= {};
 				}
 			},
 			'astro:build:done': async ({ pages, dir, logger, assets }) => {

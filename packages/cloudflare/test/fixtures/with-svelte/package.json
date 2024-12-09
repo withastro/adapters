@@ -1,11 +1,11 @@
 {
-  "name": "@test/astro-cloudflare-with-solid-js",
+  "name": "@test/astro-cloudflare-with-svelte",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@astrojs/cloudflare": "workspace:*",
-    "@astrojs/solid-js": "^5.0.0",
+    "@astrojs/svelte": "^7.0.1",
     "astro": "^5.0.0",
-    "solid-js": "^1.9.3"
+    "svelte": "^5.6.0"
   }
 }

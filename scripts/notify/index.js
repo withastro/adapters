@@ -131,7 +131,7 @@ async function run() {
 	}
 
 	if (message.length < 2000) {
-		console.log(message);
+		console.info(message);
 	} else {
 		const { name, version, url } = packages.find((pkg) => pkg.name === 'astro') ?? packages[0];
 		message = `${emoji} Some ${descriptor} ${pluralize(verb)}\n\n`;
@@ -145,13 +145,13 @@ async function run() {
 		}
 
 		if (message.length < 2000) {
-			console.log(message);
+			console.info(message);
 		} else {
 			message = `${emoji} Some ${descriptor} ${pluralize(verb)}\n\n`;
 			message += `• \`${name}@${version}\` Read the [release notes →](<${url}>)\n`;
 
 			message += `\n\nAlso ${item(extraVerbs)}: ${remainingPackages.length} other packages!`;
-			console.log(message);
+			console.info(message);
 		}
 	}
 }

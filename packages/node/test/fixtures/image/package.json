@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "astro": "^5.0.0-alpha.8",
+    "astro": "^5.0.0",
     "@astrojs/node": "workspace:*"
+  },
+  "peerDependencies": {
+    "sharp": "^0.33.5"
   },
   "scripts": {
     "build": "astro build",
