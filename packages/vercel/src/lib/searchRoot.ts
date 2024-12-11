@@ -12,7 +12,7 @@ const ROOT_FILES = [
 	'pnpm-workspace.yaml',
 
 	// https://rushjs.io/pages/advanced/config_files/
-	// 'rush.json',
+	'rush.json',
 
 	// https://nx.dev/latest/react/getting-started/nx-setup
 	// 'workspace.json',
