@@ -44,11 +44,11 @@
     "fast-glob": "^3.3.2"
   },
   "peerDependencies": {
-    "astro": "0.0.0-routemanifest-refactor-20241209145150"
+    "astro": "^5.0.0"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "astro": "0.0.0-routemanifest-refactor-20241209145150",
+    "astro": "^5.0.0",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0"
   },

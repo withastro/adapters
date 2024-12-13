@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "astro": "0.0.0-routemanifest-refactor-20241209145150",
+    "astro": "^5.0.0",
     "@astrojs/node": "workspace:*"
   }
 }
