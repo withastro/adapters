@@ -12,6 +12,7 @@ package-lock.json
 .pnpm-store
 .idea/
 **/fixtures/**/.astro
+**/hosted/**/.astro
 
 # ignore top-level vscode settings
 /.vscode/settings.json

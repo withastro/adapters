@@ -289,9 +289,10 @@ export default function netlifyIntegration(
 			export default async (request, context) => {
 				const ctx = createContext({
 					request,
-					params: {}
+					params: {},
+					locals: { netlify: { context } }
 				});
-				ctx.locals.netlify = { context } 
+				console.log(ctx.locals)
 				// https://docs.netlify.com/edge-functions/api/#return-a-rewrite
 				ctx.rewrite = (target) => {
 					if(target instanceof Request) {
@@ -313,6 +314,7 @@ export default function netlifyIntegration(
 				};
 				const next = () => {
 					const { netlify, ...otherLocals } = ctx.locals;
+					console.log({otherLocals})
 					request.headers.set("x-astro-locals", trySerializeLocals(otherLocals));
 					request.headers.set("x-astro-middleware-secret", "${middlewareSecret}");
 					return context.next();
