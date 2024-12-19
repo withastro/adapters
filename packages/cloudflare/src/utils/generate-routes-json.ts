@@ -1,4 +1,9 @@
-import type { AstroConfig, AstroIntegrationLogger, IntegrationResolvedRoute, RoutePart } from 'astro';
+import type {
+	AstroConfig,
+	AstroIntegrationLogger,
+	IntegrationResolvedRoute,
+	RoutePart,
+} from 'astro';
 
 import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -63,10 +68,7 @@ async function writeRoutesFileToOutDir(
 	}
 }
 
-function segmentsToCfSyntax(
-	segments: IntegrationResolvedRoute['segments'],
-	_config: AstroConfig
-) {
+function segmentsToCfSyntax(segments: IntegrationResolvedRoute['segments'], _config: AstroConfig) {
 	const pathSegments = [];
 	if (removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)).length > 0) {
 		pathSegments.push(removeLeadingForwardSlash(removeTrailingForwardSlash(_config.base)));
