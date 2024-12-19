@@ -1,6 +1,7 @@
 import type {
 	AstroConfig,
 	AstroIntegration,
+	HookParameters,
 	IntegrationResolvedRoute,
 	IntegrationRouteData,
 } from 'astro';
@@ -26,7 +27,6 @@ import { createGetEnv } from './utils/env.js';
 import { createRoutesFile, getParts } from './utils/generate-routes-json.js';
 import { setImageConfig } from './utils/image-config.js';
 
-export type IntegrationResolvedRouteWithDistUrl = IntegrationResolvedRoute & { distURL?: URL[] };
 export type { Runtime } from './entrypoints/server.js';
 
 export type Options = {
@@ -91,6 +91,28 @@ function setProcessEnv(config: AstroConfig, env: Record<string, unknown>) {
 	}
 }
 
+	function resolvedRouteToRouteData(
+		assets: HookParameters<'astro:build:done'>['assets'],
+		route: IntegrationResolvedRoute
+	): IntegrationRouteData {
+		return {
+			pattern: route.patternRegex,
+			component: route.entrypoint,
+			prerender: route.isPrerendered,
+			route: route.pattern,
+			generate: route.generate,
+			params: route.params,
+			segments: route.segments,
+			type: route.type,
+			pathname: route.pathname,
+			redirect: route.redirect,
+			distURL: assets.get(route.pattern),
+			redirectRoute: route.redirectRoute
+				? resolvedRouteToRouteData(assets, route.redirectRoute)
+				: undefined,
+		};
+	}
+
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
 
@@ -98,7 +120,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 		args?.cloudflareModules ?? true
 	);
 
-	let _routes: IntegrationResolvedRouteWithDistUrl[];
+	let _routes: IntegrationResolvedRoute[];
 
 	return {
 		name: '@astrojs/cloudflare',
@@ -328,9 +350,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 
 				if (!routesExists) {
-					for (const route of _routes) {
-						route.distURL = assets.get(route.pattern);
-					}
 					await createRoutesFile(
 						_config,
 						logger,
@@ -347,16 +366,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					// TODO: Replace workaround after upstream @astrojs/underscore-redirects is changed, to support new IntegrationResolvedRoute type
 					if (route.type === 'redirect')
 						redirectRoutes.push([
-							{
-								pattern: route.patternRegex,
-								component: route.entrypoint,
-								prerender: route.isPrerendered,
-								route: route.pattern,
-								generate: route.generate,
-								params: route.params,
-								segments: route.segments,
-								type: route.type,
-							},
+							resolvedRouteToRouteData(assets, route),
 							'',
 						]);
 				}
