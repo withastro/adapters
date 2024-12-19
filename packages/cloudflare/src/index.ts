@@ -15,7 +15,6 @@ import {
 	removeLeadingForwardSlash,
 } from '@astrojs/internal-helpers/path';
 import { createRedirectsFromAstroRoutes } from '@astrojs/underscore-redirects';
-import astroWhen from '@inox-tools/astro-when';
 import { AstroError } from 'astro/errors';
 import { defaultClientConditions } from 'vite';
 import { type GetPlatformProxyOptions, getPlatformProxy } from 'wrangler';
@@ -136,7 +135,6 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							},
 						],
 					},
-					integrations: [astroWhen()],
 					image: setImageConfig(args?.imageService ?? 'compile', config.image, command, logger),
 				});
 				if (args?.platformProxy?.configPath) {
