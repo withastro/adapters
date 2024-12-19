@@ -331,10 +331,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 
 				if (!routesExists) {
 					for (const route of _routes) {
-						const distURL = assets.get(route.pattern);
-						if (distURL) {
-							Object.assign(route, { distURL });
-						}
+						route.distURL = assets.get(route.pattern);
 					}
 					await createRoutesFile(
 						_config,
