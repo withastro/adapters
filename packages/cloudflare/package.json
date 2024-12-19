@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "astro": "^5.0.0",
+    "astro": "^5.0.6",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0",
     "execa": "^8.0.1",
