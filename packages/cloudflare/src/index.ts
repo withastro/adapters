@@ -196,7 +196,11 @@ export default function createIntegration(args?: Options): AstroIntegration {
 						hybridOutput: 'stable',
 						staticOutput: 'unsupported',
 						i18nDomains: 'experimental',
-						sharpImageService: 'limited',
+						sharpImageService: {
+							support: 'limited',
+							message:
+								'Cloudflare does not support sharp. You can use the `compile` image service to compile images at build time. It will not work for any on-demand rendered images.',
+						},
 						envGetSecret: 'experimental',
 					},
 				});
