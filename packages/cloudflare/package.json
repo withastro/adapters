@@ -31,7 +31,6 @@
     "@astrojs/internal-helpers": "0.4.1",
     "@astrojs/underscore-redirects": "^0.4.0-alpha.0",
     "@cloudflare/workers-types": "^4.20241112.0",
-    "@inox-tools/astro-when": "^1.0.1",
     "esbuild": "^0.24.0",
     "estree-walker": "^3.0.3",
     "magic-string": "^0.30.14",
@@ -45,7 +44,7 @@
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
-    "astro": "^5.0.0",
+    "astro": "^5.0.6",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0",
     "execa": "^8.0.1",
