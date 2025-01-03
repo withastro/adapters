@@ -341,7 +341,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					config: _config,
 					routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
 					dir,
-					buildOutput: finalBuildOutput
+					buildOutput: finalBuildOutput,
 				});
 
 				if (!trueRedirects.empty()) {
