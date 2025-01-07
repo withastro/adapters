@@ -115,6 +115,7 @@ function resolvedRouteToRouteData(
 
 export default function createIntegration(args?: Options): AstroIntegration {
 	let _config: AstroConfig;
+	let finalBuildOutput: HookParameters<'astro:config:done'>['buildOutput'];
 
 	const cloudflareModulePlugin: PluginOption & CloudflareModulePluginExtra = cloudflareModuleLoader(
 		args?.cloudflareModules ?? true
@@ -182,6 +183,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				}
 
 				_config = config;
+				finalBuildOutput = buildOutput;
 
 				setAdapter({
 					name: '@astrojs/cloudflare',
@@ -201,7 +203,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 							message:
 								'Cloudflare does not support sharp. You can use the `compile` image service to compile images at build time. It will not work for any on-demand rendered images.',
 						},
-						envGetSecret: 'experimental',
+						envGetSecret: 'stable',
 					},
 				});
 			},
@@ -376,6 +378,7 @@ export default function createIntegration(args?: Options): AstroIntegration {
 					config: _config,
 					routeToDynamicTargetMap: new Map(Array.from(redirectRoutes)),
 					dir,
+					buildOutput: finalBuildOutput,
 				});
 
 				if (!trueRedirects.empty()) {

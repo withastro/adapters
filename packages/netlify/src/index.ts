@@ -235,7 +235,7 @@ export default function netlifyIntegration(
 		};
 	}
 
-	async function writeRedirects(routes: IntegrationRouteData[], dir: URL) {
+	async function writeRedirects(routes: IntegrationRouteData[], dir: URL,buildOutput: HookParameters<'astro:config:done'>['buildOutput']) {
 		const fallback = finalBuildOutput === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
@@ -251,6 +251,7 @@ export default function netlifyIntegration(
 						return [route, fallback];
 					})
 			),
+			buildOutput,
 		});
 
 		if (!redirects.empty()) {
@@ -510,7 +511,7 @@ export default function netlifyIntegration(
 						staticOutput: 'stable',
 						serverOutput: 'stable',
 						sharpImageService: 'stable',
-						envGetSecret: 'experimental',
+						envGetSecret: 'stable',
 					},
 				});
 			},
@@ -520,7 +521,8 @@ export default function netlifyIntegration(
 			'astro:build:done': async ({ assets, dir, logger }) => {
 				await writeRedirects(
 					routes.map((route) => resolvedRouteToRouteData(assets, route)),
-					dir
+					dir,
+					finalBuildOutput
 				);
 				logger.info('Emitted _redirects');
 
