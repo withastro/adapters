@@ -235,7 +235,11 @@ export default function netlifyIntegration(
 		};
 	}
 
-	async function writeRedirects(routes: IntegrationRouteData[], dir: URL,buildOutput: HookParameters<'astro:config:done'>['buildOutput']) {
+	async function writeRedirects(
+		routes: IntegrationRouteData[],
+		dir: URL,
+		buildOutput: HookParameters<'astro:config:done'>['buildOutput']
+	) {
 		const fallback = finalBuildOutput === 'static' ? '/.netlify/static' : '/.netlify/functions/ssr';
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
