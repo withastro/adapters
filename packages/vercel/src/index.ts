@@ -72,9 +72,7 @@ function getAdapter({
 	edgeMiddleware,
 	middlewareSecret,
 	skewProtection,
-	buildOutput,
 }: {
-	buildOutput: 'server' | 'static';
 	edgeMiddleware: boolean;
 	middlewareSecret: string;
 	skewProtection: boolean;
@@ -86,7 +84,7 @@ function getAdapter({
 		args: { middlewareSecret, skewProtection },
 		adapterFeatures: {
 			edgeMiddleware,
-			buildOutput,
+			buildOutput: 'server',
 		},
 		supportedAstroFeatures: {
 			hybridOutput: 'stable',
@@ -265,7 +263,6 @@ export default function vercelAdapter({
 					}
 					setAdapter(
 						getAdapter({
-							buildOutput: _buildOutput,
 							edgeMiddleware,
 							middlewareSecret,
 							skewProtection,
@@ -277,7 +274,6 @@ export default function vercelAdapter({
 							edgeMiddleware: false,
 							middlewareSecret: '',
 							skewProtection,
-							buildOutput: _buildOutput,
 						})
 					);
 				}
