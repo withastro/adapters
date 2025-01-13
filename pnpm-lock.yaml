@@ -66,8 +66,8 @@ importers:
         specifier: 0.4.2
         version: 0.4.2
       '@astrojs/underscore-redirects':
-        specifier: ^0.5.0
-        version: 0.5.1
+        specifier: ^0.6.0
+        version: 0.6.0
       '@cloudflare/workers-types':
         specifier: ^4.20241230.0
         version: 4.20241230.0
@@ -249,8 +249,8 @@ importers:
         specifier: 0.4.2
         version: 0.4.2
       '@astrojs/underscore-redirects':
-        specifier: ^0.5.0
-        version: 0.5.1
+        specifier: ^0.6.0
+        version: 0.6.0
       '@netlify/functions':
         specifier: ^2.8.0
         version: 2.8.2
@@ -779,8 +779,8 @@ packages:
     resolution: {integrity: sha512-wxhSKRfKugLwLlr4OFfcqovk+LIFtKwLyGPqMsv+9/ibqqnW3Gv7tBhtKEb0gAyUAC4G9BTVQeQahqnQAhd6IQ==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=22.0.0}
 
-  '@astrojs/underscore-redirects@0.5.1':
-    resolution: {integrity: sha512-tmHt0ikpqSoLXXLG+8eS/orzjjPhggMVbe+sZ2OHuMzQYMfZgvKRM/DDo9GH5HAuXvEDt0d1QfgT9mXs60tYPQ==}
+  '@astrojs/underscore-redirects@0.6.0':
+    resolution: {integrity: sha512-dnJgFpaM955IFNIkEEmMaaIdWXRdeZs1ID6mlGBqdjh6NiCXfKmOdq7L4fd9Dd/tr18fkLrOJ25IUJSxRAEhjQ==}
 
   '@astrojs/vue@5.0.4':
     resolution: {integrity: sha512-ONfhcRqLVZ+gIeiZnvNX5ntdGUtPfPmlyDyKP6NyVMkJCZoAElfDYHs0FI/ti1H2Dm8GxgJrEwOoMapXywaGsw==}
@@ -5024,7 +5024,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/underscore-redirects@0.5.1': {}
+  '@astrojs/underscore-redirects@0.6.0': {}
 
   '@astrojs/vue@5.0.4(@types/node@22.10.5)(astro@5.1.3(@types/node@22.10.5)(rollup@4.30.1)(typescript@5.7.2)(yaml@2.6.1))(rollup@4.30.1)(vue@3.5.13(typescript@5.7.2))(yaml@2.6.1)':
     dependencies:
