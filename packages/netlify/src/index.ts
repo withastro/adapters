@@ -236,7 +236,7 @@ export default function netlifyIntegration(
 		const redirects = createRedirectsFromAstroRoutes({
 			config: _config,
 			dir,
-			routeToDynamicTargetMap: new Map(routes.map((route) => [route, fallback])),
+			routeToDynamicTargetMap: new Map(staticRedirects.map((route) => [route, fallback])),
 			buildOutput,
 			assets,
 		});
