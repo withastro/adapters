@@ -220,35 +220,14 @@ export default function vercelAdapter({
 							name: 'astro:copy-vercel-output',
 							hooks: {
 								'astro:build:done': async ({ logger }: HookParameters<'astro:build:done'>) => {
-									if (staticDir) {
-										if (existsSync(staticDir)) {
-											emptyDir(staticDir);
-										}
-										mkdirSync(new URL('./.vercel/output/static/', _config.root), {
-											recursive: true,
-										});
 
-										if (_buildOutput === 'static' && staticDir) {
+
+										if (_buildOutput === 'static') {
 											cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
 												recursive: true,
 											});
-										} else {
-											cpSync(
-												_config.build.client,
-												new URL('./.vercel/output/static/', _config.root),
-												{
-													recursive: true,
-												}
-											);
-											cpSync(
-												_config.build.server,
-												new URL('./.vercel/output/_functions/', _config.root),
-												{
-													recursive: true,
-												}
-											);
-										}
-									}
+										} 
+									
 								},
 							},
 						},
@@ -342,7 +321,36 @@ export default function vercelAdapter({
 			},
 			'astro:build:done': async ({ logger }: HookParameters<'astro:build:done'>) => {
 				const outDir = new URL('./.vercel/output/', _config.root);
+				if (staticDir) {
+					if (existsSync(staticDir)) {
+						emptyDir(staticDir);
+					}
+					mkdirSync(new URL('./.vercel/output/static/', _config.root), {
+						recursive: true,
+					});
 
+					mkdirSync(new URL('./.vercel/output/server/', _config.root), {
+						recursive: true,
+					});
+
+					if (_buildOutput !== 'static') {
+						cpSync(
+							_config.build.client,
+							new URL('./.vercel/output/static/', _config.root),
+							{
+								recursive: true,
+							}
+						);
+						cpSync(
+							_config.build.server,
+							new URL('./.vercel/output/_functions/', _config.root),
+							{
+								recursive: true,
+							}
+						);
+					}
+				}
+			
 				const routeDefinitions: Array<{
 					src: string;
 					dest: string;
