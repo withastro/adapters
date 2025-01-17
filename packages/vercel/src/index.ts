@@ -215,32 +215,44 @@ export default function vercelAdapter({
 						format: 'directory',
 						redirects: false,
 					},
-					integrations: [{
-						name: 'astro:copy-vercel-output',
-						hooks: {
-							'astro:build:done': async ({ logger }: HookParameters<'astro:build:done'>) => {
-								if (staticDir) {
-									if (existsSync(staticDir)) {
-										emptyDir(staticDir);
+					integrations: [
+						{
+							name: 'astro:copy-vercel-output',
+							hooks: {
+								'astro:build:done': async ({ logger }: HookParameters<'astro:build:done'>) => {
+									if (staticDir) {
+										if (existsSync(staticDir)) {
+											emptyDir(staticDir);
+										}
+										mkdirSync(new URL('./.vercel/output/static/', _config.root), {
+											recursive: true,
+										});
+
+										if (_buildOutput === 'static' && staticDir) {
+											cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
+												recursive: true,
+											});
+										} else {
+											cpSync(
+												_config.build.client,
+												new URL('./.vercel/output/static/', _config.root),
+												{
+													recursive: true,
+												}
+											);
+											cpSync(
+												_config.build.server,
+												new URL('./.vercel/output/_functions/', _config.root),
+												{
+													recursive: true,
+												}
+											);
+										}
 									}
-									mkdirSync(new URL('./.vercel/output/static/', _config.root), { recursive: true });
-				
-									if (_buildOutput === 'static' && staticDir) {
-										cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
-											recursive: true,
-										});
-									} else {
-										cpSync(_config.build.client, new URL('./.vercel/output/static/', _config.root), {
-											recursive: true,
-										});
-										cpSync(_config.build.server, new URL('./.vercel/output/_functions/', _config.root), {
-											recursive: true,
-										});
-									}
-								}
-							}
-						}
-					}],
+								},
+							},
+						},
+					],
 					vite: {
 						ssr: {
 							external: ['@vercel/nft'],
@@ -254,7 +266,6 @@ export default function vercelAdapter({
 						config.image
 					),
 				});
-
 			},
 			'astro:routes:resolved': (params) => {
 				routes = params.routes;
