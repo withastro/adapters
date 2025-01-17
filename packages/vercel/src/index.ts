@@ -219,15 +219,12 @@ export default function vercelAdapter({
 						{
 							name: 'astro:copy-vercel-output',
 							hooks: {
-								'astro:build:done': async ({ logger }: HookParameters<'astro:build:done'>) => {
-
-
-										if (_buildOutput === 'static') {
-											cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
-												recursive: true,
-											});
-										} 
-									
+								'astro:build:done': async () => {
+									if (_buildOutput === 'static') {
+										cpSync(_config.outDir, new URL('./.vercel/output/static/', _config.root), {
+											recursive: true,
+										});
+									}
 								},
 							},
 						},
@@ -329,28 +326,18 @@ export default function vercelAdapter({
 						recursive: true,
 					});
 
-					mkdirSync(new URL('./.vercel/output/server/', _config.root), {
-						recursive: true,
-					});
+					mkdirSync(new URL('./.vercel/output/server/', _config.root));
 
 					if (_buildOutput !== 'static') {
-						cpSync(
-							_config.build.client,
-							new URL('./.vercel/output/static/', _config.root),
-							{
-								recursive: true,
-							}
-						);
-						cpSync(
-							_config.build.server,
-							new URL('./.vercel/output/_functions/', _config.root),
-							{
-								recursive: true,
-							}
-						);
+						cpSync(_config.build.client, new URL('./.vercel/output/static/', _config.root), {
+							recursive: true,
+						});
+						cpSync(_config.build.server, new URL('./.vercel/output/_functions/', _config.root), {
+							recursive: true,
+						});
 					}
 				}
-			
+
 				const routeDefinitions: Array<{
 					src: string;
 					dest: string;
