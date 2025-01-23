@@ -4,7 +4,6 @@ import nodejs from '../dist/index.js';
 import { loadFixture } from './test-utils.js';
 
 describe('Astro preview host', () => {
-
 	it('defaults to localhost', async () => {
 		const fixture = await loadFixture({
 			root: './fixtures/preview-headers/',
@@ -23,7 +22,7 @@ describe('Astro preview host', () => {
 			output: 'server',
 			adapter: nodejs({ mode: 'standalone' }),
 			server: {
-				host: false
+				host: false,
 			},
 		});
 		await fixture.build();
@@ -38,7 +37,7 @@ describe('Astro preview host', () => {
 			output: 'server',
 			adapter: nodejs({ mode: 'standalone' }),
 			server: {
-				host: true
+				host: true,
 			},
 		});
 		await fixture.build();
@@ -61,5 +60,4 @@ describe('Astro preview host', () => {
 		assert.equal(devPreview.host, '127.0.0.1');
 		await devPreview.stop();
 	});
-
 });
