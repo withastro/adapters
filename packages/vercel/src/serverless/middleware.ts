@@ -42,7 +42,9 @@ export async function generateEdgeMiddleware(
 			contents: code,
 			resolveDir: fileURLToPath(root),
 		},
-		target: 'es2022',
+		// Vercel Edge runtime targets ESNext, because Cloudflare Workers update v8 weekly
+		// https://github.com/vercel/vercel/blob/1006f2ae9d67ea4b3cbb1073e79d14d063d42436/packages/next/scripts/build-edge-function-template.js
+		target: 'esnext',
 		platform: 'browser',
 		// esbuild automatically adds the browser, import and default conditions
 		// https://esbuild.github.io/api/#conditions

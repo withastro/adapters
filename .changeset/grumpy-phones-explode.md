@@ -2,4 +2,4 @@
 '@astrojs/vercel': patch
 ---
 
-Updates edge middleware to support es2022 syntax
+Updates edge middleware to support esnext syntax
