@@ -42,10 +42,12 @@ export async function generateEdgeMiddleware(
 			contents: code,
 			resolveDir: fileURLToPath(root),
 		},
-		target: 'es2020',
+		target: 'es2022',
 		platform: 'browser',
+		// esbuild automatically adds the browser, import and default conditions
+		// https://esbuild.github.io/api/#conditions
 		// https://runtime-keys.proposal.wintercg.org/#edge-light
-		conditions: ['edge-light', 'worker', 'browser'],
+		conditions: ['edge-light', 'workerd', 'worker'],
 		outfile: bundledFilePath,
 		allowOverwrite: true,
 		format: 'esm',
