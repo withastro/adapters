@@ -255,6 +255,18 @@ export default function netlifyIntegration(
 		}
 	}
 
+	async function getFilesByGlob(
+		include: Array<string> = [],
+		exclude: Array<string> = []
+	): Promise<Array<URL>> {
+		const files = await glob(include, {
+			cwd: fileURLToPath(rootDir),
+			absolute: true,
+			ignore: exclude,
+		});
+		return files.map((file) => new URL(file, _config.root));
+	}
+
 	async function writeSSRFunction({
 		notFoundContent,
 		logger,
@@ -287,11 +299,11 @@ export default function netlifyIntegration(
 			}
 		}
 
-		const includeFiles = _includeFiles
-			.map((file) => new URL(file, _config.root))
-			.concat(extraFilesToInclude);
+		const includeFiles = (await getFilesByGlob(_includeFiles, _excludeFiles)).concat(
+			extraFilesToInclude
+		);
 
-		const excludeFiles = _excludeFiles.map((file) => new URL(file, _config.root));
+		const excludeFiles = await getFilesByGlob(_excludeFiles);
 
 		const { handler } = await copyDependenciesToFunction(
 			{
