@@ -71,6 +71,12 @@ export type Options = {
 	 * for reference on how these file types are exported
 	 */
 	cloudflareModules?: boolean;
+
+	/**
+	 * Duplicate redirect routes with added trailing slash. Defaults to true.
+	 * When enabled, every entry in _redirects will be duplicated with an added trailing slash.
+	 */
+	redirectAlsoWithTrailingSlash?: boolean;
 };
 
 function wrapWithSlashes(path: string): string {
@@ -345,6 +351,16 @@ export default function createIntegration(args?: Options): AstroIntegration {
 				});
 
 				if (!trueRedirects.empty()) {
+					if (args?.redirectAlsoWithTrailingSlash ?? true === true) {
+						const originalDefinitions = [...trueRedirects.definitions];
+						trueRedirects.definitions = [];
+						for (const definition of originalDefinitions) {
+							trueRedirects.definitions.push(definition);
+							trueRedirects.definitions.push({ ...definition, input: appendForwardSlash(definition.input) });
+						}
+						trueRedirects.minInputLength += 1;
+					}
+
 					try {
 						await appendFile(new URL('./_redirects', _config.outDir), trueRedirects.print());
 					} catch (error) {
