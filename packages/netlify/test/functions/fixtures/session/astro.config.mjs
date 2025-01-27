@@ -4,7 +4,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   output: 'server',
   adapter: netlify({
-    edgeMiddleware: true
+    edgeMiddleware: true,
+    experimentalSessions: true,
   }),
   site: 'http://example.com',
 });

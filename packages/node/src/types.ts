@@ -10,6 +10,17 @@ export interface UserOptions {
 	 * - 'standalone' - Build to a standalone server. The server starts up just by running the built script.
 	 */
 	mode: 'middleware' | 'standalone';
+
+	/**
+	 * If enabled, this will configure experimental session support using filesystem storage.
+	 * If you prefer to do custom configuration for sessions, you can instead use
+	 * the `experimental.session` configuration option in your Astro config.
+	 *
+	 * See [the experimental docs](https://docs.astro.build/en/reference/experimental-flags/sessions/) for more information.
+	 *
+	 * @default {false}
+	 */
+	experimentalSessions?: boolean;
 }
 
 export interface Options extends UserOptions {

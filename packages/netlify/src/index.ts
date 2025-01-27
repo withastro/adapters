@@ -178,6 +178,17 @@ export interface NetlifyIntegrationConfig {
 	 * @default {true}
 	 */
 	imageCDN?: boolean;
+
+	/**
+	 * If enabled, this will configure experimental session support using Netlify Blobs.
+	 * If you prefer to do custom configuration for sessions, you can instead use
+	 * the `experimental.session` configuration option in your Astro config.
+	 *
+	 * See [the experimental docs](https://docs.astro.build/en/reference/experimental-flags/sessions/) for more information.
+	 *
+	 * @default {false}
+	 */
+	experimentalSessions?: boolean;
 }
 
 export default function netlifyIntegration(
@@ -443,13 +454,30 @@ export default function netlifyIntegration(
 	return {
 		name: '@astrojs/netlify',
 		hooks: {
-			'astro:config:setup': async ({ config, updateConfig }) => {
+			'astro:config:setup': async ({ config, updateConfig, logger }) => {
 				rootDir = config.root;
 				await cleanFunctions();
 
 				outDir = new URL('./dist/', rootDir);
 
 				const enableImageCDN = isRunningInNetlify && (integrationConfig?.imageCDN ?? true);
+
+				let session = config.experimental.session;
+
+				if (integrationConfig?.experimentalSessions && !session) {
+					logger.info(`Configuring experimental session support using ${isRunningInNetlify ? 'Netlify Blobs' : 'filesystem storage'}`);
+					session = isRunningInNetlify
+						? {
+								driver: 'netlify-blobs',
+								options: {
+									name: 'astro-sessions',
+									consistency: 'strong',
+								},
+							}
+						: {
+								driver: 'fs-lite',
+							};
+				}
 
 				updateConfig({
 					outDir,
@@ -471,19 +499,7 @@ export default function netlifyIntegration(
 						},
 					},
 					experimental: {
-						session:
-							config.experimental.session ??
-							(isRunningInNetlify
-								? {
-										driver: 'netlifyBlobs',
-										options: {
-											name: 'astro-sessions',
-											consistency: 'strong',
-										},
-									}
-								: {
-										driver: 'fs',
-									}),
+						session,
 					},
 				});
 			},
