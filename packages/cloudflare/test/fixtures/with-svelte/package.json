@@ -5,7 +5,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "workspace:*",
     "@astrojs/svelte": "^7.0.1",
-    "astro": "0.0.0-sessions-20241205163205",
+    "astro": "^5.1.0",
     "svelte": "^5.6.0"
   }
 }

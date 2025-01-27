@@ -35,7 +35,7 @@
     "server-destroy": "^1.0.1"
   },
   "peerDependencies": {
-    "astro": "0.0.0-sessions-20241205163205"
+    "astro": "^5.1.0"
   },
   "devDependencies": {
     "@astrojs/test-utils": "workspace:*",
