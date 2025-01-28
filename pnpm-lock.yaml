@@ -374,6 +374,9 @@ importers:
       cheerio:
         specifier: 1.0.0
         version: 1.0.0
+      devalue:
+        specifier: ^5.1.1
+        version: 5.1.1
       express:
         specifier: ^4.21.2
         version: 4.21.2
