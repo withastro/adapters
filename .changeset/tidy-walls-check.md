@@ -2,4 +2,4 @@
 '@astrojs/vercel': patch
 ---
 
-Handle trailing slashes correctly
+Fixes a bug that caused redirect loops when trailingSlash was set
