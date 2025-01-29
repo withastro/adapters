@@ -25,6 +25,7 @@ import {
 	getInjectableWebAnalyticsContent,
 } from './lib/web-analytics.js';
 import { generateEdgeMiddleware } from './serverless/middleware.js';
+import { getTransformedRoutes, normalizeRoutes, type Route } from '@vercel/routing-utils';
 
 const PACKAGE_NAME = '@astrojs/vercel';
 
@@ -435,14 +436,12 @@ export default function vercelAdapter({
 				}
 				const fourOhFourRoute = routes.find((route) => route.pathname === '/404');
 				const destination = new URL('./.vercel/output/config.json', _config.root);
-				const finalRoutes = [
-					...getRedirects(routes, _config),
+				const finalRoutes: Route[] = [
 					{
 						src: `^/${_config.build.assets}/(.*)$`,
 						headers: { 'cache-control': 'public, max-age=31536000, immutable' },
 						continue: true,
 					},
-					{ handle: 'filesystem' },
 				];
 				if (_buildOutput === 'server') {
 					finalRoutes.push(...routeDefinitions);
@@ -468,6 +467,23 @@ export default function vercelAdapter({
 					}
 				}
 
+				let trailingSlash: boolean | undefined;
+
+				if (_config.trailingSlash && _config.trailingSlash !== 'ignore') {
+					trailingSlash = _config.trailingSlash === 'always';
+				}
+
+				const { routes: redirects = [], error } = getTransformedRoutes({
+					trailingSlash,
+					rewrites: [],
+					redirects: getRedirects(routes, _config),
+					headers: [],
+				});
+
+				if(error) {
+					logger.error(`Error generating redirects: ${error.message}`);
+				}
+
 				let images: VercelImageConfig | undefined;
 				if (imageService || imagesConfig) {
 					if (imagesConfig) {
@@ -487,11 +503,16 @@ export default function vercelAdapter({
 					}
 				}
 
+				const normalized = normalizeRoutes([...(redirects ?? []), ...finalRoutes]);
+				if(normalized.error) {
+					logger.error(`Error creating routes: ${normalized.error.message}`);
+				}
+
 				// Output configuration
 				// https://vercel.com/docs/build-output-api/v3#build-output-configuration
 				await writeJson(destination, {
 					version: 3,
-					routes: finalRoutes,
+					routes: [...(redirects ?? []), ...finalRoutes],
 					images,
 				});
 
