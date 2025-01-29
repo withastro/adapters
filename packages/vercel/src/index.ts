@@ -519,7 +519,7 @@ export default function vercelAdapter({
 				// https://vercel.com/docs/build-output-api/v3#build-output-configuration
 				await writeJson(destination, {
 					version: 3,
-					routes: [...(redirects ?? []), ...finalRoutes],
+					routes: normalized.routes,
 					images,
 				});
 
