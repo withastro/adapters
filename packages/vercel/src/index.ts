@@ -262,16 +262,23 @@ export default function vercelAdapter({
 						);
 					}
 					const vercelConfigPath = new URL('vercel.json', config.root);
-					if (existsSync(vercelConfigPath)) {
+					if (
+						config.trailingSlash &&
+						config.trailingSlash !== 'ignore' &&
+						existsSync(vercelConfigPath) 
+					) {
 						try {
 							const vercelConfig = JSON.parse(readFileSync(vercelConfigPath, 'utf-8'));
-							if (vercelConfig.trailingSlash === true && config.trailingSlash === 'always') {
-								logger.warn(
-									'\n' +
-										`\tYour "vercel.json" \`trailingSlash\` configuration (set to \`true\`) will conflict with your Astro \`trailinglSlash\` configuration (set to \`"always"\`).\n` +
-										// biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
-										`\tThis would cause infinite redirects under certain conditions and throw an \`ERR_TOO_MANY_REDIRECTS\` error.\n` +
-										`\tTo prevent this, change your Astro configuration and update \`"trailingSlash"\` to \`"ignore"\`.\n`
+							if (
+								(vercelConfig.trailingSlash === true && config.trailingSlash === 'never') ||
+								(vercelConfig.trailingSlash === false && config.trailingSlash === 'always')
+							) {
+								logger.error(
+									`
+	Your "vercel.json" \`trailingSlash\` configuration (set to \`${vercelConfig.trailingSlash}\`) will conflict with your Astro \`trailingSlash\` configuration (set to \`${JSON.stringify(config.trailingSlash)}\`).
+	This would cause infinite redirects or duplicate content issues. 
+	Please remove the \`trailingSlash\` configuration from your \`vercel.json\` file or Astro config.
+`
 								);
 							}
 						} catch (_err) {
@@ -480,7 +487,7 @@ export default function vercelAdapter({
 					headers: [],
 				});
 
-				if(error) {
+				if (error) {
 					logger.error(`Error generating redirects: ${error.message}`);
 				}
 
@@ -504,7 +511,7 @@ export default function vercelAdapter({
 				}
 
 				const normalized = normalizeRoutes([...(redirects ?? []), ...finalRoutes]);
-				if(normalized.error) {
+				if (normalized.error) {
 					logger.error(`Error creating routes: ${normalized.error.message}`);
 				}
 
