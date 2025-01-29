@@ -62,5 +62,4 @@ describe('Redirects', () => {
 		assert.equal(blogRoute.headers.Location.startsWith('/team/articles'), true);
 		assert.equal(blogRoute.status, 301);
 	});
-
 });

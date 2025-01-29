@@ -2,6 +2,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { emptyDir, removeDir, writeJson } from '@astrojs/internal-helpers/fs';
+import { type Route, getTransformedRoutes, normalizeRoutes } from '@vercel/routing-utils';
 import type {
 	AstroAdapter,
 	AstroConfig,
@@ -25,7 +26,6 @@ import {
 	getInjectableWebAnalyticsContent,
 } from './lib/web-analytics.js';
 import { generateEdgeMiddleware } from './serverless/middleware.js';
-import { getTransformedRoutes, normalizeRoutes, type Route } from '@vercel/routing-utils';
 
 const PACKAGE_NAME = '@astrojs/vercel';
 
@@ -265,7 +265,7 @@ export default function vercelAdapter({
 					if (
 						config.trailingSlash &&
 						config.trailingSlash !== 'ignore' &&
-						existsSync(vercelConfigPath) 
+						existsSync(vercelConfigPath)
 					) {
 						try {
 							const vercelConfig = JSON.parse(readFileSync(vercelConfigPath, 'utf-8'));

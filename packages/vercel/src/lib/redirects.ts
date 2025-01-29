@@ -96,7 +96,6 @@ function getMatchRegex(segments: RoutePart[][]) {
 		.join('');
 }
 
-
 function getRedirectLocation(route: IntegrationResolvedRoute, config: AstroConfig): string {
 	if (route.redirectRoute) {
 		const pattern = getMatchPattern(route.redirectRoute.segments);
@@ -126,10 +125,7 @@ export function escapeRegex(content: string) {
 	return `^/${getMatchRegex(segments)}$`;
 }
 
-export function getRedirects(
-	routes: IntegrationResolvedRoute[],
-	config: AstroConfig
-): Redirect[] {
+export function getRedirects(routes: IntegrationResolvedRoute[], config: AstroConfig): Redirect[] {
 	const redirects: Redirect[] = [];
 
 	for (const route of routes) {
@@ -142,4 +138,4 @@ export function getRedirects(
 		}
 	}
 	return redirects;
-};
+}
