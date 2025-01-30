@@ -26,6 +26,7 @@ import {
 	getInjectableWebAnalyticsContent,
 } from './lib/web-analytics.js';
 import { generateEdgeMiddleware } from './serverless/middleware.js';
+import { AstroError } from 'astro/errors';
 
 const PACKAGE_NAME = '@astrojs/vercel';
 
@@ -473,10 +474,15 @@ export default function vercelAdapter({
 						});
 					}
 				}
-
+				// The Vercel `trailingSlash` option
 				let trailingSlash: boolean | undefined;
-
+				// Vercel's `trailingSlash` option maps to Astro's like so:
+				// - `true` -> `"always"`
+				// - `false` -> `"never"`
+				// - `undefined` -> `"ignore"`
+				// If config is set to "ignore", we leave it as undefined.
 				if (_config.trailingSlash && _config.trailingSlash !== 'ignore') {
+					// Otherwise, map it accordingly.
 					trailingSlash = _config.trailingSlash === 'always';
 				}
 
@@ -486,9 +492,11 @@ export default function vercelAdapter({
 					redirects: getRedirects(routes, _config),
 					headers: [],
 				});
-
 				if (error) {
-					logger.error(`Error generating redirects: ${error.message}`);
+					throw new AstroError(
+						`Error generating redirects: ${error.message}`,
+						error.link ? `${error.action ?? 'More info'}: ${error.link}` : undefined
+					);
 				}
 
 				let images: VercelImageConfig | undefined;
@@ -512,7 +520,12 @@ export default function vercelAdapter({
 
 				const normalized = normalizeRoutes([...(redirects ?? []), ...finalRoutes]);
 				if (normalized.error) {
-					logger.error(`Error creating routes: ${normalized.error.message}`);
+					throw new AstroError(
+						`Error generating routes: ${normalized.error.message}`,
+						normalized.error.link
+							? `${normalized.error.action ?? 'More info'}: ${normalized.error.link}`
+							: undefined
+					);
 				}
 
 				// Output configuration

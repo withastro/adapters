@@ -62,4 +62,19 @@ describe('Redirects', () => {
 		assert.equal(blogRoute.headers.Location.startsWith('/team/articles'), true);
 		assert.equal(blogRoute.status, 301);
 	});
+
+	it('throws an error for invalid redirects', async () => {
+		const fails = await loadFixture({
+			root: './fixtures/redirects/',
+			redirects: {
+				// Invalid source syntax
+				'/blog/(![...slug]': '/team/articles/[...slug]',
+			},
+		});
+		await assert.rejects(() => fails.build(), {
+			name: 'AstroUserError',
+			message:
+				'Error generating redirects: Redirect at index 0 has invalid `source` regular expression "/blog/(!:slug*".',
+		});
+	});
 });
