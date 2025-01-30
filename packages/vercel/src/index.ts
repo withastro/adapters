@@ -11,6 +11,7 @@ import type {
 	HookParameters,
 	IntegrationResolvedRoute,
 } from 'astro';
+import { AstroError } from 'astro/errors';
 import glob from 'fast-glob';
 import {
 	type DevImageService,
@@ -26,7 +27,6 @@ import {
 	getInjectableWebAnalyticsContent,
 } from './lib/web-analytics.js';
 import { generateEdgeMiddleware } from './serverless/middleware.js';
-import { AstroError } from 'astro/errors';
 
 const PACKAGE_NAME = '@astrojs/vercel';
 
