@@ -1,6 +1,7 @@
 import * as assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { after, before, describe, it } from 'node:test';
+import netlify from '@astrojs/netlify';
 import { loadFixture } from '@astrojs/test-utils';
 import * as cheerio from 'cheerio';
 import glob from 'fast-glob';
@@ -17,8 +18,15 @@ describe(
 		const excludedAssets = ['./files/exclude-asset.json'];
 
 		before(async () => {
-			process.env.VITE_ASSETS_INCLUDE = expectedAssetsInclude.join();
-			fixture = await loadFixture({ root });
+			fixture = await loadFixture({
+				root,
+				vite: {
+					assetsInclude: expectedAssetsInclude,
+				},
+				adapter: netlify({
+					excludeFiles: excludedAssets,
+				}),
+			});
 			await fixture.build();
 		});
 
@@ -44,7 +52,6 @@ describe(
 		});
 
 		after(async () => {
-			process.env.VITE_ASSETS_INCLUDE = undefined;
 			await fixture.clean();
 		});
 	},
@@ -71,8 +78,12 @@ describe(
 		];
 
 		before(async () => {
-			process.env.INCLUDE_FILES = expectedFiles.join();
-			fixture = await loadFixture({ root });
+			fixture = await loadFixture({
+				root,
+				adapter: netlify({
+					includeFiles: expectedFiles,
+				}),
+			});
 			await fixture.build();
 		});
 
@@ -103,7 +114,6 @@ describe(
 		});
 
 		after(async () => {
-			process.env.INCLUDE_FILES = undefined;
 			await fixture.clean();
 		});
 	},
@@ -128,9 +138,13 @@ describe(
 		const excludeFiles = [...excludedTxt, '../../../../../../node_modules/.pnpm/cowsay@*/**'];
 
 		before(async () => {
-			process.env.INCLUDE_FILES = includeFiles.join();
-			process.env.EXCLUDE_FILES = excludeFiles.join();
-			fixture = await loadFixture({ root });
+			fixture = await loadFixture({
+				root,
+				adapter: netlify({
+					includeFiles: includeFiles,
+					excludeFiles: excludeFiles,
+				}),
+			});
 			await fixture.build();
 		});
 
@@ -161,8 +175,6 @@ describe(
 		});
 
 		after(async () => {
-			process.env.INCLUDE_FILES = undefined;
-			process.env.EXCLUDE_FILES = undefined;
 			await fixture.clean();
 		});
 	},

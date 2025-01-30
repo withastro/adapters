@@ -302,7 +302,6 @@ export default function netlifyIntegration(
 		const includeFiles = (await getFilesByGlob(_includeFiles, _excludeFiles)).concat(
 			extraFilesToInclude
 		);
-
 		const excludeFiles = await getFilesByGlob(_excludeFiles);
 
 		const { handler } = await copyDependenciesToFunction(
