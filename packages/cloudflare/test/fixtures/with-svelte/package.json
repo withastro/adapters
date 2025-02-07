@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@astrojs/cloudflare": "workspace:*",
-    "@astrojs/svelte": "^7.0.3",
-    "astro": "^5.1.6",
-    "svelte": "^5.17.4"
+    "@astrojs/svelte": "^7.0.4",
+    "astro": "^5.2.5",
+    "svelte": "^5.19.9"
   }
 }
