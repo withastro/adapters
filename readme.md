@@ -1,3 +1,4 @@
 # Astro Core Adapters
 
-This is the monorepo for Astro's core adapters.
+> [!IMPORTANT]
+> All adapters that belongs to this repository have been moved to [the main monorepo](https://github.com/withastro/astro)
